@@ -11,7 +11,8 @@ const ProjectCard = ({ item }) => {
         >
           <div className=" card-body">
             <img
-              src={`${img}?${global.Date.now()}`}
+              src={img}
+              // src={`${img}?${global.Date.now()}`}
               alt="projectImage"
               className=" w-100 image"
             />
