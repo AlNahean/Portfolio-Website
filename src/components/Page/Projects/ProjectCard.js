@@ -10,7 +10,11 @@ const ProjectCard = ({ item }) => {
           style={{ backgroundColor: "transparent" }}
         >
           <div className=" card-body">
-            <img src={img} alt="projectImage" className=" w-100 image" />
+            <img
+              src={`${img}?${global.Date.now()}`}
+              alt="projectImage"
+              className=" w-100 image"
+            />
             <h4 className="title w-100 text-center">{title}</h4>
             <p className=" descreption text-center">{descreption}</p>
             <div className=" d-flex justify-content-center">
