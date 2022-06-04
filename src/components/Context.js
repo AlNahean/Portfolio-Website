@@ -10,16 +10,18 @@ const initialState = {
   lastName: "Fardous",
 };
 
-
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(Reducer, initialState);
+  const [isDarkMode, setISDarkmode] = useState(true);
   const [test, setTest] = useState("Context Text");
- 
+
   return (
     <AppContext.Provider
       value={{
         ...state,
-        test
+        test,
+        isDarkMode,
+        setISDarkmode,
       }}
     >
       {children}
