@@ -1,9 +1,20 @@
 @import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+@font-face {
+  font-family: hacked-kerx;
+  src: url(../../../public/Hacked-KerX.ttf);
+}
+@font-face {
+  font-family: hackbot;
+  src: url(../../../public/fonts/Hackbot.ttf);
+}
 
 * {
   // transition: all 0.2s 0s;
 }
-
+//to get rid off weird free trial msg
+.Typewriter__cursor {
+  display: none;
+}
 :root {
   --my-color-font: #fff;
   --my-color-font-muted: #6c757d;
@@ -30,6 +41,7 @@
 }
 body {
   background-color: var(--my-bg-color);
+  font-family: "hackbot", Courier, monospace;
   color: var(--my-color-font);
 }
 .center {
@@ -63,12 +75,14 @@ body {
   min-height: var(--my-navbar-height);
   backdrop-filter: blur(10px);
 }
+//aaaa
 .navbar-brand {
+  font-family: "hackbot", Courier, monospace;
   color: var(--my-navbar-font-color) !important;
   // color: var(--my-color-font) !important;
   // color: var(--my-primary-color);
   font-weight: bold;
-  letter-spacing: 2px;
+  letter-spacing: 8px;
   font-size: calc(1rem + 1.2vw);
 }
 .navbar-brand:hover {
@@ -91,6 +105,7 @@ body {
   color: var(--my-navbar-font-color);
   box-sizing: border-box;
   // border-bottom: 3px solid rgba(0, 0, 255, 0);
+  border-bottom: 3px solid rgba(255, 0, 0, 0);
 }
 
 .navbar .nav-item:hover {
@@ -151,11 +166,11 @@ body {
     // color: var(--my-color-font);
     box-sizing: border-box;
     // color: #212529;
-    // border-bottom: 3px solid rgba(0, 0, 255, 0);
+    border-bottom: 3px solid rgba(0, 0, 255, 0);
   }
   .navbar .nav-item:hover {
     // color: var(--my-primary-color);
-    border-bottom: 0px solid blue;
+    border-bottom: 3px solid rgba(0, 0, 255, 0);
   }
   //   .navbar .navbar-collapse {
   //     display: none;
@@ -273,6 +288,43 @@ body {
   font-size: calc(1.2rem) !important;
 
   // margin: 1rem;
+}
+
+.my-github-calender > article {
+  width: 100%;
+  max-width: 100% !important;
+}
+.my-github-calender svg {
+  width: 100% !important;
+}
+.my-github-calender rect {
+  background-color: gray;
+  // fill: gray;
+}
+
+// *************************************************************************************
+// *******************************Contact Me***************************************
+// *************************************************************************************
+.contact-me-wrapper {
+  padding-top: var(--my-navbar-height);
+}
+
+.from-control {
+  background-color: transparent !important;
+  border: 2px solid red;
+}
+.form-control {
+}
+.form-input {
+  color: var(--my-color-font);
+  background-color: transparent;
+  border: 1px solid var(--my-color-font);
+}
+.form-input:focus {
+  color: var(--my-color-font);
+  background-color: transparent;
+  border: 1px solid var(--my-color-font);
+  box-shadow: none;
 }
 
 // *************************************************************************************

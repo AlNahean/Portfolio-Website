@@ -1,16 +1,40 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+// import TextScrambler from "react-scramble-text";
+// import "react-scramble-text/dist/index.css";
+// import { useScramble } from "use-scramble";
+import Scrambler from "scrambling-text";
 
 import { AiOutlineMenu } from "react-icons/ai";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdDarkMode } from "react-icons/md";
 import { useGlobalContext } from "../../../Context";
 
+import { BsFillSunFill } from "react-icons/bs";
+
 const Navbar = ({}) => {
+  const [scrollPercent, setScrollPercent] = useState(0);
   const [showNavItem, setShowNavItem] = useState(false);
   // const [isDarkMode, setISDarkmode] = useState(false);
   const { isDarkMode, setISDarkmode } = useGlobalContext();
   const NavbarTarget = useRef();
+  // define the text to be scrambled as state.
+  const [text, setText] = useState("<Nahean/>");
+  // create an instance of Scrambler using useRef.
+  const scramblerRef = useRef(new Scrambler());
+
+  useEffect(() => {
+    // call scramble function with the text to be scrambled and handler.
+
+    scramblerRef.current.scramble(text, setText);
+    setInterval(() => {
+      scramblerRef.current.scramble(text, setText);
+    }, 4000);
+  }, []);
   const scrollAction = () => {
+    let scrolledHeight = document.body.scrollHeight - window.innerHeight;
+    let scrolled = (window.scrollY / scrolledHeight) * 100;
+    setScrollPercent(scrolled);
+
     let pageYOffset = window.pageYOffset;
     let Navbar = document.querySelector("#navbar");
     if (pageYOffset > 70) {
@@ -46,7 +70,7 @@ const Navbar = ({}) => {
       >
         <div className=" container ">
           <Link to="/" className=" navbar-brand pt-0 pb-0 text-primary">
-            {"< Nahean /> "}
+            {text}
           </Link>
           <button
             className=" navbar-toggler"
@@ -65,27 +89,49 @@ const Navbar = ({}) => {
             style={{ color: "white" }}
           >
             <div className="ms-auto navbar-nav h-100 center  ">
-              <Link
-                to="/"
+              <a
+                href="#main"
                 className=" nav-item ms-4 me-4 text-decoration-none fw-bold"
               >
                 Home
-              </Link>
-              <Link to="/about" className=" nav-item ms-4 me-4">
+              </a>
+              <a href="#about" className=" nav-item ms-4 me-4">
                 About
-              </Link>
-              <Link to="/projects" className=" nav-item ms-4 me-4">
+              </a>
+              <a href="#projects" className=" nav-item ms-4 me-4">
                 Projects
-              </Link>
+              </a>
+              <a href="#contact-me" className=" nav-item ms-4 me-4">
+                Contact Me
+              </a>
               {/* <Link to="/resume" className=" nav-item ms-4 me-4">
                 Resume
               </Link> */}
 
-              <div className=" form-check form-switch  ms-4 me-4 get-navbar-color">
-                {isDarkMode ? "dark" : "light"}
-                <input
+              <div className="  get-navbar-color mb-1">
+                <div
+                  className=" "
+                  style={{ fontSize: "1.7rem" }}
+                  onClick={(e) => {
+                    // console.log("boxCustomize", boxCustomize);
+                    // console.log(e.target.checked);
+
+                    var element = document.getElementById("body");
+
+                    if (isDarkMode) {
+                      element.setAttribute("data-layout-color", "light");
+                      setISDarkmode(false);
+                    } else {
+                      element.setAttribute("data-layout-color", "dark");
+                      setISDarkmode(true);
+                    }
+                  }}
+                >
+                  {isDarkMode ? <MdDarkMode /> : <BsFillSunFill />}
+                </div>
+                {/* <input
                   type="checkbox"
-                  className="form-check-input"
+                  className="form-check-input "
                   id="modeSwitcher"
                   checked={isDarkMode}
                   onChange={(e) => {}}
@@ -103,11 +149,16 @@ const Navbar = ({}) => {
                       setISDarkmode(e.target.checked);
                     }
                   }}
-                />
+                /> */}
               </div>
             </div>
           </div>
         </div>
+
+        <div
+          className=" position-absolute bottom-0 bg-primary"
+          style={{ height: "3px", width: `${scrollPercent}%` }}
+        ></div>
       </nav>
     </>
   );

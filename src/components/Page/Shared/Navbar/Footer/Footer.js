@@ -13,19 +13,19 @@ const socialLinksData = [
     icon: <GrTwitter />,
   },
   {
-    id: 1,
+    id: 2,
     title: "Facebook",
     link: "#",
     icon: <GrFacebookOption />,
   },
   {
-    id: 1,
+    id: 3,
     title: "Github",
     link: "#",
     icon: <GrGithub />,
   },
   {
-    id: 1,
+    id: 4,
     title: "linked In",
     link: "#",
     icon: <GrLinkedinOption />,

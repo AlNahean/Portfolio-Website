@@ -1,8 +1,5 @@
 import React from "react";
-import Footer from "../Shared/Navbar/Footer/Footer";
-import Navbar from "../Shared/Navbar/Navbar";
 import ProjectCard from "./ProjectCard";
-import ProjectsMain from "./ProjectsMain";
 
 const ProjectCardData = [
   {
@@ -31,30 +28,24 @@ const ProjectCardData = [
   },
 ];
 
-const Projects = () => {
+const ProjectsMain = () => {
   return (
-    <div>
-      <Navbar />
-      <main className=" container projects-wrapper">
-        <div className=" project-page-heading-wrapper row">
-          <h1 className=" col-12 text-center">
-            My <span className=" my-primary">Recent Works</span>
-          </h1>
-          <p className=" col-12 text-center">
-            Here are a few projects I've worked on recently.
-          </p>
-        </div>
-        <div className="projets-showcase-container row  justify-content-center g-3">
-          {ProjectCardData.map((item) => {
-            return <ProjectCard item={item} key={item.id} />;
-          })}
-        </div>
-      </main>
-
-      <ProjectsMain />
-      <Footer />
-    </div>
+    <main className=" container projects-wrapper aaaaa" id="projects">
+      <div className=" project-page-heading-wrapper row">
+        <h1 className=" col-12 text-center">
+          My <span className=" my-primary">Recent Works</span>
+        </h1>
+        <p className=" col-12 text-center">
+          Here are a few projects I've worked on recently.
+        </p>
+      </div>
+      <div className="projets-showcase-container row  justify-content-center g-3">
+        {ProjectCardData.map((item) => {
+          return <ProjectCard item={item} key={item.id} />;
+        })}
+      </div>
+    </main>
   );
 };
 
-export default Projects;
+export default ProjectsMain;
