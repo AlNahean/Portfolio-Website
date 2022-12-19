@@ -9,25 +9,25 @@ const socialLinksData = [
   {
     id: 1,
     title: "Twitter",
-    link: "#",
+    link: "https://twitter.com/nahean19",
     icon: <GrTwitter />,
   },
   {
     id: 2,
     title: "Facebook",
-    link: "#",
+    link: "https://www.facebook.com/profile.php?id=100088083783475",
     icon: <GrFacebookOption />,
   },
   {
     id: 3,
     title: "Github",
-    link: "#",
+    link: "https://github.com/AlNahean",
     icon: <GrGithub />,
   },
   {
     id: 4,
     title: "linked In",
-    link: "#",
+    link: "https://www.linkedin.com/in/nahean-fardous-30b8a9238/",
     icon: <GrLinkedinOption />,
   },
 ];

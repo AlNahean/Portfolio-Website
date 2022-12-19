@@ -26,6 +26,22 @@ const ProjectCardData = [
     img: "./projects/daraz clone.png",
     link: "https://ecommerce-clone-daraz.netlify.app/",
   },
+  {
+    id: 4,
+    title: "Rick and Morty Wiki",
+    descreption:
+      "This is a frot-end project on top of rick-and-morty api. This can show all characters and search indivisual character.",
+    img: "./projects/rick-and-morty.png",
+    link: "https://rick-and-morty-wiikii.netlify.app/",
+  },
+  {
+    id: 5,
+    title: "Phoenix Clone",
+    descreption:
+      "This is a agency website built with React and bootstrap. It can switch between dark and light mode ",
+    img: "./projects/phoenix-clone.png",
+    link: "https://phoenix-clone.netlify.app/",
+  },
 ];
 
 const ProjectsMain = () => {
