@@ -42,6 +42,22 @@ const ProjectCardData = [
     img: "./projects/phoenix-clone.png",
     link: "https://phoenix-clone.netlify.app/",
   },
+  {
+    id: 6,
+    title: "Ai Image Generator",
+    descreption:
+      "This is a project to turn text into images. With a text prompt it will generate a image based on the prompt ",
+    img: "./projects/image-generator.png",
+    link: "https://openaiapi.vercel.app/openai/generate-image",
+  },
+  {
+    id: 7,
+    title: "Ai Text Generator",
+    descreption:
+      "Based on your prompt or question it will try to generate an answer.",
+    img: "./projects/text-generator.png",
+    link: "https://openaiapi.vercel.app/openai/text-completion",
+  },
 ];
 
 const ProjectsMain = () => {
