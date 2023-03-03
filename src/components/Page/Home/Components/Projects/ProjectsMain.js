@@ -8,7 +8,9 @@ const ProjectCardData = [
     descreption:
       "This is a admin dashboard developed using React. It can switch Between Darkmode and Light mode. I used Chart js To create graph here",
     img: "./projects/hyper admin dashboard.png",
+    video: "./projects/video/2023-02-18 10-06-24.mp4",
     link: "https://admin-dashboard-react-chartjs.netlify.app/e-commerse",
+    github: "https://github.com/AlNahean/Admin-Dashboard",
   },
   {
     id: 2,
@@ -16,7 +18,10 @@ const ProjectCardData = [
     descreption:
       "This is my portfolio website. I used React to build this project. It can switch between dark mode and light mode",
     img: "./projects/portfolio website.png",
+    video: "./projects/video/",
+
     link: "https://nahean.netlify.app/",
+    github: "https://github.com/AlNahean/Portfolio-Website",
   },
   {
     id: 3,
@@ -24,7 +29,10 @@ const ProjectCardData = [
     descreption:
       "This is a E-commerse website. This includes both frontend and backend. I used React in frontend and used Node Js to develope the backend ",
     img: "./projects/daraz clone.png",
+    video: "./projects/video/2022-04-20 14-24-43.mp4",
+
     link: "https://ecommerce-clone-daraz.netlify.app/",
+    github: "https://github.com/AlNahean/daraz-clone-client",
   },
   {
     id: 4,
@@ -32,7 +40,10 @@ const ProjectCardData = [
     descreption:
       "This is a frot-end project on top of rick-and-morty api. This can show all characters and search indivisual character.",
     img: "./projects/rick-and-morty.png",
+    video: "./projects/video/React App (2).mp4",
+
     link: "https://rick-and-morty-wiikii.netlify.app/",
+    github: "https://github.com/AlNahean/rick-and-morty",
   },
   {
     id: 5,
@@ -40,7 +51,10 @@ const ProjectCardData = [
     descreption:
       "This is a agency website built with React and bootstrap. It can switch between dark and light mode ",
     img: "./projects/phoenix-clone.png",
+    video: "./projects/video/React App.mp4",
+
     link: "https://phoenix-clone.netlify.app/",
+    github: "https://github.com/AlNahean/phoenix-landing-page",
   },
   {
     id: 6,
@@ -48,7 +62,10 @@ const ProjectCardData = [
     descreption:
       "This is a project to turn text into images. With a text prompt it will generate a image based on the prompt ",
     img: "./projects/image-generator.png",
+    video: "./projects/video/",
+
     link: "https://openaiapi.vercel.app/openai/generate-image",
+    github: "https://github.com/AlNahean/openaiapi ",
   },
   {
     id: 7,
@@ -56,7 +73,98 @@ const ProjectCardData = [
     descreption:
       "Based on your prompt or question it will try to generate an answer.",
     img: "./projects/text-generator.png",
+    video: "./projects/video/",
+
     link: "https://openaiapi.vercel.app/openai/text-completion",
+    github: "https://github.com/AlNahean/openaiapi ",
+  },
+  {
+    id: 8,
+    title: "Casio Slider",
+    descreption:
+      "Based on your prompt or question it will try to generate an answer.",
+    img: "./projects/localhost_3000_casio-slider.png",
+    video: "./projects/video/Localhost 3000 Casio-Slider.mp4",
+
+    link: "https://next-js-projects-pf8p.vercel.app/casio-slider",
+    github: "https://github.com/AlNahean/next-js-projects",
+  },
+  {
+    id: 9,
+    title: "Discover World",
+    descreption:
+      "Based on your prompt or question it will try to generate an answer.",
+    img: "./projects/localhost_3000_discover-world.png",
+    video: "./projects/video/Localhost 3000 Discover-World.mp4",
+
+    link: "https://next-js-projects-pf8p.vercel.app/discover-world",
+    github: "https://github.com/AlNahean/next-js-projects",
+  },
+  {
+    id: 10,
+    title: "Grid Website",
+    descreption:
+      "Based on your prompt or question it will try to generate an answer.",
+    img: "./projects/localhost_3000_grid-website.png",
+    video: "./projects/video/Localhost 3000 Grid-Website.mp4",
+
+    link: "https://next-js-projects-pf8p.vercel.app/grid-website",
+    github: "https://github.com/AlNahean/next-js-projects",
+  },
+  {
+    id: 11,
+    title: "Netflix Redisign",
+    descreption:
+      "Based on your prompt or question it will try to generate an answer.",
+    img: "./projects/localhost_3000_home.png",
+    video: "./projects/video/Localhost 3000 Home.mp4",
+
+    link: "https://next-js-projects-pf8p.vercel.app/netflix-redesign",
+    github: "https://github.com/AlNahean/next-js-projects",
+  },
+  {
+    id: 12,
+    title: "Instagram Redesign",
+    descreption:
+      "Based on your prompt or question it will try to generate an answer.",
+    img: "./projects/localhost_3000_instagram-redesign.png",
+    video: "./projects/video/Localhost 3000 Instagram-Redesign.mp4",
+
+    link: "https://next-js-projects-pf8p.vercel.app/instagram-redesign",
+    github: "https://github.com/AlNahean/next-js-projects",
+  },
+  {
+    id: 13,
+    title: "Knives Slider",
+    descreption:
+      "Based on your prompt or question it will try to generate an answer.",
+    img: "./projects/localhost_3000_knives-slider.png",
+    video: "./projects/video/Localhost 3000 Knives-Slider.mp4",
+
+    link: "https://next-js-projects-pf8p.vercel.app/knives-slider",
+    github: "https://github.com/AlNahean/next-js-projects",
+  },
+  {
+    id: 14,
+    title: "Shoe Showcase",
+    descreption:
+      "Based on your prompt or question it will try to generate an answer.",
+    img: "./projects/localhost_3000_shoe-showcase.png",
+    video: "./projects/video/Localhost 3000 Shoe-Showcase.mp4",
+    link: "https://next-js-projects-pf8p.vercel.app/shoe-showcase",
+    github: "https://github.com/AlNahean/next-js-projects",
+  },
+  {
+    id: 15,
+    title: "Tasky",
+    descreption:
+      "Based on your prompt or question it will try to generate an answer.",
+    img: "./projects/localhost_3000_tasky (1).png",
+    video:
+      "./projects/video/Https   Next-Js-Projects-Pf8p.Vercel.App Tasky.mp4",
+
+    link: "https://next-js-projects-pf8p.vercel.app/tasky",
+    github: "https://github.com/AlNahean/next-js-projects",
   },
 ];
 
