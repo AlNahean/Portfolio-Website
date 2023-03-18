@@ -149,7 +149,7 @@ const ProjectCardData = [
     title: "Shoe Showcase",
     descreption:
       "Based on your prompt or question it will try to generate an answer.",
-    img: "./projects/compressed/localhost_3000_shoe-showcase_result.wenp",
+    img: "./projects/compressed/localhost_3000_shoe-showcase_result.webp",
     video: "./projects/video/Localhost 3000 Shoe-Showcase.mp4",
     link: "https://next-js-projects-pf8p.vercel.app/shoe-showcase",
     github: "https://github.com/AlNahean/next-js-projects",
