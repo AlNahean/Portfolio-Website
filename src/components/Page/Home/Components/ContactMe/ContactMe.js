@@ -9,6 +9,7 @@ import {
   GrGithub,
   GrLinkedinOption,
 } from "react-icons/gr";
+import FormComponent from "./FormComponent";
 
 const socialLinksData = [
   {
@@ -55,40 +56,6 @@ const contactData = [
   },
 ];
 const ContactMe = () => {
-  const [contactFormInfo, setContactFormInfo] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-  const onChangeHandler = (type, value) => {
-    if (type === "name") {
-      setContactFormInfo({ ...contactFormInfo, name: value });
-      return;
-    }
-    if (type === "email") {
-      setContactFormInfo({ ...contactFormInfo, email: value });
-      return;
-    }
-    if (type === "phone") {
-      setContactFormInfo({ ...contactFormInfo, phone: value });
-      return;
-    }
-    if (type === "message") {
-      setContactFormInfo({ ...contactFormInfo, message: value });
-      return;
-    }
-  };
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    console.log(e, contactFormInfo);
-    setContactFormInfo({
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
-    });
-  };
   return (
     <div className=" container contact-me-wrapper mt-5" id="contact-me">
       <div className=" row">
@@ -96,59 +63,7 @@ const ContactMe = () => {
           <h1 className=" my-primary">Contact Me</h1>
         </div>
         <div className=" col-12 col-md-6 p-md-5 contact-form order-2 order-md-1 ">
-          <form
-            className=" contact-form"
-            onSubmit={(e) => {
-              onSubmitHandler(e);
-            }}
-          >
-            <input
-              value={contactFormInfo.name}
-              type="text"
-              required
-              className=" form-control mt-3 mb-3 form-input"
-              placeholder="name"
-              onChange={(e) => {
-                onChangeHandler("name", e.target.value);
-              }}
-            />
-            <input
-              value={contactFormInfo.email}
-              type="email"
-              className=" form-control form-input mt-3 mb-3"
-              placeholder="email"
-              required
-              onChange={(e) => {
-                onChangeHandler("email", e.target.value);
-              }}
-            />
-            <input
-              value={contactFormInfo.phone}
-              type="tel"
-              className=" form-control form-input mt-3 mb-3"
-              placeholder="phone"
-              //   pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-              required
-              onChange={(e) => {
-                onChangeHandler("phone", e.target.value);
-              }}
-            />
-
-            <textarea
-              value={contactFormInfo.message}
-              name="message"
-              cols="10"
-              rows="5"
-              className=" form-control form-input mt-3 mb-3"
-              placeholder="message"
-              required
-              onChange={(e) => {
-                onChangeHandler("message", e.target.value);
-              }}
-            ></textarea>
-
-            <button className=" btn btn-primary">Submit</button>
-          </form>
+          <FormComponent />
         </div>
         <div className=" col-12 col-md-6 mt-5 mt-md-0 contact-info order-1 order-md-2">
           <div className=" d-flex justify-content-center align-items-center h-100 w-100">

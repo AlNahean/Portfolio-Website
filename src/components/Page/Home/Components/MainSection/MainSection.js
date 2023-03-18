@@ -1,12 +1,14 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Typewriter from "typewriter-effect";
+import WordSphere from "./WordSphere";
+import FaceAscii from "./FaceAscii";
 
 const MainSection = () => {
   return (
     <main className=" home-wrapper container" id="main">
-      <div className=" home-hero row">
+      <div className=" home-hero row position-relative">
         <div
-          className=" col-12 col-md-7 d-flex flex-column justify-content-center hero-text"
+          className=" col-12 col-md-6 d-flex flex-column justify-content-center hero-text hero-section"
           style={
             {
               // border: "1px solid red",
@@ -14,12 +16,12 @@ const MainSection = () => {
             }
           }
         >
-          <h1 className=" hero-text">Hello World</h1>
+          <h1 className=" hero-text text-white ">Hello World</h1>
           <h1 className=" mb-4 hero-text">
-            I'm <span>Nahean</span>
+            <span className=" text-white">I'm</span> <span>Nahean</span>
           </h1>
 
-          <small>
+          <small className="ty-e-text " style={{ whiteSpace: "nowrap" }}>
             <Typewriter
               options={{
                 strings: [
@@ -34,15 +36,16 @@ const MainSection = () => {
             />
           </small>
         </div>
-        <div className=" col-12 col-md-5 center">
-          <img
+        <div className=" col-12 col-md-6 center hero-section">
+          <WordSphere />
+          {/* <img
             src="./Images/undraw_programming_re_kg9v.svg"
             alt=""
             style={{ width: "100%" }}
-          />
+          /> */}
         </div>
       </div>
-      <div className=" row mb-4 ">
+      <div className=" row mb-4 mt-5 ">
         <div className=" col-12 col-md-8 home-description">
           <div className=" header w-100 d-flex justify-content-center m-2">
             <h1>
@@ -72,12 +75,15 @@ const MainSection = () => {
           </div>
         </div>
         <div className=" col-12 col-md-4 center">
-          <img
+          <Suspense fallback={<>loading</>}>
+            <FaceAscii />
+          </Suspense>
+          {/* <img
             src="./Images/undraw_profile_pic_ic-5-t.svg"
             alt=""
             // height="400"
             style={{ width: "100%" }}
-          />
+          /> */}
         </div>
       </div>
     </main>

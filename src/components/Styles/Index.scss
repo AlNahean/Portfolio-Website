@@ -19,8 +19,9 @@
   --my-color-font: #fff;
   --my-color-font-muted: #6c757d;
 
+  --my-body-bg-color: #222234;
   --my-body-bg-color: #18191a;
-  --my-bg-color-2: #212529; //org
+  // --my-bg-color-2: #212529; //org
 
   --my-bg-color: #242526;
   --my-bg-color-11: #242526;
@@ -180,7 +181,7 @@ body {
 // *******************************Home***************************************
 // *************************************************************************************
 .home-wrapper {
-  padding-top: calc(var(--my-navbar-height) + 10px);
+  padding-top: calc(var(--my-navbar-height) - 10px);
   z-index: 1;
   min-height: calc(100vh - (var(--my-navbar-height) + 10px));
 }
@@ -189,6 +190,11 @@ body {
 }
 .hero-text {
   font-size: calc(2rem + 2.7vw);
+  // color: "white";
+  // background-color: "red";
+}
+.ty-e-text {
+  min-height: calc(2rem + 3.2vw);
 }
 .hero-text small {
   font-size: calc(1.5rem + 2vw);
@@ -199,6 +205,18 @@ body {
   color: var(--my-primary-color);
 }
 
+.hero-section {
+  height: 50%;
+  // max-height: 50vh;
+  // border: 1px solid #ccc;
+}
+@media screen and (min-width: 768px) {
+  .hero-section {
+    height: 100%;
+    // max-height: 50vh;
+    // border: 1px solid #ccc;
+  }
+}
 .home-description .header h1 {
   text-transform: capitalize;
   font-size: calc(1.7rem + 1.3vw) !important;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 import {
   FaReact,
@@ -15,8 +15,12 @@ import {
   SiSocketdotio,
   SiAdobeaftereffects,
   SiGreensock,
+  SiBlender,
+  SiTailwindcss,
+  SiThreedotjs,
 } from "react-icons/si";
 import { DiJavascript1 } from "react-icons/di";
+import BedroomModel from "./BedroomModel";
 const SkillsetData = [
   {
     id: 1,
@@ -41,12 +45,12 @@ const SkillsetData = [
   {
     id: 5,
     title: "",
-    icon: <SiSocketdotio />,
+    icon: <SiThreedotjs />,
   },
   {
     id: 6,
     title: "",
-    icon: <GrGraphQl />,
+    icon: <SiTailwindcss />,
   },
   {
     id: 7,
@@ -78,7 +82,7 @@ const ToolsData = [
   {
     id: 4,
     title: "",
-    icon: <SiAdobeaftereffects />,
+    icon: <SiBlender />,
   },
 ];
 
@@ -86,7 +90,7 @@ const AboutMain = () => {
   return (
     <main className=" container about-wrapper" id="about">
       <div className=" row">
-        <div className=" col-12 col-md-8">
+        <div className=" col-12 col-md-6">
           <h1 className=" w-100 d-flex justify-content-center mb-3">
             Who <span className=" my-primary ms-2"> I am</span>
           </h1>
@@ -112,12 +116,20 @@ const AboutMain = () => {
             </ul>
           </div>
         </div>
-        <div className=" col-12 col-md-4 center">
-          <img
-            src="./Images/undraw_feeling_proud_qne1.svg"
-            alt=""
-            width="100%"
-          />
+        <div className=" col-12 col-md-6 center">
+          <Suspense
+            fallback={
+              <>
+                <img
+                  src="./Images/undraw_feeling_proud_qne1.svg"
+                  alt=""
+                  width="100%"
+                />
+              </>
+            }
+          >
+            <BedroomModel />
+          </Suspense>
         </div>
       </div>
       <div className=" row justify-content-center g-4 about-skillset mt-4">

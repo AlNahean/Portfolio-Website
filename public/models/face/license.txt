@@ -1,0 +1,11 @@
+Model Information:
+* title:	Face Low Poly
+* source:	https://sketchfab.com/3d-models/face-low-poly-3acc7ff4dd0f4f1dac1a377913af34ca
+* author:	Kiiba (https://sketchfab.com/keebie)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Face Low Poly" (https://sketchfab.com/3d-models/face-low-poly-3acc7ff4dd0f4f1dac1a377913af34ca) by Kiiba (https://sketchfab.com/keebie) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

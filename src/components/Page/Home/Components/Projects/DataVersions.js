@@ -1,6 +1,4 @@
-import React from "react";
-import ProjectCard from "./ProjectCard";
-
+//18/03/23-10:04
 const ProjectCardData = [
   {
     id: 1,
@@ -39,7 +37,7 @@ const ProjectCardData = [
     title: "Rick and Morty Wiki",
     descreption:
       "This is a frot-end project on top of rick-and-morty api. This can show all characters and search indivisual character.",
-    img: "./projects/compressed/rick-and-morty_result.webp",
+    img: "./projects/rick-and-morty.png",
     video: "./projects/video/React App (2).mp4",
 
     link: "https://rick-and-morty-wiikii.netlify.app/",
@@ -50,7 +48,7 @@ const ProjectCardData = [
     title: "Phoenix Clone",
     descreption:
       "This is a agency website built with React and bootstrap. It can switch between dark and light mode ",
-    img: "./projects/compressed/phoenix-clone_result.webp",
+    img: "./projects/phoenix-clone.png",
     video: "./projects/video/React App.mp4",
 
     link: "https://phoenix-clone.netlify.app/",
@@ -61,7 +59,7 @@ const ProjectCardData = [
     title: "Ai Image Generator",
     descreption:
       "This is a project to turn text into images. With a text prompt it will generate a image based on the prompt ",
-    img: "./projects/compressed/image-generator_result.webp",
+    img: "./projects/image-generator.png",
     video: "./projects/video/",
 
     link: "https://openaiapi.vercel.app/openai/generate-image",
@@ -72,7 +70,7 @@ const ProjectCardData = [
     title: "Ai Text Generator",
     descreption:
       "Based on your prompt or question it will try to generate an answer.",
-    img: "./projects/compressed/text-generator_result.webp",
+    img: "./projects/text-generator.png",
     video: "./projects/video/",
 
     link: "https://openaiapi.vercel.app/openai/text-completion",
@@ -83,7 +81,7 @@ const ProjectCardData = [
     title: "Casio Slider",
     descreption:
       "Based on your prompt or question it will try to generate an answer.",
-    img: "./projects/compressed/localhost_3000_casio-slider_result.webp",
+    img: "./projects/localhost_3000_casio-slider.png",
     video: "./projects/video/Localhost 3000 Casio-Slider.mp4",
 
     link: "https://next-js-projects-pf8p.vercel.app/casio-slider",
@@ -94,7 +92,7 @@ const ProjectCardData = [
     title: "Discover World",
     descreption:
       "Based on your prompt or question it will try to generate an answer.",
-    img: "./projects/compressed/localhost_3000_discover-world_result.webp",
+    img: "./projects/localhost_3000_discover-world.png",
     video: "./projects/video/Localhost 3000 Discover-World.mp4",
 
     link: "https://next-js-projects-pf8p.vercel.app/discover-world",
@@ -105,7 +103,7 @@ const ProjectCardData = [
     title: "Grid Website",
     descreption:
       "Based on your prompt or question it will try to generate an answer.",
-    img: "./projects/compressed/localhost_3000_grid-website_result.webp",
+    img: "./projects/localhost_3000_grid-website.png",
     video: "./projects/video/Localhost 3000 Grid-Website.mp4",
 
     link: "https://next-js-projects-pf8p.vercel.app/grid-website",
@@ -116,7 +114,7 @@ const ProjectCardData = [
     title: "Netflix Redisign",
     descreption:
       "Based on your prompt or question it will try to generate an answer.",
-    img: "./projects/compressed/localhost_3000_home_result.webp",
+    img: "./projects/localhost_3000_home.png",
     video: "./projects/video/Localhost 3000 Home.mp4",
 
     link: "https://next-js-projects-pf8p.vercel.app/netflix-redesign",
@@ -127,7 +125,7 @@ const ProjectCardData = [
     title: "Instagram Redesign",
     descreption:
       "Based on your prompt or question it will try to generate an answer.",
-    img: "./projects/compressed/localhost_3000_instagram-redesign_result.webp",
+    img: "./projects/localhost_3000_instagram-redesign.png",
     video: "./projects/video/Localhost 3000 Instagram-Redesign.mp4",
 
     link: "https://next-js-projects-pf8p.vercel.app/instagram-redesign",
@@ -138,7 +136,7 @@ const ProjectCardData = [
     title: "Knives Slider",
     descreption:
       "Based on your prompt or question it will try to generate an answer.",
-    img: "./projects/compressed/localhost_3000_knives-slider_result.webp",
+    img: "./projects/localhost_3000_knives-slider.png",
     video: "./projects/video/Localhost 3000 Knives-Slider.mp4",
 
     link: "https://next-js-projects-pf8p.vercel.app/knives-slider",
@@ -149,7 +147,7 @@ const ProjectCardData = [
     title: "Shoe Showcase",
     descreption:
       "Based on your prompt or question it will try to generate an answer.",
-    img: "./projects/compressed/localhost_3000_shoe-showcase_result.wenp",
+    img: "./projects/localhost_3000_shoe-showcase.png",
     video: "./projects/video/Localhost 3000 Shoe-Showcase.mp4",
     link: "https://next-js-projects-pf8p.vercel.app/shoe-showcase",
     github: "https://github.com/AlNahean/next-js-projects",
@@ -159,7 +157,7 @@ const ProjectCardData = [
     title: "Tasky",
     descreption:
       "Based on your prompt or question it will try to generate an answer.",
-    img: "./projects/compressed/localhost_3000_tasky (1)_result.webp",
+    img: "./projects/localhost_3000_tasky (1).png",
     video:
       "./projects/video/Https   Next-Js-Projects-Pf8p.Vercel.App Tasky.mp4",
 
@@ -167,25 +165,3 @@ const ProjectCardData = [
     github: "https://github.com/AlNahean/next-js-projects",
   },
 ];
-
-const ProjectsMain = () => {
-  return (
-    <main className=" container projects-wrapper aaaaa" id="projects">
-      <div className=" project-page-heading-wrapper row">
-        <h1 className=" col-12 text-center">
-          My <span className=" my-primary">Recent Works</span>
-        </h1>
-        <p className=" col-12 text-center">
-          Here are a few projects I've worked on recently.
-        </p>
-      </div>
-      <div className="projets-showcase-container row  justify-content-center g-3">
-        {ProjectCardData.map((item) => {
-          return <ProjectCard item={item} key={item.id} />;
-        })}
-      </div>
-    </main>
-  );
-};
-
-export default ProjectsMain;
