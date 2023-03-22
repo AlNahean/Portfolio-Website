@@ -89,7 +89,7 @@ const ContactMe = () => {
       <div className=" row">
         <div className="w-100 d-flex justify-content-center">
           <a
-            href="./Resume of Nahean Fardous.pdf"
+            href="./Resume of Nahean Fardous-v2.pdf"
             className=" btn btn-primary m-5"
             download
           >
