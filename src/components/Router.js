@@ -12,6 +12,8 @@ const Routing = () => {
     <Router>
       <Routes>
         <Route path="/" caseSensitive={false} element={<Home />} />
+        <Route path="/my" caseSensitive={false} element={<Home />} />
+
         <Route path="/home" caseSensitive={false} element={<Home />} />
         <Route path="/about" caseSensitive={false} element={<About />} />
         <Route path="/projects" caseSensitive={false} element={<Projects />} />
