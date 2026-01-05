@@ -1,0 +1,126 @@
+---
+title: Collapsible Code & Previews
+description: Learn how to use the CodeCollapsibleWrapper and ComponentPreview components to create interactive documentation.
+---
+
+This guide demonstrates how to use two custom components available in this project: `ComponentPreview` for showcasing live components and `CodeCollapsibleWrapper` for making large code blocks manageable.
+
+## ComponentPreview
+
+The `ComponentPreview` component is a simple container that adds a styled border and padding around its children. It's perfect for displaying live examples of your UI components.
+
+<ComponentPreview>
+  <Button>I'm in a preview!</Button>
+</ComponentPreview>
+
+Here's the code for the example above:
+
+```tsx
+import { Button } from "@/components/ui/button";
+import { ComponentPreview } from "@/components/component-preview";
+
+<ComponentPreview>
+  <Button>I'm in a preview!</Button>
+</ComponentPreview>
+```
+
+## CodeCollapsibleWrapper
+
+When you have a very long code block, it can take up a lot of vertical space. The `CodeCollapsibleWrapper` helps by hiding the majority of the code behind an "Expand" button.
+
+Here's a long code block that is initially collapsed. Click "Expand" to see the full content.
+
+<CodeCollapsibleWrapper>
+
+```tsx
+import * as React from "react"
+import {
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "lucide-react"
+import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
+
+import { cn } from "@/lib/utils"
+import { Button, buttonVariants } from "@/components/ui/button"
+
+function Calendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  captionLayout = "label",
+  buttonVariant = "ghost",
+  formatters,
+  components,
+  ...props
+}: React.ComponentProps<typeof DayPicker> & {
+  buttonVariant?: React.ComponentProps<typeof Button>["variant"]
+}) {
+  const defaultClassNames = getDefaultClassNames()
+
+  return (
+    <DayPicker
+      showOutsideDays={showOutsideDays}
+      className={cn(
+        "bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
+        String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
+        String.raw`rtl:**:[.rdp-button\_previous>svg]:rotate-180`,
+        className
+      )}
+      captionLayout={captionLayout}
+      formatters={{
+        formatMonthDropdown: (date) =>
+          date.toLocaleString("default", { month: "short" }),
+        ...formatters,
+      }}
+      classNames={{
+        root: cn("w-fit", defaultClassNames.root),
+        months: cn(
+          "flex gap-4 flex-col md:flex-row relative",
+          defaultClassNames.months
+        ),
+        month: cn("flex flex-col w-full gap-4", defaultClassNames.month),
+        // ... many more lines of code
+      }}
+      components={{
+        Root: ({ className, rootRef, ...props }) => {
+          return (
+            <div
+              data-slot="calendar"
+              ref={rootRef}
+              className={cn(className)}
+              {...props}
+            />
+          )
+        },
+        Chevron: ({ className, orientation, ...props }) => {
+          if (orientation === "left") {
+            return (
+              <ChevronLeftIcon className={cn("size-4", className)} {...props} />
+            )
+          }
+
+          if (orientation === "right") {
+            return (
+              <ChevronRightIcon
+                className={cn("size-4", className)}
+                {...props}
+              />
+            )
+          }
+
+          return (
+            <ChevronDownIcon className={cn("size-4", className)} {...props} />
+          )
+        },
+        // ... more components
+      }}
+      {...props}
+    />
+  )
+}
+```
+</CodeCollapsibleWrapper>
+
+To use it, simply wrap your markdown code block with the `<CodeCollapsibleWrapper>` component:
+

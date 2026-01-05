@@ -1,0 +1,91 @@
+# MDX Copy Button Issue - Root Cause & Fix
+
+## The Problem
+
+The `__raw__` prop (containing the raw code text) was not being passed to your MDX components, preventing the copy button from working.
+
+## Root Cause
+
+In `source.config.ts`, you were using `plugins.shift()` which **removed the first rehype plugin**. This first plugin was Fumadocs' `rehype-raw-code`, which is responsible for injecting the `__raw__` prop into code blocks.
+
+```typescript
+// ❌ WRONG - This removes rehype-raw-code
+rehypePlugins: (plugins) => {
+  plugins.shift();  // This removes Fumadocs' raw code plugin!
+  plugins.push([rehypePrettyCode, config]);
+  return plugins;
+}
+```
+
+## The Fix
+
+### 1. Fix `source.config.ts`
+
+Replace `plugins.shift()` with proper plugin replacement:
+
+```typescript
+rehypePlugins: (plugins) => {
+  // Find and remove only rehype-pretty-code
+  const prettyCodeIndex = plugins.findIndex(
+    (plugin) => Array.isArray(plugin) && plugin[0]?.name === 'rehypePrettyCode'
+  );
+  
+  if (prettyCodeIndex !== -1) {
+    plugins.splice(prettyCodeIndex, 1);
+  }
+
+  // Add your custom config
+  plugins.push([rehypePrettyCode as any, {
+    theme: {
+      dark: "github-dark",
+      light: "github-light-default",
+    },
+  }]);
+
+  return plugins;
+}
+```
+
+### 2. Update `mdx-components.tsx`
+
+Override the `figure` component (not `code` or `pre`) because `rehype-pretty-code` wraps code blocks in `<figure>` tags:
+
+```typescript
+figure: ({ className, children, ...props }: React.ComponentProps<"figure"> & {
+  "data-rehype-pretty-code-figure"?: string
+  __raw__?: string
+  __src__?: string
+}) => {
+  const isCodeFigure = "data-rehype-pretty-code-figure" in props
+  
+  if (isCodeFigure) {
+    return (
+      <figure 
+        className={cn("relative max-w-[80vw] overflow-scroll md:overflow-hidden", className)} 
+        {...props}
+      >
+        {props.__raw__ && <CopyButton value={props.__raw__} src={props.__src__} />}
+        {children}
+      </figure>
+    )
+  }
+
+  return <figure className={cn("relative", className)} {...props}>{children}</figure>
+}
+```
+
+### 3. Restart Dev Server
+
+```bash
+rm -rf .next
+npm run dev
+```
+
+## Why This Works
+
+- **Fumadocs' `rehype-raw-code`** plugin stays in place and injects `__raw__` prop
+- **`rehype-pretty-code`** transforms code into styled spans
+- **`figure` component** receives both the `__raw__` prop and styled children
+- **CopyButton** gets the raw code while users see syntax highlighting
+
+Done! ✨

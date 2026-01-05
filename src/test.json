@@ -1,0 +1,338 @@
+{
+  "props": {
+    "children": {
+      "type": "span",
+      "key": null,
+      "props": {
+        "className": "line",
+        "children": [
+          {
+            "type": "span",
+            "key": null,
+            "props": {
+              "style": {
+                "--shiki-light": "#6F42C1",
+                "--shiki-dark": "#B392F0"
+              },
+              "children": "npx"
+            },
+            "_owner": {
+              "name": "MDXContent",
+              "key": null,
+              "env": "Server",
+              "owner": {
+                "name": "Page",
+                "key": null,
+                "env": "Server",
+                "stack": [
+                  ["Function.all", "", 0, 0, 0, 0, true],
+                  ["Function.all", "", 0, 0, 0, 0, true],
+                  ["Function.all", "", 0, 0, 0, 0, true]
+                ],
+                "props": {
+                  "params": {
+                    "status": "resolved_model",
+                    "value": "{}",
+                    "reason": {
+                      "_bundlerConfig": null,
+                      "_serverReferenceConfig": null,
+                      "_moduleLoading": null,
+                      "_chunks": {},
+                      "_stringDecoder": {},
+                      "_closed": true,
+                      "_closedReason": {},
+                      "_pendingChunks": 0,
+                      "_weakResponse": {
+                        "weak": {},
+                        "response": null
+                      },
+                      "_debugRootOwner": null,
+                      "_debugRootStack": null,
+                      "_debugRootTask": {},
+                      "_blockedConsole": null,
+                      "_replayConsole": true,
+                      "_rootEnvironmentName": "Server",
+                      "_pendingInitialRender": 136,
+                      "_timeOrigin": 62457.25439453125
+                    },
+                    "_debugChunk": null,
+                    "_debugInfo": null
+                  },
+                  "searchParams": {
+                    "status": "halted",
+                    "value": null,
+                    "reason": null,
+                    "_debugChunk": null,
+                    "_debugInfo": null
+                  }
+                },
+                "debugTask": {},
+                "debugStack": {},
+                "debugLocation": {}
+              },
+              "stack": [
+                [
+                  "Page",
+                  "E:\\projects\\sorties\\task-management\\my-docs-app\\.next\\server\\chunks\\ssr\\[root-of-the-server]__c9a5fed4._.js",
+                  1818,
+                  294,
+                  1598,
+                  1,
+                  false
+                ]
+              ],
+              "props": {
+                "components": {}
+              },
+              "debugTask": {},
+              "debugStack": {},
+              "debugLocation": {}
+            },
+            "_store": {}
+          },
+          {
+            "type": "span",
+            "key": null,
+            "props": {
+              "style": {
+                "--shiki-light": "#032F62",
+                "--shiki-dark": "#9ECBFF"
+              },
+              "children": " shadcn@canary"
+            },
+            "_owner": {
+              "name": "MDXContent",
+              "key": null,
+              "env": "Server",
+              "owner": {
+                "name": "Page",
+                "key": null,
+                "env": "Server",
+                "stack": [
+                  ["Function.all", "", 0, 0, 0, 0, true],
+                  ["Function.all", "", 0, 0, 0, 0, true],
+                  ["Function.all", "", 0, 0, 0, 0, true]
+                ],
+                "props": {
+                  "params": {
+                    "status": "resolved_model",
+                    "value": "{}",
+                    "reason": {
+                      "_bundlerConfig": null,
+                      "_serverReferenceConfig": null,
+                      "_moduleLoading": null,
+                      "_chunks": {},
+                      "_stringDecoder": {},
+                      "_closed": true,
+                      "_closedReason": {},
+                      "_pendingChunks": 0,
+                      "_weakResponse": {
+                        "weak": {},
+                        "response": null
+                      },
+                      "_debugRootOwner": null,
+                      "_debugRootStack": null,
+                      "_debugRootTask": {},
+                      "_blockedConsole": null,
+                      "_replayConsole": true,
+                      "_rootEnvironmentName": "Server",
+                      "_pendingInitialRender": 136,
+                      "_timeOrigin": 62457.25439453125
+                    },
+                    "_debugChunk": null,
+                    "_debugInfo": null
+                  },
+                  "searchParams": {
+                    "status": "halted",
+                    "value": null,
+                    "reason": null,
+                    "_debugChunk": null,
+                    "_debugInfo": null
+                  }
+                },
+                "debugTask": {},
+                "debugStack": {},
+                "debugLocation": {}
+              },
+              "stack": [
+                [
+                  "Page",
+                  "E:\\projects\\sorties\\task-management\\my-docs-app\\.next\\server\\chunks\\ssr\\[root-of-the-server]__c9a5fed4._.js",
+                  1818,
+                  294,
+                  1598,
+                  1,
+                  false
+                ]
+              ],
+              "props": {
+                "components": {}
+              },
+              "debugTask": {},
+              "debugStack": {},
+              "debugLocation": {}
+            },
+            "_store": {}
+          },
+          {
+            "type": "span",
+            "key": null,
+            "props": {
+              "style": {
+                "--shiki-light": "#032F62",
+                "--shiki-dark": "#9ECBFF"
+              },
+              "children": " init"
+            },
+            "_owner": {
+              "name": "MDXContent",
+              "key": null,
+              "env": "Server",
+              "owner": {
+                "name": "Page",
+                "key": null,
+                "env": "Server",
+                "stack": [
+                  ["Function.all", "", 0, 0, 0, 0, true],
+                  ["Function.all", "", 0, 0, 0, 0, true],
+                  ["Function.all", "", 0, 0, 0, 0, true]
+                ],
+                "props": {
+                  "params": {
+                    "status": "resolved_model",
+                    "value": "{}",
+                    "reason": {
+                      "_bundlerConfig": null,
+                      "_serverReferenceConfig": null,
+                      "_moduleLoading": null,
+                      "_chunks": {},
+                      "_stringDecoder": {},
+                      "_closed": true,
+                      "_closedReason": {},
+                      "_pendingChunks": 0,
+                      "_weakResponse": {
+                        "weak": {},
+                        "response": null
+                      },
+                      "_debugRootOwner": null,
+                      "_debugRootStack": null,
+                      "_debugRootTask": {},
+                      "_blockedConsole": null,
+                      "_replayConsole": true,
+                      "_rootEnvironmentName": "Server",
+                      "_pendingInitialRender": 136,
+                      "_timeOrigin": 62457.25439453125
+                    },
+                    "_debugChunk": null,
+                    "_debugInfo": null
+                  },
+                  "searchParams": {
+                    "status": "halted",
+                    "value": null,
+                    "reason": null,
+                    "_debugChunk": null,
+                    "_debugInfo": null
+                  }
+                },
+                "debugTask": {},
+                "debugStack": {},
+                "debugLocation": {}
+              },
+              "stack": [
+                [
+                  "Page",
+                  "E:\\projects\\sorties\\task-management\\my-docs-app\\.next\\server\\chunks\\ssr\\[root-of-the-server]__c9a5fed4._.js",
+                  1818,
+                  294,
+                  1598,
+                  1,
+                  false
+                ]
+              ],
+              "props": {
+                "components": {}
+              },
+              "debugTask": {},
+              "debugStack": {},
+              "debugLocation": {}
+            },
+            "_store": {}
+          }
+        ]
+      },
+      "_owner": {
+        "name": "MDXContent",
+        "key": null,
+        "env": "Server",
+        "owner": {
+          "name": "Page",
+          "key": null,
+          "env": "Server",
+          "stack": [
+            ["Function.all", "", 0, 0, 0, 0, true],
+            ["Function.all", "", 0, 0, 0, 0, true],
+            ["Function.all", "", 0, 0, 0, 0, true]
+          ],
+          "props": {
+            "params": {
+              "status": "resolved_model",
+              "value": "{}",
+              "reason": {
+                "_bundlerConfig": null,
+                "_serverReferenceConfig": null,
+                "_moduleLoading": null,
+                "_chunks": {},
+                "_stringDecoder": {},
+                "_closed": true,
+                "_closedReason": {},
+                "_pendingChunks": 0,
+                "_weakResponse": {
+                  "weak": {},
+                  "response": null
+                },
+                "_debugRootOwner": null,
+                "_debugRootStack": null,
+                "_debugRootTask": {},
+                "_blockedConsole": null,
+                "_replayConsole": true,
+                "_rootEnvironmentName": "Server",
+                "_pendingInitialRender": 136,
+                "_timeOrigin": 62457.25439453125
+              },
+              "_debugChunk": null,
+              "_debugInfo": null
+            },
+            "searchParams": {
+              "status": "halted",
+              "value": null,
+              "reason": null,
+              "_debugChunk": null,
+              "_debugInfo": null
+            }
+          },
+          "debugTask": {},
+          "debugStack": {},
+          "debugLocation": {}
+        },
+        "stack": [
+          [
+            "Page",
+            "E:\\projects\\sorties\\task-management\\my-docs-app\\.next\\server\\chunks\\ssr\\[root-of-the-server]__c9a5fed4._.js",
+            1818,
+            294,
+            1598,
+            1,
+            false
+          ]
+        ],
+        "props": {
+          "components": {}
+        },
+        "debugTask": {},
+        "debugStack": {},
+        "debugLocation": {}
+      },
+      "_store": {}
+    }
+  }
+}
