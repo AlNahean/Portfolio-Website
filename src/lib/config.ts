@@ -1,6 +1,7 @@
 export const siteConfig = {
   name: "Nahean",
-  url: "https://botany-suggestions.vercel.app",
+  url: "https://nahean-study-hub.netlify.app", // Example URL, you can change this
+  ogImage: "https://nahean-study-hub.netlify.app/og.jpg", // Example OG image URL
   description:
     "A personal knowledge base for mastering Botany. Built for clarity, speed, and focus.",
   author: {
@@ -17,6 +18,10 @@ export const siteConfig = {
     {
       href: "/study",
       label: "Study",
+    },
+    {
+      href: "/blog",
+      label: "Blog",
     },
   ],
   footerText: "Built by Nahean Fardous.",

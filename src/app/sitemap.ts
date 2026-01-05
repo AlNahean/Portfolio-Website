@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { source, studySource } from "@/lib/source";
+import { source, studySource, blogSource } from "@/lib/source";
 import { siteConfig } from "@/lib/config";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -17,10 +17,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       : new Date(),
   }));
 
-  const routes = ["", "/study", "/docs"].map((route) => ({
+  const blogPages = blogSource.getPages().map((page) => ({
+    url: `${siteConfig.url}${page.url}`,
+    lastModified: page.data.lastModified
+      ? new Date(page.data.lastModified)
+      : new Date(),
+  }));
+
+  const routes = ["", "/study", "/docs", "/blog"].map((route) => ({
     url: `${siteConfig.url}${route}`,
     lastModified: new Date(),
   }));
 
-  return [...routes, ...docsPages, ...studyPages];
+  return [...routes, ...docsPages, ...studyPages, ...blogPages];
 }

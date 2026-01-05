@@ -8,6 +8,9 @@ import { z } from "zod";
 
 // import { transformers } from "@/lib/highlight-code";
 
+
+
+
 export default defineConfig({
   mdxOptions: {
     rehypePlugins: (plugins) => {
@@ -46,3 +49,16 @@ export const docs = defineDocs({
 export const study = defineDocs({
   dir: "content/study",
 });
+// Updated Blog Schema
+export const blog = defineDocs({
+  dir: "content/blog",
+  docs: {
+    schema: frontmatterSchema.extend({
+      date: z.string().date().or(z.date()).optional(),
+      author: z.string().optional(),
+      image: z.string().optional(),
+      tags: z.array(z.string()).optional(),
+    }),
+  },
+});
+

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { NextResponse, type NextRequest } from "next/server";
 
-import { source, studySource } from "@/lib/source";
+import { source, studySource, blogSource } from "@/lib/source";
 
 export const revalidate = false;
 
@@ -17,6 +17,9 @@ export async function GET(
   let page = source.getPage(slug);
   if (!page) {
     page = studySource.getPage(slug);
+  }
+  if (!page) {
+    page = blogSource.getPage(slug);
   }
 
   if (!page) {
@@ -47,6 +50,7 @@ export function generateStaticParams() {
   // This function remains the same
   const docsParams = source.generateParams();
   const studyParams = studySource.generateParams();
+  const blogParams = blogSource.generateParams();
 
-  return [...docsParams, ...studyParams];
+  return [...docsParams, ...studyParams, ...blogParams];
 }

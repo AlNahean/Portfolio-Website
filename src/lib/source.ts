@@ -1,5 +1,5 @@
 import { loader } from "fumadocs-core/source";
-import { docs, study } from "../../.source";
+import { docs, study, blog } from "../../.source";
 
 export const source = loader({
   baseUrl: "/docs",
@@ -10,4 +10,10 @@ export const source = loader({
 export const studySource = loader({
   baseUrl: "/study",
   source: study.toFumadocsSource(),
+});
+
+// Add a new loader for the blog section
+export const blogSource = loader({
+  baseUrl: "/blog",
+  source: blog.toFumadocsSource(),
 });

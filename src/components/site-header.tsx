@@ -1,7 +1,7 @@
 import Link from "next/link"
 
 import { siteConfig } from "@/lib/config"
-import { source, studySource } from "@/lib/source"
+import { source, studySource, blogSource } from "@/lib/source"
 import { CommandMenu } from "@/components/command-menu"
 import { Icons } from "@/components/icons"
 import { MainNav } from "@/components/main-nav"
@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator"
 export function SiteHeader() {
     const combinedPageTree = {
         ...source.pageTree,
-        children: [...source.pageTree.children, ...studySource.pageTree.children],
+        children: [...source.pageTree.children, ...studySource.pageTree.children, ...blogSource.pageTree.children],
     };
 
     return (
@@ -23,7 +23,7 @@ export function SiteHeader() {
                 <div className="3xl:fixed:container flex h-[var(--header-height)] items-center gap-2">
                     <MobileNav
                         items={siteConfig.navItems}
-                        studyItems={studySource.pageTree.children}
+                        studyItems={[...studySource.pageTree.children, ...blogSource.pageTree.children]}
                         className="flex lg:hidden"
                     />
                     <Button

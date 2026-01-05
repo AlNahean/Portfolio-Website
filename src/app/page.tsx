@@ -1,271 +1,27 @@
-// import { SiteFooter } from "@/components/site-footer";
-// import { SiteHeader } from "@/components/site-header";
-// import { Badge } from "@/components/ui/badge";
-// import { Button } from "@/components/ui/button";
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Kbd } from "@/components/ui/kbd";
-// import Link from "next/link";
-// import {
-//   ArrowRight,
-//   BookOpen,
-//   Code,
-//   FileText,
-//   Github,
-//   Library,
-//   Lightbulb,
-//   Rocket,
-//   Search,
-//   Sparkles,
-//   Scale,
-// } from "lucide-react";
-
-// // A minimal, clean-looking card for navigation
-// const LinkedCard = ({
-//   href,
-//   children,
-//   className,
-// }: {
-//   href: string;
-//   children: React.ReactNode;
-//   className?: string;
-// }) => (
-//   <Link
-//     href={href}
-//     className={`group block overflow-hidden rounded-lg border bg-transparent text-card-foreground transition-all duration-300 ease-in-out hover:border-foreground/30 hover:bg-muted/30 hover:shadow-sm ${className}`}
-//   >
-//     {children}
-//   </Link>
-// );
-
-// // A reusable component for listing features with icons
-// const FeatureItem = ({
-//   icon: Icon,
-//   title,
-//   children,
-// }: {
-//   icon: React.ElementType;
-//   title: string;
-//   children: React.ReactNode;
-// }) => (
-//   <div className="flex items-start gap-4">
-//     <div className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-full border bg-background">
-//       <Icon className="size-5 text-muted-foreground" />
-//     </div>
-//     <div>
-//       <h3 className="text-xl font-semibold">{title}</h3>
-//       <p className="text-muted-foreground mt-1 text-balance">{children}</p>
-//     </div>
-//   </div>
-// );
-
-// export default function Home() {
-//   return (
-//     <div className="flex min-h-screen flex-col bg-background text-foreground">
-//       <SiteHeader />
-//       <main className="flex-1">
-//         {/* --- Hero Section --- */}
-//         <section className="w-full py-28 md:py-36 lg:py-48">
-//           <div className="container px-4 text-center md:px-6">
-//             <div className="mx-auto flex max-w-3xl flex-col items-center space-y-6">
-//               <h1 className="font-heading text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-//                 Nahean's Study Hub
-//               </h1>
-//               <p className="text-muted-foreground max-w-2xl text-lg md:text-xl">
-//                 A personal knowledge base for mastering Botany. Built for clarity, speed, and focus.
-//               </p>
-//               <div className="mt-6 flex flex-col gap-4 sm:flex-row">
-//                 <Button asChild size="lg">
-//                   <Link href="/study/higher-cryptogams/answer">
-//                     Start Studying <ArrowRight className="ml-2 size-4" />
-//                   </Link>
-//                 </Button>
-//                 <Button asChild size="lg" variant="outline">
-//                   <a href="https://github.com/alnahean" target="_blank" rel="noopener noreferrer">
-//                     <Github className="mr-2 size-4" /> View on GitHub
-//                   </a>
-//                 </Button>
-//               </div>
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* --- Introduction Section --- */}
-//         <section className="w-full border-y bg-muted/30 py-20 md:py-24">
-//           <div className="container px-4 md:px-6">
-//             <div className="mx-auto max-w-3xl text-center">
-//               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-//                 From Personal Notes to a Public Resource
-//               </h2>
-//               <p className="text-muted-foreground mt-4 text-lg text-balance">
-//                 This project began as a simple need: to organize complex botany notes into a clear, searchable format. It evolved into a demonstration of how modern web technologies can transform the way we learn and share knowledge.
-//               </p>
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* --- Subjects Section --- */}
-//         <section className="w-full py-20 md:py-24 lg:py-32 relative overflow-hidden">
-//           {/* Decorative background elements */}
-//           <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-muted/30 to-transparent rounded-full blur-3xl" />
-//           <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-muted/30 to-transparent rounded-full blur-3xl" />
-
-//           <div className="container px-4 md:px-6 relative">
-//             <div className="flex flex-col items-center justify-center space-y-4 text-center">
-//               <div className="space-y-3">
-//                 <div className="inline-block">
-//                   <h2 className="font-heading text-3xl font-bold tracking-tighter sm:text-5xl bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
-//                     Explore The Core Subjects
-//                   </h2>
-//                   <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-transparent via-foreground/50 to-transparent rounded-full" />
-//                 </div>
-//                 <p className="text-muted-foreground mx-auto max-w-3xl text-balance md:text-xl/relaxed">
-//                   Detailed notes, curated from trusted suggestions, and organized for focused study.
-//                 </p>
-//               </div>
-//             </div>
-
-//             <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:px-8">
-//               {/* Card 1 */}
-//               <a
-//                 href="/study/higher-cryptogams/answer"
-//                 className="group relative overflow-hidden rounded-2xl border bg-card transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
-//               >
-//                 <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-muted/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-//                 <div className="p-6 pb-4">
-//                   <div className="relative">
-//                     <div className="absolute inset-0 bg-muted/40 rounded-xl blur-xl" />
-//                     <div className="relative flex size-14 items-center justify-center rounded-xl border-2 bg-background shadow-lg">
-//                       <BookOpen className="size-7 text-muted-foreground" strokeWidth={2.5} />
-//                     </div>
-//                   </div>
-//                   <h3 className="mt-4 text-xl font-bold tracking-tight">Higher Cryptogams</h3>
-//                 </div>
-//                 <div className="px-6 pb-6">
-//                   <p className="text-muted-foreground leading-relaxed">
-//                     Dive into the world of Bryophytes and Pteridophytes. Explore their characteristics, life cycles, and economic importance.
-//                   </p>
-//                 </div>
-//               </a>
-
-//               {/* Card 2 */}
-//               <a
-//                 href="/study/plant-anatomy/answers"
-//                 className="group relative overflow-hidden rounded-2xl border bg-card transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
-//               >
-//                 <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-muted/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-//                 <div className="p-6 pb-4">
-//                   <div className="relative">
-//                     <div className="absolute inset-0 bg-muted/40 rounded-xl blur-xl" />
-//                     <div className="relative flex size-14 items-center justify-center rounded-xl border-2 bg-background shadow-lg">
-//                       <Scale className="size-7 text-muted-foreground" strokeWidth={2.5} />
-//                     </div>
-//                   </div>
-//                   <h3 className="mt-4 text-xl font-bold tracking-tight">Plant Anatomy</h3>
-//                 </div>
-//                 <div className="px-6 pb-6">
-//                   <p className="text-muted-foreground leading-relaxed">
-//                     Uncover the internal structure of plants. Learn about tissues, cellular components, growth, and the systems that support plant life.
-//                   </p>
-//                 </div>
-//               </a>
-
-//               {/* Card 3 */}
-//               <a
-//                 href="/study/taxonomy-of-angiosperms/answers"
-//                 className="group relative overflow-hidden rounded-2xl border bg-card transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
-//               >
-//                 <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-muted/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-//                 <div className="p-6 pb-4">
-//                   <div className="relative">
-//                     <div className="absolute inset-0 bg-muted/40 rounded-xl blur-xl" />
-//                     <div className="relative flex size-14 items-center justify-center rounded-xl border-2 bg-background shadow-lg">
-//                       <Library className="size-7 text-muted-foreground" strokeWidth={2.5} />
-//                     </div>
-//                   </div>
-//                   <h3 className="mt-4 text-xl font-bold tracking-tight">Taxonomy of Angiosperms</h3>
-//                 </div>
-//                 <div className="px-6 pb-6">
-//                   <p className="text-muted-foreground leading-relaxed">
-//                     Master the classification of flowering plants. This section covers taxonomic principles, family characteristics, and nomenclature.
-//                   </p>
-//                 </div>
-//               </a>
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* --- Features Section --- */}
-//         <section className="bg-muted/30 w-full border-y py-20 md:py-24 lg:py-32">
-//           <div className="container grid max-w-6xl items-start gap-12 px-4 md:px-6 lg:grid-cols-2">
-//             <div className="space-y-4">
-//               <Badge variant="outline">Why it works</Badge>
-//               <h2 className="font-heading text-3xl font-bold tracking-tighter sm:text-4xl">A Tool for Focused Learning</h2>
-//               <p className="text-muted-foreground text-lg">
-//                 Beyond just text on a screen, this platform incorporates features designed to enhance the study experience.
-//               </p>
-//             </div>
-//             <div className="grid gap-8">
-//               <FeatureItem icon={Rocket} title="Built for Speed">
-//                 Powered by Next.js and hosted on Vercel, the site is incredibly fast. Access your notes instantly without waiting for slow page loads.
-//               </FeatureItem>
-//               <FeatureItem icon={Search} title="Instant Search">
-//                 Find any topic or question across all subjects with a powerful global search. Just press <Kbd>⌘</Kbd> + <Kbd>K</Kbd>.
-//               </FeatureItem>
-//               <FeatureItem icon={Sparkles} title="Clean & Minimalist UI">
-//                 The interface is designed to be clean and distraction-free, letting you focus on the content.
-//               </FeatureItem>
-//             </div>
-//           </div>
-//         </section>
-
-//         {/* --- Tech Stack & Philosophy --- */}
-//         <section className="w-full py-20 md:py-24 lg:py-32">
-//           <div className="container grid max-w-6xl items-center gap-16 px-4 md:px-6 lg:grid-cols-2">
-//             <div className="space-y-4">
-//               <Badge variant="outline">The Technology</Badge>
-//               <h2 className="font-heading text-3xl font-bold tracking-tighter sm:text-4xl">The Tools Behind the Hub</h2>
-//               <p className="text-muted-foreground text-lg">
-//                 Leveraging the best of the modern web ecosystem to create a high-quality, maintainable, and performant platform.
-//               </p>
-//               <div className="mt-4 flex flex-wrap gap-2">
-//                 <Badge variant="secondary" className="px-3 py-1">Next.js</Badge>
-//                 <Badge variant="secondary" className="px-3 py-1">React</Badge>
-//                 <Badge variant="secondary" className="px-3 py-1">TypeScript</Badge>
-//                 <Badge variant="secondary" className="px-3 py-1">Tailwind CSS</Badge>
-//                 <Badge variant="secondary" className="px-3 py-1">Shadcn UI</Badge>
-//                 <Badge variant="secondary" className="px-3 py-1">Fumadocs</Badge>
-//               </div>
-//             </div>
-//             <div className="grid gap-8">
-//               <FeatureItem icon={Code} title="Open Source & Modern">
-//                 The entire project is built with a modern tech stack and is completely open source on GitHub. It serves as a real-world example of a documentation site.
-//               </FeatureItem>
-//               <FeatureItem icon={FileText} title="Content-First with MDX">
-//                 All notes are written in MDX, allowing for rich content that blends text with interactive React components for a more dynamic learning experience.
-//               </FeatureItem>
-//               <FeatureItem icon={Lightbulb} title="A Living Project">
-//                 This is an ongoing project. New notes and features will be added over time. Contributions and suggestions are always welcome.
-//               </FeatureItem>
-//             </div>
-//           </div>
-//         </section>
-//       </main>
-//       <SiteFooter />
-//     </div>
-//   );
-// }
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Icons } from "@/components/icons";
 import Link from "next/link";
 import {
   ArrowRight,
-  BookOpen,
-  Github,
-  Library,
-  Scale,
+  Code,
+  ExternalLink,
+  Mail,
+  MapPin,
+  Phone
 } from "lucide-react";
+import { siteConfig } from "@/lib/config";
 
 export default function Home() {
   return (
@@ -273,88 +29,226 @@ export default function Home() {
       <SiteHeader />
       <main className="flex-1">
         {/* --- Hero Section --- */}
-        <section className="w-full py-28 md:py-36 lg:py-48">
-          <div className="container px-4 text-center md:px-6">
-            <div className="mx-auto flex max-w-3xl flex-col items-center space-y-6">
-              <h1 className="font-heading text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-                Nahean's Study Hub
-              </h1>
-              <p className="text-muted-foreground max-w-2xl text-lg md:text-xl">
-                A personal knowledge base for mastering Botany. Built for clarity, speed, and focus.
+        <section className="container flex flex-col items-center justify-center space-y-8 py-24 text-center md:py-32 lg:py-40">
+          <div className="space-y-4 animate-in fade-in slide-in-from-bottom-5 duration-1000">
+            <h1 className="font-heading text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+              Md. Nahean Fardous
+            </h1>
+            <p className="text-xl font-medium text-muted-foreground sm:text-2xl">
+              Front-End Developer
+            </p>
+            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl text-balance">
+              Adept web developer specializing in Javascript and ReactJs. I build exceptional digital experiences with modern technologies.
+            </p>
+          </div>
+          <div className="flex flex-col gap-4 sm:flex-row animate-in fade-in slide-in-from-bottom-5 duration-1000 delay-200">
+            <Button asChild size="lg">
+              <Link href="#contact">
+                Contact Me <ArrowRight className="ml-2 size-4" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link href="#projects">
+                View Projects
+              </Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* --- About & Skills Section --- */}
+        {/* Added scroll-mt-24 to fix the scroll into view issue caused by sticky header */}
+        <section id="about" className="container scroll-mt-24 py-12 md:py-24 lg:py-32 bg-muted/30">
+          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-start">
+            {/* About Me */}
+            <div className="space-y-6">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">About Me</h2>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                I am an adept web developer specializing in Javascript and ReactJs. I am proficient in building frontend applications and efficient in working with modern web technologies. Highly adaptive, I can quickly learn new technologies that are best suited for certain tasks and deliver quality products within a given period.
               </p>
-              <div className="mt-6 flex flex-col gap-4 sm:flex-row">
-                <Button asChild size="lg">
-                  <Link href="/study">
-                    Start Studying <ArrowRight className="ml-2 size-4" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <a href="https://github.com/AlNahean" target="_blank" rel="noopener noreferrer">
-                    <Github className="mr-2 size-4" /> View on GitHub
-                  </a>
-                </Button>
+
+              <div className="space-y-4 pt-4">
+                <h3 className="text-xl font-semibold flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-primary" />
+                  Education
+                </h3>
+                <div className="border-l-2 border-primary/20 pl-6 ml-1 space-y-1">
+                  <h4 className="font-bold text-lg">Bachelor of Science</h4>
+                  <p className="text-foreground/80 font-medium">Netrokona Govt. College</p>
+                  <p className="text-sm text-muted-foreground">2021 - present</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Skills */}
+            <div className="space-y-6" id="skills">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Skills</h2>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "Javascript", "React", "GSAP", "Next.js", "Tailwind CSS",
+                  "Bootstrap", "Typescript", "SCSS", "Three.js", "Chart.js"
+                ].map((skill) => (
+                  <Badge key={skill} variant="secondary" className="text-base px-4 py-2 hover:bg-primary/20 transition-colors cursor-default">
+                    {skill}
+                  </Badge>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* --- Subjects Section --- */}
-        <section className="w-full border-t bg-muted/30 py-20 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-3">
-                <h2 className="font-heading text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Explore The Core Subjects
-                </h2>
-                <p className="text-muted-foreground mx-auto max-w-3xl text-balance md:text-xl/relaxed">
-                  Detailed notes, curated from trusted suggestions, and organized for focused study.
-                </p>
-              </div>
-            </div>
+        {/* --- Projects Section --- */}
+        <section id="projects" className="container scroll-mt-24 py-12 md:py-24 lg:py-32">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Featured Projects</h2>
+            <p className="text-muted-foreground text-lg">A selection of my recent work</p>
+          </div>
 
-            <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {/* Card 1 */}
-              <Link
-                href="/study/higher-cryptogams/answers"
-                className="block rounded-lg border bg-card p-6 transition-colors hover:bg-muted/50"
-              >
-                <div className="flex size-12 items-center justify-center rounded-lg border bg-background">
-                  <BookOpen className="size-6 text-muted-foreground" />
-                </div>
-                <h3 className="mt-4 text-xl font-bold">Higher Cryptogams</h3>
-                <p className="text-muted-foreground mt-2 text-balance">
-                  Dive into the world of Bryophytes and Pteridophytes. Explore their characteristics, life cycles, and economic importance.
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {/* Project 1 */}
+            <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg border-muted">
+              <CardHeader>
+                <CardTitle className="text-xl">Daraz Clone</CardTitle>
+                <CardDescription>Full-Stack React App</CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  A clone of Daraz where visitors can browse items, add to cart, search for items, create accounts, and list products for sale. Built using React.js for the UI and Node.js for the backend.
                 </p>
-              </Link>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Badge variant="outline" className="text-xs">React.js</Badge>
+                  <Badge variant="outline" className="text-xs">Node.js</Badge>
+                </div>
+              </CardContent>
+              {/* Fix: Changed flex layout to handle overflow better */}
+              <CardFooter className="flex flex-col sm:flex-row gap-3 pt-6 border-t bg-muted/20">
+                <Button asChild size="sm" variant="outline" className="flex-1 w-full sm:w-auto gap-2">
+                  <Link href="#" target="_blank"> <Code className="size-4" /> Code</Link>
+                </Button>
+                <Button asChild size="sm" className="flex-1 w-full sm:w-auto gap-2">
+                  <Link href="#" target="_blank"> <ExternalLink className="size-4" /> Live Demo</Link>
+                </Button>
+              </CardFooter>
+            </Card>
 
-              {/* Card 2 */}
-              <Link
-                href="/study/plant-anatomy/answers"
-                className="block rounded-lg border bg-card p-6 transition-colors hover:bg-muted/50"
-              >
-                <div className="flex size-12 items-center justify-center rounded-lg border bg-background">
-                  <Scale className="size-6 text-muted-foreground" />
-                </div>
-                <h3 className="mt-4 text-xl font-bold">Plant Anatomy</h3>
-                <p className="text-muted-foreground mt-2 text-balance">
-                  Uncover the internal structure of plants, from tissues and cells to overall growth and development.
+            {/* Project 2 */}
+            <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg border-muted">
+              <CardHeader>
+                <CardTitle className="text-xl">Admin Dashboard</CardTitle>
+                <CardDescription>React & Chart.js</CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  A comprehensive admin dashboard featuring toggleable Dark/Light modes. Utilizes Chart.js to visualize data through interactive graphs.
                 </p>
-              </Link>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Badge variant="outline" className="text-xs">React</Badge>
+                  <Badge variant="outline" className="text-xs">Chart.js</Badge>
+                </div>
+              </CardContent>
+              <CardFooter className="flex flex-col sm:flex-row gap-3 pt-6 border-t bg-muted/20">
+                <Button asChild size="sm" variant="outline" className="flex-1 w-full sm:w-auto gap-2">
+                  <Link href="#" target="_blank"> <Code className="size-4" /> Code</Link>
+                </Button>
+                <Button asChild size="sm" className="flex-1 w-full sm:w-auto gap-2">
+                  <Link href="#" target="_blank"> <ExternalLink className="size-4" /> Live Demo</Link>
+                </Button>
+              </CardFooter>
+            </Card>
 
-              {/* Card 3 */}
-              <Link
-                href="/study/taxonomy-of-angiosperms/answers"
-                className="block rounded-lg border bg-card p-6 transition-colors hover:bg-muted/50"
-              >
-                <div className="flex size-12 items-center justify-center rounded-lg border bg-background">
-                  <Library className="size-6 text-muted-foreground" />
-                </div>
-                <h3 className="mt-4 text-xl font-bold">Taxonomy of Angiosperms</h3>
-                <p className="text-muted-foreground mt-2 text-balance">
-                  Master the classification of flowering plants, covering principles, family characteristics, and nomenclature.
+            {/* Project 3 */}
+            <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg border-muted">
+              <CardHeader>
+                <CardTitle className="text-xl">Phoenix Clone</CardTitle>
+                <CardDescription>Agency Website</CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  An agency website built with React and Bootstrap. Features a robust dark and light mode switch for better user experience.
                 </p>
-              </Link>
-            </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Badge variant="outline" className="text-xs">React</Badge>
+                  <Badge variant="outline" className="text-xs">Bootstrap</Badge>
+                </div>
+              </CardContent>
+              <CardFooter className="flex flex-col sm:flex-row gap-3 pt-6 border-t bg-muted/20">
+                <Button asChild size="sm" variant="outline" className="flex-1 w-full sm:w-auto gap-2">
+                  <Link href="#" target="_blank"> <Code className="size-4" /> Code</Link>
+                </Button>
+                <Button asChild size="sm" className="flex-1 w-full sm:w-auto gap-2">
+                  <Link href="#" target="_blank"> <ExternalLink className="size-4" /> Live Demo</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+        </section>
+
+        {/* --- Contact Section --- */}
+        <section id="contact" className="container scroll-mt-24 py-12 md:py-24 lg:py-32 bg-muted/30">
+          <div className="mx-auto max-w-2xl text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Get In Touch</h2>
+            <p className="text-muted-foreground mt-4 text-lg">
+              Feel free to reach out for collaborations or just a friendly hello.
+            </p>
+          </div>
+
+          <div className="mx-auto max-w-4xl grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {/* Email */}
+            <Card className="hover:border-primary/50 transition-colors">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Mail className="size-5 text-primary" /> Email
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <a href="mailto:nahean.fardous@gmail.com" className="hover:underline text-sm sm:text-base break-words">
+                  nahean.fardous@gmail.com
+                </a>
+              </CardContent>
+            </Card>
+
+            {/* Phone */}
+            <Card className="hover:border-primary/50 transition-colors">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Phone className="size-5 text-primary" /> Phone
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <a href="tel:+8801688961770" className="hover:underline text-sm sm:text-base">
+                  +8801688961770
+                </a>
+              </CardContent>
+            </Card>
+
+            {/* Location */}
+            <Card className="hover:border-primary/50 transition-colors md:col-span-2 lg:col-span-1">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <MapPin className="size-5 text-primary" /> Location
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm sm:text-base">Digarkanda, Mymensingh</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="mt-12 flex justify-center gap-6">
+            <Button asChild variant="ghost" size="icon" className="h-12 w-12 rounded-full border">
+              <a href={siteConfig.author.links.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                <Icons.linkedin className="size-6" />
+              </a>
+            </Button>
+            <Button asChild variant="ghost" size="icon" className="h-12 w-12 rounded-full border">
+              <a href={siteConfig.author.links.github} target="_blank" rel="noreferrer" aria-label="GitHub">
+                <Icons.gitHub className="size-6" />
+              </a>
+            </Button>
+            <Button asChild variant="ghost" size="icon" className="h-12 w-12 rounded-full border">
+              <a href={siteConfig.author.links.facebook} target="_blank" rel="noreferrer" aria-label="Facebook">
+                <Icons.facebook className="size-6" />
+              </a>
+            </Button>
           </div>
         </section>
       </main>
