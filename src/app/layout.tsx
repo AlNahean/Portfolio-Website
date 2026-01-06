@@ -6,6 +6,7 @@ import { LayoutProvider } from "@/hooks/use-layout";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/lib/config";
+import { RootProvider } from "fumadocs-ui/provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,26 +18,44 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Optimized Metadata
 export const metadata: Metadata = {
-  title: siteConfig.name,
-  description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  keywords: ["Next.js", "React", "Frontend Developer", "Full Stack", "Nahean Fardous", "Portfolio"],
+  authors: [{ name: siteConfig.author.name, url: siteConfig.url }],
+  creator: siteConfig.author.name,
   openGraph: {
     type: "website",
+    locale: "en_US",
     url: siteConfig.url,
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    creator: siteConfig.author.links.twitter,
     title: siteConfig.name,
     description: siteConfig.description,
+    images: [siteConfig.ogImage],
+    creator: "@nahean95",
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
 };
-import { RootProvider } from "fumadocs-ui/provider";
-
 
 export default function RootLayout({
   children,
@@ -45,16 +64,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
           <LayoutProvider>
             <RootProvider>
               {children}
-
             </RootProvider>
-
             <TailwindIndicator />
             <Toaster position="top-center" />
           </LayoutProvider>

@@ -4,11 +4,17 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
+    unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "**" },
       { protocol: "http", hostname: "**" },
     ],
-    unoptimized: true,
+  },
+  // This ensures your database/prisma logic runs nicely if you use the nodejs_compat flag
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '2mb',
+    },
   },
   async rewrites() {
     return [

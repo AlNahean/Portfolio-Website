@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Play } from "lucide-react";
@@ -12,7 +11,7 @@ interface Project {
     title: string;
     description: string;
     tech: string[];
-    video: string;
+    video?: string; // Made optional
     image: string;
     live?: string;
     github?: string;
@@ -22,7 +21,12 @@ export function ProjectCard({ project }: { project: Project }) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
 
+    // Check if a valid video path exists
+    const hasVideo = project.video && project.video.trim().length > 0 && !project.video.includes("Placeholder");
+
     const handleMouseEnter = () => {
+        if (!hasVideo) return;
+
         setIsPlaying(true);
         if (videoRef.current) {
             videoRef.current.currentTime = 0;
@@ -31,6 +35,8 @@ export function ProjectCard({ project }: { project: Project }) {
     };
 
     const handleMouseLeave = () => {
+        if (!hasVideo) return;
+
         setIsPlaying(false);
         if (videoRef.current) {
             videoRef.current.pause();
@@ -61,24 +67,28 @@ export function ProjectCard({ project }: { project: Project }) {
                         <Icons.logo className="h-12 w-12 text-muted-foreground/20" />
                     )}
 
-                    {/* Play Hint */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="bg-background/80 backdrop-blur-sm p-3 rounded-full shadow-lg">
-                            <Play className="size-6 fill-current text-primary" />
+                    {/* Play Hint - Only show if video exists */}
+                    {hasVideo && (
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="bg-background/80 backdrop-blur-sm p-3 rounded-full shadow-lg">
+                                <Play className="size-6 fill-current text-primary" />
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
-                {/* Video Preview */}
-                <video
-                    ref={videoRef}
-                    src={project.video}
-                    muted
-                    loop
-                    playsInline
-                    className={`absolute inset-0 z-0 h-full w-full object-cover transition-opacity duration-500 ${isPlaying ? "opacity-100" : "opacity-0"
-                        }`}
-                />
+                {/* Video Preview - Only render if video exists */}
+                {hasVideo && (
+                    <video
+                        ref={videoRef}
+                        src={project.video}
+                        muted
+                        loop
+                        playsInline
+                        className={`absolute inset-0 z-0 h-full w-full object-cover transition-opacity duration-500 ${isPlaying ? "opacity-100" : "opacity-0"
+                            }`}
+                    />
+                )}
 
                 {/* Tech Badge Overlay */}
                 <div className="absolute top-3 right-3 z-20">

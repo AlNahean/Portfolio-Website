@@ -1,18 +1,8 @@
 import { loader } from "fumadocs-core/source";
-import { docs, study, blog } from "../../.source";
+import { blog } from "../../.source"; // Removed docs and study imports
 
-export const source = loader({
-  baseUrl: "/docs",
-  source: docs.toFumadocsSource(),
-});
-
-// Add a new loader for the study section
-export const studySource = loader({
-  baseUrl: "/study",
-  source: study.toFumadocsSource(),
-});
-
-// Add a new loader for the blog section
+// We only keep the blog loader if you intend to write articles, 
+// otherwise this file can be simplified further.
 export const blogSource = loader({
   baseUrl: "/blog",
   source: blog.toFumadocsSource(),
