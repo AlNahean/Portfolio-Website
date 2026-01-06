@@ -1,8 +1,19 @@
 import { loader } from "fumadocs-core/source";
-import { blog } from "../../.source"; // Removed docs and study imports
+import { docs, study, blog } from "../../.source";
 
-// We only keep the blog loader if you intend to write articles, 
-// otherwise this file can be simplified further.
+// Restored: Legacy Docs Source (Required for /app/docs)
+export const source = loader({
+  baseUrl: "/docs",
+  source: docs.toFumadocsSource(),
+});
+
+// Restored: Legacy Study Source (Required for /app/study)
+export const studySource = loader({
+  baseUrl: "/study",
+  source: study.toFumadocsSource(),
+});
+
+// Blog Source
 export const blogSource = loader({
   baseUrl: "/blog",
   source: blog.toFumadocsSource(),

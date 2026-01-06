@@ -3,6 +3,9 @@ import { GuestbookForm } from "./guestbook-form";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
+// This prevents the build from failing by fetching data at runtime instead of build time
+export const dynamic = "force-dynamic";
+
 // Helper to generate a consistent random rotation based on string ID
 function getRotation(id: string) {
     const charCode = id.charCodeAt(id.length - 1);
@@ -11,12 +14,14 @@ function getRotation(id: string) {
 }
 
 export default async function GuestbookPage() {
+    // This fetch will now happen only when a user visits the page, not during build
     const entries = await db.guestbookEntry.findMany({
         orderBy: { createdAt: "desc" },
     });
 
     return (
         <div className="min-h-screen bg-[#0a0a0a] text-white relative overflow-hidden">
+            {/* ... rest of your JSX code ... */}
             {/* Grid Background Pattern */}
             <div
                 className="absolute inset-0 z-0 opacity-20 pointer-events-none"
