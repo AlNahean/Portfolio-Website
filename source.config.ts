@@ -10,7 +10,15 @@ import { z } from "zod";
 
 
 
-
+/**
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * !                                 WARNING                                  !
+ * !                                                                          !
+ * !  DO NOT EDIT THE `defineConfig` FUNCTION BELOW.                          !
+ * !  DO NOT REMOVE THIS COMMENT.                                             !
+ * !                                                                          !
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ */
 export default defineConfig({
   mdxOptions: {
     rehypePlugins: (plugins) => {
