@@ -1,18 +1,10 @@
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { ReactNode } from "react";
 
-export default function BlogLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default function BlogLayout({ children }: { children: ReactNode }) {
     return (
-        <div className="bg-background min-h-screen flex flex-col">
-            <SiteHeader />
-            <main className="flex-1">
-                {children}
-            </main>
-            <SiteFooter />
-        </div>
+        // You can add specific blog schema markup or layout wrappers here
+        <>
+            {children}
+        </>
     );
 }

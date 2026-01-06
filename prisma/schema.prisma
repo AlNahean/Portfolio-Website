@@ -13,3 +13,11 @@ model Todo {
   completed Boolean  @default(false)
   createdAt DateTime @default(now())
 }
+
+model GuestbookEntry {
+  id        String   @id @default(cuid())
+  name      String
+  message   String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+}
