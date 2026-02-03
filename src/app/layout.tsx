@@ -7,6 +7,7 @@ import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { Toaster } from "@/components/ui/sonner";
 import { siteConfig } from "@/lib/config";
 import { RootProvider } from "fumadocs-ui/provider";
+import { ScrollProgress } from "@/components/scroll-progress"; // Import here
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,7 +19,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Optimized Metadata
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -68,6 +68,7 @@ export default function RootLayout({
         <ThemeProvider>
           <LayoutProvider>
             <RootProvider>
+              <ScrollProgress className="bg-primary/20" /> {/* Added here */}
               {children}
             </RootProvider>
             <TailwindIndicator />

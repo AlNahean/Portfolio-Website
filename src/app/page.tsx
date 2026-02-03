@@ -6,7 +6,9 @@ import { AboutSection } from "@/components/sections/about";
 import { ProjectsSection } from "@/components/sections/projects";
 import { ExperienceSection } from "@/components/sections/experience";
 import { GithubStatsSection } from "@/components/github-stats";
+import { BlogSection } from "@/components/sections/blog";
 import { ContactSection } from "@/components/sections/contact";
+import { MicroCardsSection } from "@/components/sections/micro-cards";
 
 export default function Home() {
     return (
@@ -16,9 +18,11 @@ export default function Home() {
                 <HeroSection />
                 <TechStackSection />
                 <AboutSection />
+                <MicroCardsSection />
                 <ProjectsSection />
                 <ExperienceSection />
                 <GithubStatsSection />
+                <BlogSection />
                 <ContactSection />
             </main>
             <SiteFooter />
