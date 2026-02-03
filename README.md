@@ -1,33 +1,68 @@
-# Nahean's Study Hub
+# Al Nahean's Portfolio
 
-This is a [Next.js](https://nextjs.org) project for my personal study notes on Botany, bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+A modern, high-performance personal portfolio and knowledge hub built with **Next.js 15**, **React 19**, and **Tailwind CSS 4**. This project serves as a showcase of my work, a blog for my thoughts, and a study hub for my learning notes.
+
+## Tech Stack
+
+- **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Styling:** [Tailwind CSS 4](https://tailwindcss.com/)
+- **UI Components:** [Shadcn UI](https://ui.shadcn.com/) & [Radix UI](https://www.radix-ui.com/)
+- **Database:** [PostgreSQL](https://www.postgresql.org/) with [Prisma ORM](https://www.prisma.io/)
+- **Content:** [Fumadocs](https://fumadocs.vercel.app/) (MDX)
+- **Deployment:** Vercel
+
+## Features
+
+- **Portfolio Showcase:** Sections for projects, detailed experience, and tech stack.
+- **Blog & Study Hub:** MDX-powered content management for articles and study notes.
+- **Guestbook:** Interactive guestbook for visitors to leave messages.
+- **Dynamic Island:** Interactive UI component for media controls and notifications.
+- **GitHub Stats:** Real-time integration with GitHub API.
+- **SEO Optimized:** Built-in SEO best practices with metadata management.
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone the repository:**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```bash
+   git clone <repository-url>
+   cd portolio
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Install dependencies:**
 
-You can start editing the content by modifying the `.mdx` files inside the `content/` directory. The pages auto-update as you edit the files.
+   This project prefers `pnpm`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font).
+   ```bash
+   pnpm install
+   ```
 
-## About This Project
+3. **Set up Environment Variables:**
 
-This project serves as a personal knowledge base, organizing complex botany notes into a clear, searchable, and fast web format. It's built with modern web technologies to demonstrate an effective way to learn and share knowledge.
+   Copy the example environment file and fill in the required values.
 
-The source code is publicly available on GitHub for anyone interested in the implementation.
+   ```bash
+   cp .env.example .env
+   ```
 
-## Todos
+   Make sure to configure your `DATABASE_URL` and other secrets.
 
-- [ ] make sure to change localhost hardcoded in the readme to the final url
+4. **Run the development server:**
+
+   ```bash
+   pnpm dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Project Structure
+
+- `content/`: MDX files for Blog (`content/blog`) and Study Hub (`content/study`).
+- `src/components/`: Reusable UI components.
+- `src/app/`: Next.js App Router pages and API routes.
+- `prisma/`: Database schema and migrations.
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
