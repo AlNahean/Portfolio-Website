@@ -1,0 +1,14 @@
+{
+  "name": "file-uploader-demo",
+  "type": "registry:example",
+  "files": [
+    {
+      "path": "src/registry/example/file-uploader-demo.tsx",
+      "content": "\"use client\"\r\n\r\nimport { FileUploader } from \"@/registry/ui/file-uploader\"\r\n\r\nexport default function FileUploaderDemo() {\r\n    return (\r\n        <div className=\"w-full max-w-md mx-auto\">\r\n            <FileUploader\r\n                maxFiles={5}\r\n                maxSize={1024 * 1024 * 10} /* 10MB */\r\n                onUpload={(files) => console.log(\"Uploaded:\", files)}\r\n            />\r\n        </div>\r\n    )\r\n}\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "registryDependencies": [
+    "file-uploader"
+  ]
+}

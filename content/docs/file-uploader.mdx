@@ -1,0 +1,32 @@
+---
+title: File Uploader
+description: A complex file uploader component with drag and drop, file size validation, multiple files support, and custom hooks.
+---
+
+import { ComponentPreview } from "@/components/component-preview"
+
+<ComponentPreview name="file-uploader-demo" />
+
+## Introduction
+
+This is a very complex File Uploader component constructed to demonstrate how multi-file structures are supported in custom registries. It features:
+
+- Drag and drop interface
+- Custom React Hooks for state management (`use-file-upload`)
+- Advanced utility formatting for byte strings (`format-bytes`)
+- File size error handling and multiple uploads
+
+## Installation
+
+```bash
+npx shadcn@latest add https://nahean.vercel.app/r/file-uploader.json
+```
+
+## Structure
+
+When installed, the `shadcn` CLI unpacks this complex component into multiple distinct locations:
+- `/components/ui/file-uploader.tsx` - The main UI component rendered above.
+- `/hooks/use-file-upload.ts` - The state management hook which handles drag events.
+- `/lib/format-bytes.ts` - The utility function that renders the byte sizes properly.
+
+Notice that although you run a single add command, the registry CLI knows exactly where each independent chunk of functionality belongs.

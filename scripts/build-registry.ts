@@ -13,11 +13,21 @@ async function build() {
   for (const [key, item] of Object.entries(registry)) {
     const registryEntry = {
       ...item,
-      files: item.files.map((file) => ({
-        path: file,
-        content: fs.readFileSync(path.join(process.cwd(), file), "utf8"),
-        type: "registry:ui"
-      })),
+      files: item.files.map((file) => {
+        if (typeof file === "string") {
+          return {
+            path: file,
+            content: fs.readFileSync(path.join(process.cwd(), file), "utf8"),
+            type: "registry:ui"
+          };
+        }
+        return {
+          path: file.path,
+          type: file.type,
+          target: file.target,
+          content: fs.readFileSync(path.join(process.cwd(), file.path), "utf8"),
+        };
+      }),
     };
 
     fs.writeFileSync(

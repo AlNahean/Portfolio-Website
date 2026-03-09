@@ -5,6 +5,7 @@
     "registry",
     "registry-guide",
     "index",
-    "test"
+    "test",
+    "file-uploader"
   ]
 }
