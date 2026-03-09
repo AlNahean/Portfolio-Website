@@ -31,7 +31,6 @@ export default async function Page({
 
     const MDX = page.data.body;
     const neighbours = await findNeighbour(source.pageTree, page.url);
-    // @ts-expect-error - Assuming links might not always exist
     const links = page.data.links;
 
     return (
@@ -42,11 +41,11 @@ export default async function Page({
             <div className="flex min-w-0 flex-1 flex-col">
                 {page.data.toc?.length ? <DocsMobileTOC toc={page.data.toc} /> : null}
                 <div className="h-(--top-spacing) shrink-0" />
-                <div className="mx-auto flex w-full max-w-2xl min-w-0 flex-1 flex-col gap-8 px-4 py-6 text-neutral-800 md:px-0 lg:py-8 dark:text-neutral-300">
-                    <div className="flex flex-col gap-2">
+                <div className="mx-auto flex w-full max-w-3xl min-w-0 flex-1 flex-col gap-10 px-4 py-10 text-neutral-800 md:px-0 lg:py-16 dark:text-neutral-300">
+                    <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-2">
                             <div className="flex items-start justify-between">
-                                <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight sm:text-3xl xl:text-4xl">
+                                <h1 className="scroll-m-20 text-4xl font-bold tracking-tight sm:text-4xl xl:text-5xl">
                                     {page.data.title}
                                 </h1>
                                 <div className="docs-nav bg-background/80 border-border/50 fixed inset-x-0 bottom-0 isolate z-50 flex items-center gap-2 border-t px-6 py-4 backdrop-blur-sm sm:static sm:z-0 sm:border-t-0 sm:bg-transparent sm:px-0 sm:pt-1.5 sm:backdrop-blur-none">
@@ -58,11 +57,11 @@ export default async function Page({
                                         <Button
                                             variant="secondary"
                                             size="icon"
-                                            className="extend-touch-target ml-auto size-8 shadow-none md:size-7"
+                                            className="ml-auto size-8 shadow-sm md:size-8"
                                             asChild
                                         >
                                             <Link href={neighbours.previous.url}>
-                                                <ArrowLeft />
+                                                <ArrowLeft className="size-4" />
                                                 <span className="sr-only">Previous</span>
                                             </Link>
                                         </Button>
@@ -71,19 +70,19 @@ export default async function Page({
                                         <Button
                                             variant="secondary"
                                             size="icon"
-                                            className="extend-touch-target size-8 shadow-none md:size-7"
+                                            className="size-8 shadow-sm md:size-8"
                                             asChild
                                         >
                                             <Link href={neighbours.next.url}>
                                                 <span className="sr-only">Next</span>
-                                                <ArrowRight />
+                                                <ArrowRight className="size-4" />
                                             </Link>
                                         </Button>
                                     )}
                                 </div>
                             </div>
                             {page.data.description && (
-                                <p className="text-muted-foreground text-[1.05rem] text-balance sm:text-base">
+                                <p className="text-muted-foreground mt-4 text-[1.1rem] leading-relaxed text-balance">
                                     {page.data.description}
                                 </p>
                             )}
@@ -91,53 +90,60 @@ export default async function Page({
                         {links ? (
                             <div className="flex items-center gap-2 pt-4">
                                 {links?.doc && (
-                                    <Badge asChild variant="secondary" className="rounded-full">
-                                        <a href={links.doc} target="_blank" rel="noreferrer">
-                                            Docs <ArrowUpRight />
+                                    <Badge asChild variant="secondary" className="rounded-full px-4 py-1">
+                                        <a href={links.doc} target="_blank" rel="noreferrer" className="flex items-center gap-1">
+                                            Docs <ArrowUpRight className="size-3" />
                                         </a>
                                     </Badge>
                                 )}
                                 {links?.api && (
-                                    <Badge asChild variant="secondary" className="rounded-full">
-                                        <a href={links.api} target="_blank" rel="noreferrer">
-                                            API Reference <ArrowUpRight />
+                                    <Badge asChild variant="secondary" className="rounded-full px-4 py-1">
+                                        <a href={links.api} target="_blank" rel="noreferrer" className="flex items-center gap-1">
+                                            API Reference <ArrowUpRight className="size-3" />
                                         </a>
                                     </Badge>
                                 )}
                             </div>
                         ) : null}
                     </div>
-                    <div className="w-full flex-1 *:data-[slot=alert]:first:mt-0">
+                    <div className="w-full flex-1 *:data-[slot=alert]:first:mt-0 prose dark:prose-invert max-w-none">
                         <MDX components={mdxComponents} />
                     </div>
                 </div>
-                <div className="mx-auto hidden h-16 w-full max-w-2xl items-center gap-2 px-4 sm:flex md:px-0">
+                <div className="mx-auto hidden h-24 w-full max-w-3xl items-center gap-4 px-4 sm:flex md:px-0 border-t border-border/40 mt-12 mb-8">
                     {neighbours.previous && (
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            asChild
-                            className="shadow-none"
-                        >
-                            <Link href={neighbours.previous.url}>
-                                <ArrowLeft /> {neighbours.previous.name}
-                            </Link>
-                        </Button>
+                        <div className="flex flex-col items-start gap-1">
+                            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold px-2">Previous</span>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                asChild
+                                className="h-10 px-4 rounded-xl shadow-none hover:bg-muted"
+                            >
+                                <Link href={neighbours.previous.url}>
+                                    <ArrowLeft className="size-4 mr-2" /> {neighbours.previous.name}
+                                </Link>
+                            </Button>
+                        </div>
                     )}
                     {neighbours.next && (
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            className="ml-auto shadow-none"
-                            asChild
-                        >
-                            <Link href={neighbours.next.url}>
-                                {neighbours.next.name} <ArrowRight />
-                            </Link>
-                        </Button>
+                        <div className="ml-auto flex flex-col items-end gap-1 text-right">
+                            <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold px-2">Next Page</span>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="h-10 px-4 rounded-xl shadow-none hover:bg-muted"
+                                asChild
+                            >
+                                <Link href={neighbours.next.url}>
+                                    {neighbours.next.name} <ArrowRight className="size-4 ml-2" />
+                                </Link>
+                            </Button>
+                        </div>
                     )}
                 </div>
             </div>
+
             <div className="sticky top-[calc(var(--header-height)+1px)] z-30 ml-auto hidden h-[calc(100svh-var(--footer-height)+2rem)] w-72 flex-col gap-4 overflow-hidden overscroll-none pb-8 xl:flex">
                 <div className="h-(--top-spacing) shrink-0" />
                 {page.data.toc?.length ? (
