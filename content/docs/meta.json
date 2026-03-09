@@ -1,6 +1,9 @@
 {
   "pages": [
     "introduction",
+    "installation",
+    "registry",
+    "registry-guide",
     "index",
     "test"
   ]

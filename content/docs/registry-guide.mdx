@@ -1,0 +1,92 @@
+---
+title: Registry Guide
+description: A step-by-step guide on how to contribute components to the registry.
+---
+
+The registry system is designed to make it easy to develop, showcase, and share reusable components. Follow this guide to add your own components to the system.
+
+## Workflow Overview
+
+Adding a component to the registry involves four main steps:
+
+1. **Developing** the UI component.
+2. **Creating** a demo/example.
+3. **Registering** the component in the manifest.
+4. **Building** the registry artifacts.
+
+---
+
+## 1. Develop the UI Component
+
+Create your component in the `src/registry/ui/` directory. Use shadcn-style patterns, including `class-variance-authority` (cva) for styling and `cn` for class merging.
+
+```tsx
+// src/registry/ui/my-new-component.tsx
+import * as React from "react"
+import { cn } from "@/lib/utils"
+
+export function MyNewComponent({ className, ...props }) {
+  return (
+    <div className={cn("p-4 border rounded", className)} {...props}>
+      Hello World
+    </div>
+  )
+}
+```
+
+## 2. Create a Demo
+
+Create a demo component in `src/registry/example/`. This is what will be rendered in the documentation previews.
+
+```tsx
+// src/registry/example/my-new-component-demo.tsx
+import { MyNewComponent } from "@/registry/ui/my-new-component"
+
+export default function MyNewComponentDemo() {
+  return <MyNewComponent className="bg-primary/10" />
+}
+```
+
+## 3. Register the Component
+
+Add your component and its demo to the registry manifest in `src/registry/index.ts`.
+
+```typescript
+// src/registry/index.ts
+export const registry: Record<string, RegistryItem> = {
+  // ... existing items
+  "my-new-component": {
+    name: "my-new-component",
+    type: "components:ui",
+    files: ["src/registry/ui/my-new-component.tsx"],
+    dependencies: ["lucide-react"], // Add any npm dependencies here
+  },
+  "my-new-component-demo": {
+    name: "my-new-component-demo",
+    type: "components:example",
+    files: ["src/registry/example/my-new-component-demo.tsx"],
+    registryDependencies: ["my-new-component"],
+  },
+}
+```
+
+## 4. Build Artifacts
+
+Run the build script to generate the JSON manifests for the CLI and the dynamic component index for the documentation.
+
+```bash
+pnpm run build:registry
+```
+
+## 5. Use in Documentation
+
+You can now use your component in any MDX file using the `ComponentPreview` component.
+
+```mdx
+<ComponentPreview name="my-new-component-demo" />
+```
+
+This will automatically:
+- Render the `MyNewComponentDemo` from `src/registry/example/`.
+- Provide a clean preview area.
+- (Optional) Link to the installation source.

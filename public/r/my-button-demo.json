@@ -1,0 +1,14 @@
+{
+  "name": "my-button-demo",
+  "type": "components:example",
+  "files": [
+    {
+      "path": "src/registry/example/my-button-demo.tsx",
+      "content": "import { MyButton } from \"@/registry/ui/my-button\"\r\nimport { Rocket } from \"lucide-react\"\r\n\r\nexport default function MyButtonDemo() {\r\n    return (\r\n        <div className=\"flex items-center gap-4\">\r\n            <MyButton>\r\n                Standard Button\r\n            </MyButton>\r\n            <MyButton variant=\"outline\">\r\n                <Rocket className=\"mr-2 h-4 w-4\" />\r\n                With Icon\r\n            </MyButton>\r\n        </div>\r\n    )\r\n}\r\n",
+      "type": "registry:ui"
+    }
+  ],
+  "registryDependencies": [
+    "my-button"
+  ]
+}

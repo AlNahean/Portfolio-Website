@@ -1,0 +1,27 @@
+---
+title: Registry System
+description: Standardized way to share and showcase components.
+---
+
+Our registry system allows you to build components in a dedicated folder and then automatically generate JSON manifests for the shadcn CLI.
+
+## Live Preview
+
+Here is an example component from our registry:
+
+<ComponentPreview name="my-button-demo" />
+
+## Installation
+
+You can install this component using the shadcn CLI:
+
+```bash
+npx shadcn@latest add https://nahean.dev/r/my-button.json
+```
+
+## How it works
+
+1. **Develop**: Build your component in `src/registry/ui/`.
+2. **Register**: Add it to `src/registry/index.ts`.
+3. **Build**: Run `npm run build:registry` to generate the JSON files and the dynamic index.
+4. **Showcase**: Use `<ComponentPreview name="your-component-demo" />` in your MDX files.
