@@ -7,8 +7,10 @@ import { ModeSwitcher } from "@/components/mode-switcher"
 import { SiteConfig } from "@/components/site-config" // Restored Import
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-
+import { CommandMenu } from "@/components/command-menu"
+import { source } from "@/lib/source"
 export function SiteHeader() {
+    const combinedPageTree = source.pageTree;
     return (
         <header className="bg-background/80 backdrop-blur-md sticky top-0 z-50 w-full border-b">
             <div className="container-wrapper 3xl:fixed:px-0 px-6">
@@ -31,6 +33,16 @@ export function SiteHeader() {
                     </Button>
                     <MainNav items={siteConfig.navItems} className="hidden lg:flex" />
                     <div className="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
+                        <div className="hidden w-full flex-1 md:flex md:w-auto md:flex-none">
+                            <CommandMenu
+                                tree={combinedPageTree}
+                                navItems={siteConfig.navItems}
+                            />
+                        </div>
+                        <Separator
+                            orientation="vertical"
+                            className="ml-2 hidden h-4 lg:block"
+                        />
                         {/* GitHub Button */}
                         <Button asChild size="icon" variant="ghost" className="h-8 w-8">
                             <a href={siteConfig.author.links.github} target="_blank" rel="noreferrer">
@@ -46,10 +58,8 @@ export function SiteHeader() {
                                 <span className="sr-only">Facebook</span>
                             </a>
                         </Button>
-
                         {/* Layout Toggle Button (Restored) */}
                         <SiteConfig className="hidden lg:flex" />
-
                         <Separator orientation="vertical" className="h-4" />
                         <ModeSwitcher />
                     </div>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nahean Fardous | Portfolio</title>
+    
+    <!-- Google Fonts: Inter (shadcn default) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Config for shadcn/ui aesthetic -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans:['Inter', 'sans-serif'] },
+                    colors: {
+                        background: "hsl(var(--background))",
+                        foreground: "hsl(var(--foreground))",
+                        card: "hsl(var(--card))",
+                        "card-foreground": "hsl(var(--card-foreground))",
+                        muted: "hsl(var(--muted))",
+                        "muted-foreground": "hsl(var(--muted-foreground))",
+                        accent: "hsl(var(--accent))",
+                        "accent-foreground": "hsl(var(--accent-foreground))",
+                        border: "hsl(var(--border))",
+                        primary: "hsl(var(--primary))",
+                        "primary-foreground": "hsl(var(--primary-foreground))",
+                    },
+                    borderRadius: {
+                        lg: "var(--radius)",
+                        md: "calc(var(--radius) - 2px)",
+                        sm: "calc(var(--radius) - 4px)",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* shadcn/ui CSS Variables */
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 240 10% 3.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 240 10% 3.9%;
+            --muted: 240 4.8% 95.9%;
+            --muted-foreground: 240 3.8% 46.1%;
+            --accent: 240 4.8% 95.9%;
+            --accent-foreground: 240 5.9% 10%;
+            --border: 240 5.9% 90%;
+            --primary: 262.1 83.3% 57.8%; /* Purple Accent */
+            --primary-foreground: 210 40% 98%;
+            --radius: 0.5rem;
+        }
+
+        .dark {
+            --background: 240 10% 3.9%;
+            --foreground: 0 0% 98%;
+            --card: 240 10% 3.9%;
+            --card-foreground: 0 0% 98%;
+            --muted: 240 3.7% 15.9%;
+            --muted-foreground: 240 5% 64.9%;
+            --accent: 240 3.7% 15.9%;
+            --accent-foreground: 0 0% 98%;
+            --border: 240 3.7% 15.9%;
+            --primary: 262.1 83.3% 57.8%;
+            --primary-foreground: 210 40% 98%;
+        }
+
+        body {
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+        }
+
+        /* Hide sections by default for SPA feel */
+        .page-section { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .page-section.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mock GitHub Graph Squares */
+        .gh-sq { width: 12px; height: 12px; border-radius: 2px; background-color: hsl(var(--muted)); }
+        .gh-sq.lvl-1 { background-color: #0e4429; }
+        .gh-sq.lvl-2 { background-color: #006d32; }
+        .gh-sq.lvl-3 { background-color: #26a641; }
+        .gh-sq.lvl-4 { background-color: #39d353; }
+        .dark .gh-sq.lvl-1 { background-color: #0e4429; }
+        .dark .gh-sq.lvl-2 { background-color: #006d32; }
+        .dark .gh-sq.lvl-3 { background-color: #26a641; }
+        .dark .gh-sq.lvl-4 { background-color: #39d353; }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased selection:bg-primary/30">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div class="container mx-auto max-w-5xl flex h-14 items-center justify-between px-4">
+            <div class="mr-4 hidden md:flex">
+                <a href="#" onclick="nav('about')" class="mr-6 flex items-center space-x-2">
+                    <span class="font-bold sm:inline-block bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">Nahean Fardous</span>
+                </a>
+                <nav class="flex items-center space-x-6 text-sm font-medium">
+                    <button onclick="nav('about')" class="nav-link transition-colors hover:text-foreground/80 text-foreground">About</button>
+                    <button onclick="nav('blog')" class="nav-link transition-colors hover:text-foreground/80 text-foreground/60">Blog</button>
+                    <button onclick="nav('projects')" class="nav-link transition-colors hover:text-foreground/80 text-foreground/60">Projects</button>
+                    <button onclick="nav('publications')" class="nav-link transition-colors hover:text-foreground/80 text-foreground/60">Publications</button>
+                    <button onclick="nav('repositories')" class="nav-link transition-colors hover:text-foreground/80 text-foreground/60">Repositories</button>
+                    <button onclick="nav('tools')" class="nav-link transition-colors hover:text-foreground/80 text-foreground/60">Tools</button>
+                    <a href="#" class="transition-colors hover:text-foreground/80 text-foreground/60">Resume</a>
+                </nav>
+            </div>
+            
+            <!-- Mobile Menu & Theme Toggle -->
+            <div class="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+                <span class="font-bold md:hidden bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">Nahean</span>
+                <button id="theme-toggle" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-9 w-9">
+                    <i data-lucide="sun" class="h-4 w-4 hidden dark:block"></i>
+                    <i data-lucide="moon" class="h-4 w-4 block dark:hidden"></i>
+                    <span class="sr-only">Toggle theme</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto max-w-5xl px-4 py-8">
+        
+        <!-- ================= ABOUT SECTION ================= -->
+        <section id="about" class="page-section active">
+            <div class="flex flex-col-reverse md:flex-row gap-8 items-start">
+                <div class="flex-1 space-y-6">
+                    <div>
+                        <h1 class="text-4xl font-bold tracking-tight mb-2">Nahean Fardous</h1>
+                        <p class="text-lg text-muted-foreground font-medium">Botany Student • Bioinformatics & Software Developer</p>
+                    </div>
+                    
+                    <div class="space-y-4 text-sm leading-relaxed text-foreground/90">
+                        <p>
+                            Nahean Fardous is a final-year Botany student from Bangladesh with strong interests in bioinformatics, computational biology, and software development. He combines biological research with programming to analyze biological data and build useful tools.
+                        </p>
+                        <p>
+                            His work focuses on sequence analysis, bioinformatics pipelines, and building applications using modern technologies such as <span class="font-semibold text-primary">Rust, Python, and JavaScript</span>. He is particularly interested in developing tools that bridge biology and computer science.
+                        </p>
+                    </div>
+
+                    <div class="flex gap-3 pt-2">
+                        <a href="https://github.com/yourusername" target="_blank" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+                            <i data-lucide="github" class="mr-2 h-4 w-4"></i> GitHub
+                        </a>
+                        <a href="https://linkedin.com/in/yourusername" target="_blank" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+                            <i data-lucide="linkedin" class="mr-2 h-4 w-4"></i> LinkedIn
+                        </a>
+                        <a href="mailto:your@email.com" class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+                            <i data-lucide="mail" class="mr-2 h-4 w-4"></i> Email
+                        </a>
+                    </div>
+
+                    <div class="pt-6">
+                        <h3 class="text-lg font-semibold tracking-tight mb-4">Awards & Recognition</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-center text-sm text-muted-foreground">
+                                <i data-lucide="award" class="mr-2 h-4 w-4 text-purple-500"></i>
+                                Botany Honours Student – National University
+                            </li>
+                            <li class="flex items-center text-sm text-muted-foreground">
+                                <i data-lucide="microscope" class="mr-2 h-4 w-4 text-blue-500"></i>
+                                Independent Bioinformatics Research Projects
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Column: Profile & Graph -->
+                <div class="w-full md:w-80 space-y-6">
+                    <!-- Profile Picture Placeholder -->
+                    <div class="aspect-square rounded-xl bg-muted border border-border flex items-center justify-center overflow-hidden relative group">
+                        <i data-lucide="user" class="h-20 w-20 text-muted-foreground/30"></i>
+                        <div class="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-blue-500/10 mix-blend-overlay"></div>
+                    </div>
+
+                    <!-- GitHub Contribution Graph Mockup -->
+                    <div class="rounded-xl border border-border bg-card p-4 shadow-sm">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-sm font-semibold">Contributions</h4>
+                            <i data-lucide="github" class="h-4 w-4 text-muted-foreground"></i>
+                        </div>
+                        <div class="flex gap-1 flex-wrap">
+                            <!-- Generate fake graph squares -->
+                            <script>
+                                for(let i=0; i<84; i++) {
+                                    let lvl = Math.floor(Math.random() * 5);
+                                    let cls = lvl === 0 ? '' : `lvl-${lvl}`;
+                                    document.write(`<div class="gh-sq ${cls}"></div>`);
+                                }
+                            </script>
+                        </div>
+                        <div class="mt-3 text-xs text-muted-foreground text-right">342 contributions in the last year</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= BLOG SECTION ================= -->
+        <section id="blog" class="page-section">
+            <div class="space-y-2 mb-8">
+                <h2 class="text-3xl font-bold tracking-tight">Blog Notes</h2>
+                <p class="text-muted-foreground">Thoughts on bioinformatics, programming, and research.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Blog Post 1 -->
+                <article class="group rounded-xl border border-border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md cursor-pointer overflow-hidden flex flex-col">
+                    <div class="h-40 w-full bg-gradient-to-br from-purple-900/40 to-blue-900/40 border-b border-border flex items-center justify-center relative">
+                        <i data-lucide="dna" class="h-10 w-10 text-purple-400 opacity-50"></i>
+                        <span class="absolute top-3 left-3 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-background/50 backdrop-blur-sm">Featured</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center text-xs text-muted-foreground mb-2">
+                            <span>Mar 12, 2026</span>
+                        </div>
+                        <h3 class="font-semibold text-lg leading-tight mb-2 group-hover:text-primary transition-colors">Introduction to DNA Sequence Alignment</h3>
+                        <p class="text-sm text-muted-foreground mb-4 flex-1">Understanding sequence alignment algorithms in bioinformatics and their computational complexity.</p>
+                        <div class="flex gap-2 mt-auto">
+                            <span class="inline-flex items-center rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">Bioinformatics</span>
+                            <span class="inline-flex items-center rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">Algorithms</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 2 -->
+                <article class="group rounded-xl border border-border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md cursor-pointer overflow-hidden flex flex-col">
+                    <div class="h-40 w-full bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-b border-border flex items-center justify-center">
+                        <i data-lucide="file-code-2" class="h-10 w-10 text-blue-400 opacity-50"></i>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center text-xs text-muted-foreground mb-2">
+                            <span>Feb 28, 2026</span>
+                        </div>
+                        <h3 class="font-semibold text-lg leading-tight mb-2 group-hover:text-primary transition-colors">Using Biopython for Sequence Analysis</h3>
+                        <p class="text-sm text-muted-foreground mb-4 flex-1">A beginner tutorial on analyzing biological sequences and parsing FASTA files using Python.</p>
+                        <div class="flex gap-2 mt-auto">
+                            <span class="inline-flex items-center rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">Python</span>
+                            <span class="inline-flex items-center rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">Bioinformatics</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 3 -->
+                <article class="group rounded-xl border border-border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md cursor-pointer overflow-hidden flex flex-col">
+                    <div class="h-40 w-full bg-gradient-to-br from-orange-900/40 to-red-900/40 border-b border-border flex items-center justify-center">
+                        <i data-lucide="cpu" class="h-10 w-10 text-orange-400 opacity-50"></i>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <div class="flex items-center text-xs text-muted-foreground mb-2">
+                            <span>Jan 15, 2026</span>
+                        </div>
+                        <h3 class="font-semibold text-lg leading-tight mb-2 group-hover:text-primary transition-colors">Building Bioinformatics Tools with Rust</h3>
+                        <p class="text-sm text-muted-foreground mb-4 flex-1">Why Rust is becoming the go-to language for high-performance, memory-safe bioinformatics tools.</p>
+                        <div class="flex gap-2 mt-auto">
+                            <span class="inline-flex items-center rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">Rust</span>
+                            <span class="inline-flex items-center rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">Bioinformatics</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ================= PROJECTS SECTION ================= -->
+        <section id="projects" class="page-section">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+                <div class="space-y-2">
+                    <h2 class="text-3xl font-bold tracking-tight">Projects</h2>
+                    <p class="text-muted-foreground">Detailed case studies and full applications.</p>
+                </div>
+                <!-- Filter Pills mock -->
+                <div class="flex flex-wrap gap-2">
+                    <span class="inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-semibold bg-primary text-primary-foreground cursor-pointer">All</span>
+                    <span class="inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-semibold hover:bg-muted cursor-pointer">Bioinformatics</span>
+                    <span class="inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-semibold hover:bg-muted cursor-pointer">AI / ML</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Project 1 -->
+                <div class="rounded-xl border border-border bg-card text-card-foreground shadow-sm flex flex-col">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-2 bg-primary/10 rounded-lg text-primary">
+                                <i data-lucide="network" class="h-6 w-6"></i>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">Python</span>
+                                <span class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">Bioinformatics</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Local Sequence Alignment Tool</h3>
+                        <p class="text-sm text-muted-foreground mb-6">A Python-based tool to analyze DNA sequence similarity using dynamic programming. Features Needleman-Wunsch and Smith-Waterman implementations locally.</p>
+                        <div class="mt-auto flex gap-3">
+                            <button class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2">
+                                <i data-lucide="github" class="mr-2 h-4 w-4"></i> GitHub
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="rounded-xl border border-border bg-card text-card-foreground shadow-sm flex flex-col">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-2 bg-blue-500/10 rounded-lg text-blue-500">
+                                <i data-lucide="message-square-text" class="h-6 w-6"></i>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors">Python</span>
+                                <span class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors">LLM</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Telegram Chat Summarizer</h3>
+                        <p class="text-sm text-muted-foreground mb-6">Local AI client that summarizes group conversations automatically using open-source LLMs. Respects privacy by keeping data on-device.</p>
+                        <div class="mt-auto flex gap-3">
+                            <button class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2">
+                                <i data-lucide="github" class="mr-2 h-4 w-4"></i> GitHub
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="rounded-xl border border-border bg-card text-card-foreground shadow-sm flex flex-col md:col-span-2 lg:col-span-1">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-2 bg-orange-500/10 rounded-lg text-orange-500">
+                                <i data-lucide="video" class="h-6 w-6"></i>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors">Rust</span>
+                                <span class="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors">Tauri</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">FFmpeg GUI</h3>
+                        <p class="text-sm text-muted-foreground mb-6">A blazing fast desktop GUI wrapper for FFmpeg built with Rust and Tauri. Makes complex video encoding tasks accessible through a clean UI.</p>
+                        <div class="mt-auto flex gap-3">
+                            <button class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2">
+                                <i data-lucide="github" class="mr-2 h-4 w-4"></i> GitHub
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PUBLICATIONS SECTION ================= -->
+        <section id="publications" class="page-section">
+            <div class="space-y-2 mb-8">
+                <h2 class="text-3xl font-bold tracking-tight">Research Publications</h2>
+                <p class="text-muted-foreground">Papers, preprints, and academic writings.</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Publication Item -->
+                <div class="rounded-xl border border-border bg-card text-card-foreground shadow-sm p-6 flex flex-col sm:flex-row gap-4 sm:items-center">
+                    <div class="hidden sm:flex h-12 w-12 shrink-0 items-center justify-center rounded-full border bg-muted">
+                        <i data-lucide="file-text" class="h-5 w-5 text-muted-foreground"></i>
+                    </div>
+                    <div class="flex-1 space-y-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-primary/10 text-primary border-primary/20">Preprint</span>
+                            <span class="text-xs text-muted-foreground">2026</span>
+                        </div>
+                        <h3 class="font-semibold text-lg">Sequence Pattern Analysis Using Python</h3>
+                        <p class="text-sm text-muted-foreground">
+                            <span class="font-medium text-foreground">Nahean Fardous</span>
+                        </p>
+                        <p class="text-sm text-muted-foreground italic">Independent Research</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-2 shrink-0">
+                        <button class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+                            <i data-lucide="file-down" class="mr-2 h-4 w-4"></i> PDF
+                        </button>
+                        <button class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+                            <i data-lucide="github" class="mr-2 h-4 w-4"></i> Code
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= REPOSITORIES SECTION ================= -->
+        <section id="repositories" class="page-section">
+            <div class="flex items-center justify-between mb-8">
+                <div class="space-y-2">
+                    <h2 class="text-3xl font-bold tracking-tight">Code Repositories</h2>
+                    <p class="text-muted-foreground">Open-source libraries and scripts fetched via GitHub API.</p>
+                </div>
+                <i data-lucide="github" class="h-8 w-8 text-muted-foreground opacity-50"></i>
+            </div>
+
+            <!-- Grid for GitHub Repos (Mocked data representing fetched state) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                <div class="rounded-xl border border-border bg-card p-5 shadow-sm hover:border-primary/50 transition-colors">
+                    <div class="flex items-start justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="book-marked" class="h-4 w-4 text-muted-foreground"></i>
+                            <a href="#" class="font-semibold hover:underline text-primary">py-seq-align</a>
+                        </div>
+                        <span class="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold">Public</span>
+                    </div>
+                    <p class="text-sm text-muted-foreground mb-4 line-clamp-2">Python implementation of dynamic programming algorithms for local and global sequence alignment.</p>
+                    <div class="flex items-center gap-4 text-xs text-muted-foreground mt-auto">
+                        <span class="flex items-center gap-1"><span class="h-2 w-2 rounded-full bg-blue-500"></span> Python</span>
+                        <span class="flex items-center gap-1"><i data-lucide="star" class="h-3 w-3"></i> 12</span>
+                        <span class="flex items-center gap-1"><i data-lucide="git-fork" class="h-3 w-3"></i> 3</span>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-border bg-card p-5 shadow-sm hover:border-primary/50 transition-colors">
+                    <div class="flex items-start justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="book-marked" class="h-4 w-4 text-muted-foreground"></i>
+                            <a href="#" class="font-semibold hover:underline text-primary">tg-summarizer-llm</a>
+                        </div>
+                    </div>
+                    <p class="text-sm text-muted-foreground mb-4 line-clamp-2">A self-hosted bot that securely summarizes long Telegram group chats using Llama.cpp.</p>
+                    <div class="flex items-center gap-4 text-xs text-muted-foreground mt-auto">
+                        <span class="flex items-center gap-1"><span class="h-2 w-2 rounded-full bg-blue-500"></span> Python</span>
+                        <span class="flex items-center gap-1"><i data-lucide="star" class="h-3 w-3"></i> 8</span>
+                    </div>
+                </div>
+
+                <div class="rounded-xl border border-border bg-card p-5 shadow-sm hover:border-primary/50 transition-colors">
+                    <div class="flex items-start justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="book-marked" class="h-4 w-4 text-muted-foreground"></i>
+                            <a href="#" class="font-semibold hover:underline text-primary">rusty-bio-tools</a>
+                        </div>
+                    </div>
+                    <p class="text-sm text-muted-foreground mb-4 line-clamp-2">Command line utilities for FASTA/FASTQ parsing written purely in Rust for speed.</p>
+                    <div class="flex items-center gap-4 text-xs text-muted-foreground mt-auto">
+                        <span class="flex items-center gap-1"><span class="h-2 w-2 rounded-full bg-orange-500"></span> Rust</span>
+                        <span class="flex items-center gap-1"><i data-lucide="star" class="h-3 w-3"></i> 24</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= TOOLS SECTION ================= -->
+        <section id="tools" class="page-section">
+            <div class="space-y-2 mb-8">
+                <h2 class="text-3xl font-bold tracking-tight">BioToolbox</h2>
+                <p class="text-muted-foreground">Interactive web-based bioinformatics tools and utilities.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Sidebar Nav (Mock) -->
+                <div class="w-full md:w-64 space-y-1">
+                    <button class="w-full flex items-center justify-start rounded-md bg-accent text-accent-foreground px-4 py-2 text-sm font-medium">
+                        <i data-lucide="align-horizontal-space-around" class="mr-2 h-4 w-4"></i> Sequence Alignment
+                    </button>
+                    <button class="w-full flex items-center justify-start rounded-md hover:bg-muted text-muted-foreground px-4 py-2 text-sm font-medium transition-colors">
+                        <i data-lucide="box" class="mr-2 h-4 w-4"></i> 3D Protein Viewer
+                    </button>
+                    <button class="w-full flex items-center justify-start rounded-md hover:bg-muted text-muted-foreground px-4 py-2 text-sm font-medium transition-colors">
+                        <i data-lucide="calculator" class="mr-2 h-4 w-4"></i> Bio Calculators
+                    </button>
+                    <button class="w-full flex items-center justify-start rounded-md hover:bg-muted text-muted-foreground px-4 py-2 text-sm font-medium transition-colors">
+                        <i data-lucide="terminal-square" class="mr-2 h-4 w-4"></i> Gradio Demos
+                    </button>
+                </div>
+
+                <!-- Main Tool Area -->
+                <div class="flex-1 rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+                    <div class="border-b border-border p-4 bg-muted/30">
+                        <h3 class="font-semibold">Sequence Alignment Playground</h3>
+                        <p class="text-xs text-muted-foreground">Paste two DNA/RNA sequences to calculate alignment score.</p>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none">Sequence 1</label>
+                            <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-mono ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50" placeholder="e.g. ATGCGT...">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium leading-none">Sequence 2</label>
+                            <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm font-mono ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" placeholder="e.g. ATGGGT...">
+                        </div>
+                        <div class="pt-2">
+                            <button class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 w-full sm:w-auto">
+                                Run Alignment
+                            </button>
+                        </div>
+                        
+                        <!-- Empty State visual -->
+                        <div class="mt-6 border-2 border-dashed border-muted rounded-lg h-32 flex flex-col items-center justify-center text-muted-foreground bg-muted/10">
+                            <i data-lucide="activity" class="h-6 w-6 mb-2 opacity-50"></i>
+                            <span class="text-sm">Results will appear here</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border mt-12 py-8">
+        <div class="container mx-auto max-w-5xl px-4 text-center text-sm text-muted-foreground">
+            <p>&copy; <span id="year"></span> Nahean Fardous. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Update Copyright Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Simple SPA Navigation Logic
+        function nav(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.page-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update Nav styling
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('text-foreground');
+                el.classList.add('text-foreground/60');
+            });
+            event.target.classList.remove('text-foreground/60');
+            event.target.classList.add('text-foreground');
+        }
+
+        // Theme Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlNode = document.documentElement;
+
+        // Check local storage or system preference on load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlNode.classList.add('dark');
+        } else {
+            htmlNode.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlNode.classList.contains('dark')) {
+                htmlNode.classList.remove('dark');
+                localStorage.theme = 'light';
+            } else {
+                htmlNode.classList.add('dark');
+                localStorage.theme = 'dark';
+            }
+        });
+    </script>
+</body>
+</html>
