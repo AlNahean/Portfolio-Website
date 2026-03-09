@@ -25,7 +25,7 @@ async function build() {
       JSON.stringify(registryEntry, null, 2)
     );
 
-    if (item.type === "components:example") {
+    if (item.type === "registry:example") {
       componentsIndex.push(`  "${key}": dynamic(() => import("@/registry/example/${key}")),`);
     }
   }

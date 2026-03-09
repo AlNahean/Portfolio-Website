@@ -1,6 +1,6 @@
 {
   "name": "my-button-demo",
-  "type": "components:example",
+  "type": "registry:example",
   "files": [
     {
       "path": "src/registry/example/my-button-demo.tsx",
