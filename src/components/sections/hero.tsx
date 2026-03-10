@@ -34,16 +34,19 @@ export function HeroSection() {
                                 Nahean Fardous
                             </h1>
                             <p className="text-xl md:text-2xl text-muted-foreground font-medium max-w-lg">
-                                Botany Student • Bioinformatics & Software Developer
+                                Full-Stack Developer & Bioinformatician
                             </p>
                         </div>
 
                         <div className="space-y-6 text-lg leading-relaxed text-muted-foreground max-w-xl">
+                            <div className="bg-primary/5 border border-primary/20 rounded-xl p-5 mb-6 shadow-sm">
+                                <h3 className="text-sm font-bold tracking-wider text-primary uppercase mb-2">Value Proposition</h3>
+                                <p className="text-foreground font-medium">
+                                    I bridge the gap between complex biological data analysis and robust web software.
+                                </p>
+                            </div>
                             <p>
-                                Nahean Fardous is a final-year Botany student from Bangladesh merging biological research with modern software engineering.
-                            </p>
-                            <p>
-                                He builds high-performance bioinformatics tools using <span className="text-primary font-semibold">Rust</span> and <span className="text-primary font-semibold">Python</span>, bridging the gap between life sciences and computational power.
+                                With a strong focus on engineering output, I build high-performance web applications and bioinformatics tools using <span className="text-primary font-semibold">React, Next.js, Rust,</span> and <span className="text-primary font-semibold">Python</span>. My work translates intricate data into scalable, user-centric digital experiences.
                             </p>
                         </div>
 
@@ -66,11 +69,11 @@ export function HeroSection() {
                             <ul className="grid gap-3">
                                 <li className="flex items-center text-sm text-muted-foreground">
                                     <Award className="mr-3 h-4 w-4 text-primary" />
-                                    Botany Honours Student – National University
+                                    Delivered 20+ Full-Stack Web Projects
                                 </li>
                                 <li className="flex items-center text-sm text-muted-foreground">
                                     <Microscope className="mr-3 h-4 w-4 text-primary" />
-                                    Independent Bioinformatics Research
+                                    Independent Bioinformatics Research & Tooling
                                 </li>
                             </ul>
                         </div>

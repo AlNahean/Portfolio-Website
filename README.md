@@ -1,6 +1,6 @@
-# Al Nahean's Portfolio
+# Nahean Fardous | Full-Stack Developer & Bioinformatician
 
-A modern, high-performance personal portfolio and knowledge hub built with **Next.js 15**, **React 19**, and **Tailwind CSS 4**. This project serves as a showcase of my work, a blog for my thoughts, and a study hub for my learning notes.
+A modern, high-performance personal portfolio and knowledge hub built with **Next.js 15**, **React 19**, and **Tailwind CSS 4**. This project serves as a showcase of my engineering output, biological data analysis tools, and technical writings.
 
 ## Tech Stack
 

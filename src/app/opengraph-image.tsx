@@ -62,7 +62,7 @@ export default async function Image() {
                             letterSpacing: "-0.04em",
                         }}
                     >
-                        {siteConfig.name}
+                        {siteConfig.author.name}
                     </div>
                     <div
                         tw="text-[40px] leading-[1.5] flex-grow-1 text-stone-400 mt-4"

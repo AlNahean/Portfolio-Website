@@ -12,7 +12,7 @@ export function SiteFooter() {
                     <div className="space-y-8">
                         <Link href="/" className="flex items-center gap-2">
                             <Icons.logo className="size-6" />
-                            <span className="font-bold text-lg">{siteConfig.name}</span>
+                            <span className="font-bold text-lg">{siteConfig.author.name}</span>
                         </Link>
                         <p className="text-sm leading-6 text-muted-foreground max-w-sm">
                             {siteConfig.description}

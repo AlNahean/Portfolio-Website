@@ -38,10 +38,10 @@ export const changelogData: ChangelogItem[] = [
     version: "v1.0.0",
     date: "2024-01-01",
     title: "Initial Launch",
-    description: "The first public release of Nahean's Study Hub.",
+    description: "The first public release of my portfolio and knowledge base.",
     changes: [
       "Docs Engine powered by Next.js and Fumadocs.",
-      "Dedicated Study Notes section for Botany.",
+      "Dedicated portfolio showcase with Projects & Experience.",
       "Integrated Blog for updates and insights.",
     ],
     image: "/projects/portfolio website.png",

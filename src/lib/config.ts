@@ -1,9 +1,9 @@
 export const siteConfig = {
-  name: "Nahean Fardous",
+  name: "Nahean Fardous | Full-Stack Developer & Bioinformatician",
   url: "https://nahean.vercel.app",
   ogImage: "https://nahean.vercel.app/opengraph-image",
   description:
-    "Full-Stack Engineer specializing in React, Next.js, and scalable web architecture.",
+    "I bridge the gap between complex biological data analysis and robust web software.",
   author: {
     name: "Nahean Fardous",
     links: {
