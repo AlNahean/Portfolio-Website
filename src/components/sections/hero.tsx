@@ -1,40 +1,89 @@
-import Link from "next/link";
+"use client";
+
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, Github, Linkedin, Award, Microscope, Video } from "lucide-react";
+
+const PhysicsBadge = dynamic(() => import("@/registry/ui/physics-badge"), {
+    ssr: false,
+});
 
 export function HeroSection() {
     return (
-        <section className="relative pt-24 pb-32 md:pt-40 md:pb-48 overflow-hidden border-b bg-background/50 backdrop-blur-sm">
-            <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
-                <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-blue-500/20 opacity-20 blur-[100px]"></div>
+        <section id="about" className="relative w-full min-h-[85vh] flex items-center overflow-hidden">
+
+            {/* --- 3D BACKGROUND LAYER --- */}
+            {/* Positioned absolutely to fill the right half, serving as a backdrop for the whole hero */}
+            <div className="absolute inset-0 z-0 hidden lg:block">
+                {/* Physics Badge takes full height of the section */}
+                <PhysicsBadge className="w-full h-full" />
+
+                {/* Gradient fades to ensure text readability on the left */}
+                <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent pointer-events-none" />
+                <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-background to-transparent pointer-events-none" />
             </div>
 
-            <div className="container px-4 md:px-6 flex flex-col items-center text-center">
-                <div className="mb-8 inline-flex items-center rounded-full border bg-background px-3 py-1 text-sm font-medium text-muted-foreground shadow-sm">
-                    <span className="flex h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
-                    Available for full-time roles
+            {/* --- CONTENT LAYER --- */}
+            <div className="container relative z-10 px-4 md:px-6 pointer-events-none">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+                    {/* Left Column: Text & Bio */}
+                    <div className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-1000 pointer-events-auto">
+                        <div className="space-y-2">
+                            <h1 className="text-5xl font-extrabold tracking-tight lg:text-7xl bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground/90 to-primary">
+                                Nahean Fardous
+                            </h1>
+                            <p className="text-xl md:text-2xl text-muted-foreground font-medium max-w-lg">
+                                Botany Student • Bioinformatics & Software Developer
+                            </p>
+                        </div>
+
+                        <div className="space-y-6 text-lg leading-relaxed text-muted-foreground max-w-xl">
+                            <p>
+                                Nahean Fardous is a final-year Botany student from Bangladesh merging biological research with modern software engineering.
+                            </p>
+                            <p>
+                                He builds high-performance bioinformatics tools using <span className="text-primary font-semibold">Rust</span> and <span className="text-primary font-semibold">Python</span>, bridging the gap between life sciences and computational power.
+                            </p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-4">
+                            <Button size="lg" className="h-12 px-8 rounded-full shadow-lg transition-transform hover:scale-105" asChild>
+                                <a href="https://github.com/AlNahean" target="_blank" rel="noopener noreferrer">
+                                    <Github className="mr-2 h-5 w-5" /> GitHub
+                                </a>
+                            </Button>
+                            <Button size="lg" variant="outline" className="h-12 px-8 rounded-full transition-transform hover:scale-105" asChild>
+                                <a href="https://www.linkedin.com/in/nahean-fardous-30b8a9238/" target="_blank" rel="noopener noreferrer">
+                                    <Linkedin className="mr-2 h-5 w-5" /> LinkedIn
+                                </a>
+                            </Button>
+                        </div>
+
+                        {/* Highlights List */}
+                        <div className="pt-6 space-y-4 border-t border-border/50 max-w-md">
+                            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">Highlights</h3>
+                            <ul className="grid gap-3">
+                                <li className="flex items-center text-sm text-muted-foreground">
+                                    <Award className="mr-3 h-4 w-4 text-primary" />
+                                    Botany Honours Student – National University
+                                </li>
+                                <li className="flex items-center text-sm text-muted-foreground">
+                                    <Microscope className="mr-3 h-4 w-4 text-primary" />
+                                    Independent Bioinformatics Research
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Right Column (Empty for Physics Badge, but needs to be here for grid layout) */}
+                    <div className="hidden lg:block h-[600px]" />
                 </div>
+            </div>
 
-                <h1 className="font-heading text-4xl font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl max-w-5xl">
-                    Building the <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600">Future</span> of the Web
-                </h1>
-
-                <p className="mt-6 max-w-[700px] text-muted-foreground md:text-xl leading-relaxed">
-                    I'm <span className="font-semibold text-foreground">Nahean Fardous</span>, a Full-Stack Engineer crafting high-performance digital experiences with Next.js, TypeScript, and modern web technologies.
-                </p>
-
-                <div className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                    <Button size="lg" className="h-12 px-8 rounded-full text-base font-semibold shadow-lg shadow-blue-500/20" asChild>
-                        <Link href="#projects">
-                            View Selected Work <ArrowRight className="ml-2 h-4 w-4" />
-                        </Link>
-                    </Button>
-                    <Button size="lg" variant="outline" className="h-12 px-8 rounded-full text-base bg-background/50 backdrop-blur-sm" asChild>
-                        <Link href="/Resume of Nahean Fardous-v2.pdf" target="_blank" rel="noopener noreferrer">
-                            <Download className="mr-2 h-4 w-4" /> Download CV
-                        </Link>
-                    </Button>
-                </div>
+            {/* Scroll Indicator */}
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-muted-foreground hidden md:block pointer-events-none">
+                <Video className="h-6 w-6 rotate-180 opacity-50" />
             </div>
         </section>
     );

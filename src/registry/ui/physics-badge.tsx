@@ -51,7 +51,7 @@ export default function PhysicsBadge({
     useTexture.preload(textureUrl);
 
     return (
-        <div className={cn("relative h-screen w-full", className)}>
+        <div className={cn("relative h-full w-full", className)}>
             <Canvas
                 camera={{ position: [0, 0, 13], fov: 25 }}
                 // Ensure the canvas itself is transparent
