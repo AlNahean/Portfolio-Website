@@ -70,3 +70,21 @@ export const blog = defineDocs({
   },
 });
 
+export const publications = defineDocs({
+  dir: "content/publications",
+  docs: {
+    schema: frontmatterSchema.extend({
+      date: z.string().date().or(z.date()).optional(),
+      venue: z.string().optional(),
+      authors: z.string().optional(),
+      type: z.string().optional(),
+      fullTitle: z.string().optional(),
+      links: z.object({
+        arxiv: z.string().optional(),
+        pdf: z.string().optional(),
+        code: z.string().optional(),
+        doi: z.string().optional(),
+      }).optional(),
+    }),
+  },
+});

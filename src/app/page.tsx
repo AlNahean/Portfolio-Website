@@ -9,6 +9,9 @@ import { GithubStatsSection } from "@/components/github-stats";
 import { BlogSection } from "@/components/sections/blog";
 import { ContactSection } from "@/components/sections/contact";
 import { MicroCardsSection } from "@/components/sections/micro-cards";
+import { CuratedShelf } from "@/components/sections/curated-shelf";
+import { PublicationsSection } from "@/components/sections/publications";
+import { BioToolboxSection } from "@/components/sections/biotoolbox";
 
 export default function Home() {
     return (
@@ -19,8 +22,11 @@ export default function Home() {
                 <TechStackSection />
                 <AboutSection />
                 <MicroCardsSection />
+                <CuratedShelf />
                 <ProjectsSection />
                 <ExperienceSection />
+                <PublicationsSection />
+                <BioToolboxSection />
                 <GithubStatsSection />
                 <BlogSection />
                 <ContactSection />
