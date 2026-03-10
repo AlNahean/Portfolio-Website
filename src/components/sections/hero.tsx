@@ -10,13 +10,13 @@ const PhysicsBadge = dynamic(() => import("@/registry/ui/physics-badge"), {
 
 export function HeroSection() {
     return (
-        <section id="about" className="relative w-full min-h-[85vh] flex items-center overflow-hidden">
+        <section id="about" className="relative w-full min-h-[calc(100vh_-_65px)] flex items-center overflow-hidden pb-8">
 
             {/* --- 3D BACKGROUND LAYER --- */}
             {/* Positioned absolutely to fill the right half, serving as a backdrop for the whole hero */}
             <div className="absolute inset-0 z-0 hidden lg:block">
                 {/* Physics Badge takes full height of the section */}
-                <PhysicsBadge className="w-full h-full" />
+                <PhysicsBadge className="w-full h-full" anchorX={4} />
 
                 {/* Gradient fades to ensure text readability on the left */}
                 <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent pointer-events-none" />
@@ -81,10 +81,7 @@ export function HeroSection() {
                 </div>
             </div>
 
-            {/* Scroll Indicator */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce text-muted-foreground hidden md:block pointer-events-none">
-                <Video className="h-6 w-6 rotate-180 opacity-50" />
-            </div>
+
         </section>
     );
 }

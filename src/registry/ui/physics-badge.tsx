@@ -39,12 +39,14 @@ interface PhysicsBadgeProps {
     className?: string;
     modelUrl?: string;
     textureUrl?: string;
+    anchorX?: number;
 }
 
 export default function PhysicsBadge({
     className,
     modelUrl = "/assets/3d/card.glb",
     textureUrl = "/assets/images/tag_texture.png",
+    anchorX = 0,
 }: PhysicsBadgeProps) {
     // Preload assets for smoother experience
     useGLTF.preload(modelUrl);
@@ -65,7 +67,7 @@ export default function PhysicsBadge({
                     gravity={[0, -40, 0]}
                     timeStep={1 / 60}
                 >
-                    <Band modelUrl={modelUrl} textureUrl={textureUrl} />
+                    <Band modelUrl={modelUrl} textureUrl={textureUrl} anchorX={anchorX} />
                 </Physics>
 
                 <Environment background={false} blur={0.75}>
@@ -108,9 +110,10 @@ interface BandProps {
     minSpeed?: number;
     modelUrl: string;
     textureUrl: string;
+    anchorX?: number;
 }
 
-function Band({ maxSpeed = 50, minSpeed = 10, modelUrl, textureUrl }: BandProps) {
+function Band({ maxSpeed = 50, minSpeed = 10, modelUrl, textureUrl, anchorX = 0 }: BandProps) {
     const band = useRef<THREE.Mesh<MeshLineGeometry, MeshLineMaterial>>(null);
     const fixed = useRef<RapierRigidBody>(null);
     const j1 = useRef<RapierRigidBody>(null);
@@ -219,7 +222,7 @@ function Band({ maxSpeed = 50, minSpeed = 10, modelUrl, textureUrl }: BandProps)
 
     return (
         <>
-            <group position={[0, 4, 0]}>
+            <group position={[anchorX, 4, 0]}>
                 <RigidBody ref={fixed} {...segmentProps} type="fixed" />
                 <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
                     <BallCollider args={[0.1]} />
