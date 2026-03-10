@@ -1,0 +1,139 @@
+---
+title: Physics Badge
+description: A 3D interactive physics-based badge component using React Three Fiber and Rapier.
+---
+
+A highly interactive 3D physics badge component. You can drag the badge around and it realistically reacts to gravity and momentum!
+
+<ComponentPreview name="physics-badge-demo" />
+
+## Installation
+
+<CodeTabs>
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add "http://localhost:3000/r/physics-badge.json"
+```
+*(Make sure to replace the localhost URL with your actual deployed URL when sharing your registry)*
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+**1. Install the required dependencies:**
+
+```bash
+npm install @react-three/fiber @react-three/drei @react-three/rapier meshline three
+npm install -D @types/three
+```
+
+**2. Copy and paste the following code into `components/ui/physics-badge.tsx`:**
+
+```tsx title="components/ui/physics-badge.tsx"
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
+import { Canvas, extend, useFrame, ReactThreeFiber } from "@react-three/fiber";
+import { useGLTF, useTexture, Environment, Lightformer } from "@react-three/drei";
+import {
+    Physics,
+    useRopeJoint,
+    useSphericalJoint,
+    RigidBody,
+    BallCollider,
+    CuboidCollider,
+    RapierRigidBody,
+} from "@react-three/rapier";
+import { MeshLineGeometry, MeshLineMaterial } from "meshline";
+import * as THREE from "three";
+import { cn } from "@/lib/utils";
+
+extend({ MeshLineGeometry, MeshLineMaterial });
+
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            meshLineGeometry: ReactThreeFiber.Object3DNode<
+                MeshLineGeometry,
+                typeof MeshLineGeometry
+            >;
+            meshLineMaterial: ReactThreeFiber.Object3DNode<
+                MeshLineMaterial,
+                typeof MeshLineMaterial
+            >;
+        }
+    }
+}
+
+interface PhysicsBadgeProps {
+    className?: string;
+    modelUrl?: string;
+    textureUrl?: string;
+}
+
+export default function PhysicsBadge({
+    className,
+    modelUrl = "/assets/3d/card.glb",
+    textureUrl = "/assets/images/tag_texture.png",
+}: PhysicsBadgeProps) {
+    useGLTF.preload(modelUrl);
+    useTexture.preload(textureUrl);
+
+    return (
+        <div className={cn("relative h-screen w-full", className)}>
+            <Canvas
+                camera={{ position: [0, 0, 13], fov: 25 }}
+                gl={{ alpha: true, antialias: true }}
+                style={{ background: "transparent" }}
+            >
+                <ambientLight intensity={Math.PI} />
+                <Physics debug={false} interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
+                    <Band modelUrl={modelUrl} textureUrl={textureUrl} />
+                </Physics>
+
+                <Environment background={false} blur={0.75}>
+                    <Lightformer intensity={2} color="white" position={[0, -1, 5]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+                    <Lightformer intensity={3} color="white" position={[-1, -1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+                    <Lightformer intensity={3} color="white" position={[1, 1, 1]} rotation={[0, 0, Math.PI / 3]} scale={[100, 0.1, 1]} />
+                    <Lightformer intensity={10} color="white" position={[-10, 0, 14]} rotation={[0, Math.PI / 2, Math.PI / 3]} scale={[100, 10, 1]} />
+                </Environment>
+            </Canvas>
+        </div>
+    );
+}
+
+// ... Band component implementation (see full source)
+```
+
+</TabsContent>
+</CodeTabs>
+
+## Setup Assets
+
+To make this component render correctly, you must place the required 3D `.glb` model and the texture `.png` inside your `public` directory:
+1. Model: `public/assets/3d/card.glb`
+2. Texture: `public/assets/images/tag_texture.png`
+
+You can change these default paths via props when rendering the component:
+
+```tsx
+import PhysicsBadge from "@/components/ui/physics-badge"
+
+export default function Example() {
+  return (
+    <div className="h-[500px] w-full relative">
+      <PhysicsBadge 
+        modelUrl="/assets/3d/card.glb"
+        textureUrl="/assets/images/tag_texture.png"
+      />
+    </div>
+  )
+}
+```

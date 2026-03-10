@@ -2,6 +2,8 @@
   "name": "botany-suggestions",
   "version": "0.1.0",
   "private": true,
+  "author": "Nahean Fardous",
+  "homepage": "https://nahean.vercel.app",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=8192\" prisma generate && cross-env NODE_OPTIONS=\"--max-old-space-size=8192\" next build",
@@ -38,6 +40,9 @@
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "@react-three/rapier": "^2.2.0",
     "@uploadthing/react": "^7.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -52,7 +57,8 @@
     "input-otp": "^1.4.2",
     "jotai": "^2.15.0",
     "lucide-react": "^0.545.0",
-    "next": "15.5.7",
+    "meshline": "^3.3.1",
+    "next": "15.5.9",
     "next-themes": "^0.4.6",
     "prisma": "^5.22.0",
     "react": "19.1.0",
@@ -65,9 +71,11 @@
     "shiki": "^3.13.0",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1",
+    "three": "^0.183.2",
     "uploadthing": "^7.7.4",
     "vaul": "^1.1.2",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "zustand": "4.5.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -85,6 +93,9 @@
     "typescript": "^5"
   },
   "pnpm": {
+    "overrides": {
+      "zustand": "4.5.5"
+    },
     "onlyBuiltDependencies": [
       "@prisma/client",
       "@prisma/engines",

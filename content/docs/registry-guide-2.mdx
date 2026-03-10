@@ -1,0 +1,134 @@
+---
+title: Component Registry Guide
+description: Learn how to create and publish multi-file components to the custom shadcn-compatible registry.
+---
+
+Our portfolio features a custom component registry built on top of the shadcn/ui architecture. This allows us to serve components (even complex ones with multiple files and folders) directly via the CLI (e.g., `npx shadcn@latest add ...`).
+
+This guide explains the step-by-step process of adding a new, complex component with multiple files (hooks, sub-components, utilities) to the registry.
+
+## Registry Architecture
+
+1.  **`src/registry/ui/`**: Where the actual source code for the components lives.
+2.  **`src/registry/example/`**: Where the demo/preview components live.
+3.  **`src/registry/index.ts`**: The single source of truth mapping component names to their actual files.
+4.  **`scripts/build-registry.ts`**: The script that reads `index.ts`, extracts file contents, and builds the deployable `.json` files in `public/r/`.
+
+---
+
+## Step 1: Create your Component Files
+
+Let's say we want to create a complex component called `fancy-card` that requires a hook and multiple sub-components inside a folder.
+
+Create the files in their respective directories:
+
+```text
+src/registry/
+├── hooks/
+│   └── use-fancy-logic.ts
+├── ui/
+│   └── fancy-card/
+│       ├── index.tsx
+│       └── card-header.tsx
+└── example/
+    └── fancy-card-demo.tsx
+```
+
+## Step 2: Register the Component
+
+Open `src/registry/index.ts`. Here, you need to define two things: the component itself, and its demo.
+
+For complex components, you **must use the object syntax** for the `files` array. This allows you to specify a `target` path, which tells the shadcn CLI exactly where to install the file in the user's project (e.g., placing it inside a folder).
+
+```typescript title="src/registry/index.ts"
+import { RegistryItem } from "./schema";
+
+export const registry: Record<string, RegistryItem> = {
+  // ... existing components ...
+
+  // 1. Define the actual component
+  "fancy-card": {
+    name: "fancy-card",
+    type: "registry:ui",
+    dependencies: ["lucide-react", "framer-motion"], // npm packages to install
+    files: [
+      { 
+        path: "src/registry/ui/fancy-card/index.tsx", 
+        type: "registry:component", 
+        target: "components/ui/fancy-card/index.tsx" // Resolves to user's components folder
+      },
+      { 
+        path: "src/registry/ui/fancy-card/card-header.tsx", 
+        type: "registry:component", 
+        target: "components/ui/fancy-card/card-header.tsx" 
+      },
+      { 
+        path: "src/registry/hooks/use-fancy-logic.ts", 
+        type: "registry:hook",
+        target: "hooks/use-fancy-logic.ts" // Resolves to user's hooks folder
+      }
+    ],
+  },
+
+  // 2. Define the demo (used for the docs page)
+  "fancy-card-demo": {
+    name: "fancy-card-demo",
+    type: "registry:example",
+    files: ["src/registry/example/fancy-card-demo.tsx"],
+    registryDependencies: ["fancy-card"], // Links the demo to the component
+  },
+};
+```
+
+<Callout variant="warning" title="Important">
+  When defining `target`, always use relative paths without a leading slash (e.g., `components/ui/...`). The shadcn CLI uses the user's `components.json` aliases to resolve these paths automatically.
+</Callout>
+
+## Step 3: Build the Registry
+
+Once your files are created and registered in `index.ts`, you must compile the registry.
+
+Run the following command in your terminal:
+
+```bash
+pnpm run build:registry
+```
+
+**What happens when you run this?**
+1. It reads `src/registry/index.ts`.
+2. It extracts the raw text content of every file referenced.
+3. It generates `public/r/fancy-card.json` and `public/r/fancy-card-demo.json`.
+4. It auto-updates `src/registry/components.ts` with a Next.js `dynamic()` import for your demo.
+
+## Step 4: Create the Documentation Page
+
+Finally, create an MDX file for your component to display it on the site. Notice the 4 backticks used here to wrap the MDX code block!
+
+````mdx title="content/docs/components/fancy-card.mdx"
+---
+title: Fancy Card
+description: A complex card component with animated headers.
+---
+
+<ComponentPreview name="fancy-card-demo" />
+
+## Installation
+
+<CodeTabs>
+  <Tab value="cli">
+    ```bash
+    npx shadcn@latest add https://nahean.vercel.app/r/fancy-card.json
+    ```
+  </Tab>
+  <Tab value="manual">
+    <Steps>
+      <Step>Copy and paste the component code</Step>
+      <ComponentSource name="fancy-card" />
+    </Steps>
+  </Tab>
+</CodeTabs>
+````
+
+### How the `<ComponentPreview />` works
+
+Because you ran `pnpm run build:registry`, the demo was automatically added to `src/registry/components.ts`. The `<ComponentPreview name="fancy-card-demo" />` looks up this map, dynamically imports your React component, and renders it safely inside the documentation page.

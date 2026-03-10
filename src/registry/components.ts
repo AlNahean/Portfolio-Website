@@ -5,4 +5,5 @@ import * as React from "react";
 export const registryComponents: Record<string, React.ComponentType<any>> = {
   "my-button-demo": dynamic(() => import("@/registry/example/my-button-demo")),
   "file-uploader-demo": dynamic(() => import("@/registry/example/file-uploader-demo")),
+  "physics-badge-demo": dynamic(() => import("@/registry/example/physics-badge-demo")),
 };

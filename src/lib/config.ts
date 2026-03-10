@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Nahean Fardous",
-  url: "https://nahean.dev",
-  ogImage: "https://nahean.dev/og.png",
+  url: "https://nahean.vercel.app",
+  ogImage: "https://nahean.vercel.app/opengraph-image",
   description:
     "Full-Stack Engineer specializing in React, Next.js, and scalable web architecture.",
   author: {
@@ -14,8 +14,10 @@ export const siteConfig = {
       email: "mailto:nahean.fardous@gmail.com",
     },
   },
-  navItems: [
+ navItems: [
     { href: "/", label: "Home" },
+    { href: "/blog", label: "Blog" },    // Added
+    { href: "/docs", label: "Docs" },    // Added
     { href: "#about", label: "About" },
     { href: "#projects", label: "Work" },
     { href: "#contact", label: "Contact" },

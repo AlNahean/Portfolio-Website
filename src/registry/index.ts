@@ -31,4 +31,18 @@ export const registry: Record<string, RegistryItem> = {
     files: ["src/registry/example/file-uploader-demo.tsx"],
     registryDependencies: ["file-uploader"],
   },
+  "physics-badge": {
+    name: "physics-badge",
+    type: "registry:ui",
+    dependencies: ["@react-three/fiber", "@react-three/drei", "@react-three/rapier", "meshline", "three"],
+    files: [
+      { path: "src/registry/ui/physics-badge.tsx", type: "registry:component", target: "components/ui/physics-badge.tsx" }
+    ],
+  },
+  "physics-badge-demo": {
+    name: "physics-badge-demo",
+    type: "registry:example",
+    files: ["src/registry/example/physics-badge-demo.tsx"],
+    registryDependencies: ["physics-badge"],
+  },
 };

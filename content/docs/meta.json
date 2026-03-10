@@ -6,6 +6,9 @@
     "registry-guide",
     "index",
     "test",
-    "file-uploader"
+    "file-uploader",
+    "physics-badge",
+    "my-test",
+    "registry-guide-2"
   ]
 }

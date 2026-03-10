@@ -1,0 +1,129 @@
+---
+title: Components Demo
+description: A comprehensive showcase of all available MDX components and patterns.
+---
+
+## Typography
+
+Use standard markdown for text. You can use **bold**, *italics*, or `inline code` naturally.
+
+> This is a blockquote. It's perfect for highlighting important notes, definitions, or citations from botanical literature.
+
+## Alerts & Callouts
+
+We have standard UI alerts and a custom `<Callout />` component.
+
+<Callout variant="info" title="Pro Tip">
+  You can pass `variant="info"` or `variant="warning"` to change the styling of this callout.
+</Callout>
+
+<Alert>
+  <AlertTitle>Heads up!</AlertTitle>
+  <AlertDescription>
+    This is a standard Shadcn Alert component, useful for system-level messages.
+  </AlertDescription>
+</Alert>
+
+## Interactive Elements
+
+### Tabs
+Tabs are great for showing alternative implementations (e.g., CLI vs Manual installation).
+
+<Tabs defaultValue="react">
+  <TabsList>
+    <TabsTrigger value="react">React</TabsTrigger>
+    <TabsTrigger value="vue">Vue</TabsTrigger>
+  </TabsList>
+  <TabsContent value="react">
+    You are viewing the React implementation.
+  </TabsContent>
+  <TabsContent value="vue">
+    You are viewing the Vue implementation.
+  </TabsContent>
+</Tabs>
+
+### Accordion
+Use these for FAQs or long, optional technical details.
+
+<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>What is the Botany Study Hub?</AccordionTrigger>
+    <AccordionContent>
+      It is a specialized knowledge base for master-level botany notes, featuring high-performance rendering and searchable content.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+
+## Registry Components
+These are dynamically loaded from your registry.
+
+### 1. Physics Badge
+<ComponentPreview name="physics-badge-demo" />
+
+### 2. File Uploader
+<ComponentPreview name="file-uploader-demo" />
+
+## Code & Syntax Highlighting
+
+We use `rehype-pretty-code` to highlight your snippets.
+
+```typescript title="src/lib/utils.ts"
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+```
+
+### Collapsible Code
+Use this for long configuration files that don't need to be seen immediately.
+
+<CodeCollapsibleWrapper>
+```json
+{
+  "name": "botany-suggestions",
+  "version": "0.1.0",
+  "dependencies": {
+    "next": "15.5.9",
+    "react": "19.1.0"
+  }
+}
+```
+</CodeCollapsibleWrapper>
+
+## Layout & Structural
+
+### Steps
+Ideal for tutorials.
+
+<Steps>
+<Step>Clone the repository</Step>
+<Step>Install dependencies</Step>
+<Step>Run the development server</Step>
+</Steps>
+
+### Badges
+Use these to highlight status or categories.
+
+<div className="flex gap-2">
+  <Badge>Stable</Badge>
+  <Badge variant="secondary">Experimental</Badge>
+  <Badge variant="outline">Deprecated</Badge>
+</div>
+
+### Linked Card
+A card that acts as a navigation trigger.
+
+<LinkedCard href="/docs/introduction">
+  <CardTitle>Get Started</CardTitle>
+  <p>Learn how to use the registry system properly.</p>
+</LinkedCard>
+
+
+### How to use this:
+1. **Create the file**: Save the code above as `content/docs/components-demo.mdx`.
+2. **Register it**: If you have a `meta.json` in `content/docs`, add `components-demo` to the `pages` array.
+3. **Verify**: Run `pnpm run dev` and navigate to `/docs/components-demo`.
+
+### Tips for writing MDX in this project:
+- **`__raw__` prop**: Any code block you write in MDX automatically gets a copy button because of your `mdx-components.tsx` configuration.
+- **Dynamic Imports**: Because you are using a custom registry, you can always drop in a new `<ComponentPreview name="your-component-name" />` as long as it's defined in `src/registry/index.ts` and you've run `pnpm run build:registry`.
+- **Styling**: You can combine Tailwind classes with standard MDX tags (e.g., `<div className="flex gap-4">...</div>`) directly within the `.mdx` file.
