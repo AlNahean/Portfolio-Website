@@ -15,15 +15,19 @@ import { Button } from "@/components/ui/button";
 import { OpenAuthorsProfileCta } from "@/components/open-authors-profile-cta";
 
 export async function generateStaticParams() {
-    return await source.generateParams();
+    const params = await source.generateParams();
+    return params
+        .filter(p => p.slug && p.slug.length > 0)
+        .map(p => ({ slug: p.slug[0] }));
 }
 
 export default async function Page({
     params,
 }: {
-    params: { slug?: string[] };
+    params: Promise<{ slug: string }>;
 }) {
-    const page = await source.getPage(params.slug);
+    const resolvedParams = await params;
+    const page = await source.getPage([resolvedParams.slug]);
 
     if (!page) {
         notFound();
@@ -34,7 +38,7 @@ export default async function Page({
     const links = page.data.links;
 
     return (
-        <div
+        <main
             data-slot="docs"
             className="flex items-stretch text-[1.05rem] sm:text-[15px] xl:w-full"
         >
@@ -156,6 +160,6 @@ export default async function Page({
                     <OpenAuthorsProfileCta />
                 </div>
             </div>
-        </div>
+        </main>
     );
 }

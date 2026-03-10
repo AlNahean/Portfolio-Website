@@ -16,16 +16,17 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
 export async function generateStaticParams() {
-    return blogSource.generateParams();
+    const params = blogSource.generateParams();
+    return params.map(p => ({ slug: p.slug[0] }));
 }
 
 export default async function BlogPostPage({
     params,
 }: {
-    params: Promise<{ slug?: string[] }>;
+    params: Promise<{ slug: string }>;
 }) {
     const resolvedParams = await params;
-    const page = blogSource.getPage(resolvedParams.slug);
+    const page = blogSource.getPage([resolvedParams.slug]);
 
     if (!page) {
         notFound();
@@ -38,7 +39,7 @@ export default async function BlogPostPage({
         <div className="flex min-h-screen flex-col bg-background">
             <SiteHeader />
 
-            <div
+            <main
                 data-slot="docs"
                 className="container-wrapper flex-1 items-stretch text-[1.05rem] sm:text-[15px] xl:w-full"
             >
@@ -151,7 +152,7 @@ export default async function BlogPostPage({
                     </div>
 
                 </div>
-            </div>
+            </main>
             <SiteFooter />
         </div>
     );
