@@ -30,6 +30,10 @@ const nextConfig: NextConfig = {
         source: "/blog/:path*.md",
         destination: "/llm/:path*",
       },
+      {
+        source: "/publications/:path*.md",
+        destination: "/llm/:path*",
+      },
     ];
   },
   eslint: {

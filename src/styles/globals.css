@@ -174,6 +174,12 @@
   button:active {
     @apply opacity-60 md:opacity-100;
   }
+  .maplibregl-popup-content {
+    @apply bg-transparent! shadow-none! p-0! rounded-none!;
+  }
+  .maplibregl-popup-tip {
+    @apply hidden!;
+  }
 }
 
 @utility border-grid {
@@ -243,7 +249,6 @@
       @apply !mt-2;
     }
 
-
     [data-rehype-pretty-code-figure]>pre {
 
       /* For Webkit browsers like Chrome, Safari */
@@ -277,7 +282,6 @@
       scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
     }
   }
-
 
   [data-rehype-pretty-code-figure] {
     background-color: var(--color-code);
@@ -381,7 +385,6 @@
     font-size: 0.8rem;
   }
 }
-
 
 @layer utilities {
 

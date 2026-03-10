@@ -1,5 +1,8 @@
+"use client"
+
 import { Badge } from "@/components/ui/badge";
 import { Briefcase, Code2, MapPin } from "lucide-react";
+import { Map, MapMarker, MarkerContent } from "@/components/ui/map";
 
 export function AboutSection() {
     return (
@@ -27,13 +30,28 @@ export function AboutSection() {
                     </div>
                 </div>
 
-                {/* Location Card */}
-                <div className="rounded-2xl border bg-zinc-900 text-white p-6 flex flex-col items-center justify-center text-center relative overflow-hidden">
-                    <div className="absolute inset-0 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
-                    <div className="relative z-10">
-                        <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white/10 mb-4 animate-pulse">
-                            <MapPin className="size-6" />
-                        </div>
+                {/* Location Card with Map */}
+                <div className="rounded-2xl border bg-zinc-900 text-white p-0 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+                    <div className="absolute inset-0 z-0">
+                        <Map
+                            zoom={11}
+                            center={[90.4125, 24.7471]}
+                            className="grayscale contrast-[1.2] brightness-[0.7] opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                            interactive={false}
+                        >
+                            <MapMarker longitude={90.4125} latitude={24.7471}>
+                                <MarkerContent>
+                                    <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/10 ring-8 ring-white/5 animate-pulse">
+                                        <MapPin className="size-6 text-white" />
+                                    </div>
+                                </MarkerContent>
+                            </MapMarker>
+                        </Map>
+                    </div>
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 to-transparent z-10 pointer-events-none" />
+
+                    <div className="relative z-20 p-6 flex flex-col items-center mt-auto">
                         <h3 className="font-bold text-lg">Mymensingh, BD</h3>
                         <p className="text-zinc-400 text-sm">Remote / Relocate</p>
                     </div>
@@ -43,7 +61,7 @@ export function AboutSection() {
                 <div className="rounded-2xl border bg-gradient-to-br from-green-500/10 to-emerald-500/10 p-6 flex flex-col justify-between border-green-500/20">
                     <div className="flex justify-between items-start">
                         <Briefcase className="size-6 text-green-600" />
-                        <Badge className="bg-green-600 hover:bg-green-700">Active</Badge>
+                        <Badge className="bg-green-600 hover:bg-green-700 font-medium">Active</Badge>
                     </div>
                     <div>
                         <h3 className="font-bold text-lg">Open for Work</h3>

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { NextResponse, type NextRequest } from "next/server";
 
-import { source, studySource, blogSource } from "@/lib/source";
+import { source, studySource, blogSource, publicationSource } from "@/lib/source";
 
 export const revalidate = false;
 
@@ -14,12 +14,15 @@ export async function GET(
   const slug = resolvedParams.slug ?? [];
 
   // Use the resolved slug array
-  let page = source.getPage(slug);
+  let page: any = source.getPage(slug);
   if (!page) {
     page = studySource.getPage(slug);
   }
   if (!page) {
     page = blogSource.getPage(slug);
+  }
+  if (!page) {
+    page = publicationSource.getPage(slug);
   }
 
   if (!page) {
@@ -51,6 +54,7 @@ export function generateStaticParams() {
   const docsParams = source.generateParams();
   const studyParams = studySource.generateParams();
   const blogParams = blogSource.generateParams();
+  const publicationParams = publicationSource.generateParams();
 
-  return [...docsParams, ...studyParams, ...blogParams];
+  return [...docsParams, ...studyParams, ...blogParams, ...publicationParams];
 }
