@@ -13,9 +13,9 @@ export function AboutSection() {
                     <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
                         <Code2 className="size-32" />
                     </div>
-                    <h2 className="text-3xl font-bold mb-4">Engineering Output & Value</h2>
+                    <h2 className="text-3xl font-bold mb-4">Bridging Data & Design</h2>
                     <p className="text-muted-foreground text-lg leading-relaxed max-w-prose">
-                        I don't just write code; I solve problems. By combining scalable web architecture with biological data analysis, I deliver robust software solutions. Whether it's a sleek frontend or a data-heavy backend pipeline, I bridge the gap between complex technical requirements and seamless user experiences.
+                        I specialize in translating heavy technical requirements into clean, accessible web applications. From crafting seamless user interfaces with modern frameworks to building robust backend pipelines for scientific data, I care deeply about performance, architecture, and the final user experience.
                     </p>
                     <div className="mt-8 flex gap-4">
                         <div className="flex flex-col">

@@ -34,7 +34,20 @@ const nextConfig: NextConfig = {
         source: "/publications/:path*.md",
         destination: "/llm/:path*",
       },
+      {
+        source: "/projects/:path*.md",
+        destination: "/llm/:path*",
+      },
+      {
+        source: "/case-studies/:path*.md",
+        destination: "/llm/:path*",
+      },
+      {
+        source: "/reflections/:path*.md",
+        destination: "/llm/:path*",
+      },
     ];
+
   },
   eslint: {
     ignoreDuringBuilds: true,

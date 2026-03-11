@@ -1,7 +1,7 @@
 import { GitFork, Star, BookOpen } from "lucide-react";
 import { Icons } from "@/components/icons";
 
-const REPOS =[
+const REPOS = [
     {
         name: "py-seq-align",
         desc: "Python implementation of dynamic programming algorithms for local and global sequence alignment.",
@@ -80,7 +80,7 @@ export function RepositoriesSection() {
                                     Public
                                 </span>
                             </div>
-                            
+
                             <p className="text-sm text-muted-foreground mb-6 flex-1 line-clamp-3">
                                 {repo.desc}
                             </p>

@@ -1,0 +1,18 @@
+---
+title: "Engineering the BioToolbox"
+description: "Designing an interactive browser-based sequence alignment tool for researchers without relying on heavy backend processing."
+date: "2023-11-15"
+image: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=2070&auto=format&fit=crop"
+tags: ["Bioinformatics", "WebAssembly", "React"]
+role: "Solo Developer & Researcher"
+timeline: "3 Months"
+---
+
+## The Challenge
+Sequence alignment traditionally requires sending massive string datasets to a Python or C++ backend, waiting for processing, and returning the result. This causes latency and high server costs.
+
+## The Approach
+I utilized **WebAssembly (Wasm)** to compile the core alignment algorithms (Needleman-Wunsch) so they could run directly in the user's browser. 
+
+## The Impact
+By offloading computation to the client, the application became infinitely scalable with zero backend costs, providing real-time feedback to researchers as they typed sequences.

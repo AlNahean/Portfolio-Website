@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ProjectCard } from "@/components/project-card";
-import { PROJECTS } from "@/data/projects";
+import { projectSource } from "@/lib/source";
 
 export const metadata: Metadata = {
     title: "Projects",
@@ -10,6 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
+    const allProjects = [...projectSource.getPages()];
+
     return (
         <div className="flex min-h-screen flex-col bg-background text-foreground font-sans">
             <SiteHeader />
@@ -25,8 +27,17 @@ export default function ProjectsPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {PROJECTS.map((project) => (
-                        <ProjectCard key={project.id} project={project} />
+                    {allProjects.map((project) => (
+                        <ProjectCard key={project.url} project={{
+                            url: project.url,
+                            title: project.data.title,
+                            description: project.data.description,
+                            tech: project.data.tech,
+                            video: project.data.video,
+                            image: project.data.image,
+                            live: project.data.live,
+                            github: project.data.github,
+                        }} />
                     ))}
                 </div>
             </main>

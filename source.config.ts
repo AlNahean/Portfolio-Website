@@ -88,3 +88,44 @@ export const publications = defineDocs({
     }),
   },
 });
+
+export const projects = defineDocs({
+  dir: "content/projects",
+  docs: {
+    schema: frontmatterSchema.extend({
+      description: z.string(),
+      tech: z.array(z.string()),
+      video: z.string().optional(),
+      image: z.string(),
+      live: z.string().optional(),
+      github: z.string().optional(),
+      date: z.string().date().or(z.date()).optional(), // Added for sorting
+    }),
+  },
+});
+
+export const caseStudies = defineDocs({
+  dir: "content/case-studies",
+  docs: {
+    schema: frontmatterSchema.extend({
+      date: z.string().date().or(z.date()),
+      author: z.string().optional(),
+      image: z.string(),
+      tags: z.array(z.string()),
+      timeline: z.string().optional(),
+      role: z.string().optional(),
+    }),
+  },
+});
+
+export const reflections = defineDocs({
+  dir: "content/reflections",
+  docs: {
+    schema: frontmatterSchema.extend({
+      date: z.string().date().or(z.date()),
+      category: z.string(), // E.g., "Philosophy", "Mentorship"
+      readTime: z.string(), // E.g., "5 MIN READ"
+      description: z.string(), // We will use this for the italicized quote
+    }),
+  },
+});

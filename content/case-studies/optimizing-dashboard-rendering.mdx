@@ -1,0 +1,20 @@
+---
+title: "Taming React Renders in Heavy Dashboards"
+description: "A deep dive into memoization, Context API pitfalls, and achieving 60fps in a data-heavy analytics dashboard."
+date: "2022-11-20"
+image: "/projects/dashboard.png"
+tags: ["Performance", "React", "Chart.js"]
+role: "Frontend Developer"
+timeline: "3 Weeks"
+---
+
+## The Bottleneck
+The client's primary analytics dashboard contained 12 charts. Updating a single global date filter caused all 12 charts to unmount and remount, freezing the browser for nearly 2 seconds.
+
+## The Fix
+1. **Context Splitting**: Separated the global state into `UI_Context` and `Data_Context`.
+2. **useMemo & React.memo**: Wrapped expensive chart components to ensure they only re-rendered when their specific data slice changed.
+3. **Web Workers**: Offloaded the heavy JSON data parsing to a background worker.
+
+## The Outcome
+Achieved a buttery-smooth 60fps interaction rate, even when processing arrays with 50,000+ data points.

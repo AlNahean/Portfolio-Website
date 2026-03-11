@@ -1,0 +1,22 @@
+---
+title: "Scaling E-Commerce - Monolith to Microservices"
+description: "How we migrated a struggling legacy Node.js monolith into a robust serverless architecture using Next.js and AWS."
+date: "2024-03-10"
+image: "/projects/daraz clone.png"
+tags: ["Architecture", "Next.js", "AWS", "Scaling"]
+role: "Lead Full-Stack Engineer"
+timeline: "6 Months"
+---
+
+## The Problem
+The existing platform was built tightly coupled. As traffic grew during holiday seasons, the entire application would buckle under database locking issues, causing checkout failures.
+
+## The Solution
+We decided to strangle the monolith. 
+1. **Frontend Modernization**: Moved to Next.js App Router for edge caching.
+2. **Backend Splitting**: Separated the Inventory, Cart, and Checkout into independent microservices.
+
+## The Results
+- **99.99% Uptime** during Black Friday.
+- **40% Reduction** in cloud compute costs.
+- **LCP** improved from 4.2s to 1.1s.

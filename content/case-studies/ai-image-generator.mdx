@@ -1,0 +1,17 @@
+---
+title: "Architecting an AI SaaS Platform"
+description: "Integrating OpenAI's DALL-E API with a scalable React frontend and a credit-based billing system."
+date: "2023-08-22"
+image: "/projects/image-generator.png"
+tags: ["AI/ML", "Stripe", "React", "SaaS"]
+role: "Full-Stack Developer"
+timeline: "4 Weeks"
+---
+
+## Overview
+Building a wrapper around an AI API is easy. Building a profitable SaaS around it is hard. This project focused on the business logic required to sustain an AI product.
+
+## Key Implementations
+- **Credit System:** Built a Prisma/Postgres ledger tracking user generation credits.
+- **Webhooks:** Secure Stripe webhook integration to automatically refill credits upon successful payment.
+- **Optimistic UI:** Implemented skeleton loaders and optimistic state updates so the UI felt instant, even when the AI generation took 5-10 seconds.

@@ -5,18 +5,28 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Play } from "lucide-react";
 import { Icons } from "@/components/icons";
-import { Project } from "@/data/projects";
+import Link from "next/link";
 
-export function ProjectCard({ project }: { project: Project }) {
+// Define the serializable shape for the project card
+export interface ProjectCardData {
+    url: string;
+    title: string;
+    description: string;
+    tech: string[];
+    video?: string;
+    image: string;
+    live?: string;
+    github?: string;
+}
+
+export function ProjectCard({ project }: { project: ProjectCardData }) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
 
-    // Check if a valid video path exists
     const hasVideo = project.video && project.video.trim().length > 0 && !project.video.includes("Placeholder");
 
     const handleMouseEnter = () => {
         if (!hasVideo) return;
-
         setIsPlaying(true);
         if (videoRef.current) {
             videoRef.current.currentTime = 0;
@@ -26,7 +36,6 @@ export function ProjectCard({ project }: { project: Project }) {
 
     const handleMouseLeave = () => {
         if (!hasVideo) return;
-
         setIsPlaying(false);
         if (videoRef.current) {
             videoRef.current.pause();
@@ -39,9 +48,8 @@ export function ProjectCard({ project }: { project: Project }) {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            {/* Media Container */}
-            <div className="relative aspect-video w-full overflow-hidden bg-muted border-b">
-                {/* Static Image / Placeholder */}
+            {/* Media Container - Wrapped in Link to go to MDX page */}
+            <Link href={project.url} className="relative aspect-video w-full overflow-hidden bg-muted border-b block">
                 <div
                     className={`absolute inset-0 z-10 transition-opacity duration-500 flex items-center justify-center bg-secondary/20 ${isPlaying ? "opacity-0" : "opacity-100"
                         }`}
@@ -57,7 +65,6 @@ export function ProjectCard({ project }: { project: Project }) {
                         <Icons.logo className="h-12 w-12 text-muted-foreground/20" />
                     )}
 
-                    {/* Play Hint - Only show if video exists */}
                     {hasVideo && (
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div className="bg-background/80 backdrop-blur-sm p-3 rounded-full shadow-lg">
@@ -67,7 +74,6 @@ export function ProjectCard({ project }: { project: Project }) {
                     )}
                 </div>
 
-                {/* Video Preview - Only render if video exists */}
                 {hasVideo && (
                     <video
                         ref={videoRef}
@@ -80,20 +86,21 @@ export function ProjectCard({ project }: { project: Project }) {
                     />
                 )}
 
-                {/* Tech Badge Overlay */}
                 <div className="absolute top-3 right-3 z-20">
                     <Badge variant="secondary" className="backdrop-blur-md bg-background/80 shadow-sm border-none">
                         {project.tech[0]}
                     </Badge>
                 </div>
-            </div>
+            </Link>
 
             {/* Content */}
             <div className="flex flex-1 flex-col p-6">
                 <div className="mb-4">
-                    <h3 className="font-heading text-xl font-bold tracking-tight group-hover:text-primary transition-colors">
-                        {project.title}
-                    </h3>
+                    <Link href={project.url}>
+                        <h3 className="font-heading text-xl font-bold tracking-tight group-hover:text-primary transition-colors">
+                            {project.title}
+                        </h3>
+                    </Link>
                     <p className="text-muted-foreground text-sm mt-2 line-clamp-3 leading-relaxed">
                         {project.description}
                     </p>
@@ -110,7 +117,7 @@ export function ProjectCard({ project }: { project: Project }) {
                     ))}
                 </div>
 
-                <div className="flex items-center gap-3 pt-4 border-t mt-auto">
+                <div className="flex items-center gap-3 pt-4 border-t mt-auto relative z-20">
                     {project.live && (
                         <Button size="sm" className="flex-1 font-semibold" asChild>
                             <a href={project.live} target="_blank" rel="noopener noreferrer">

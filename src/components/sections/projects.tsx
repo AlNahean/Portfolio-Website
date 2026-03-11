@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/project-card";
-import { PROJECTS } from "@/data/projects";
+import { projectSource } from "@/lib/source";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export function ProjectsSection() {
-    // Only show the first 3 projects on the homepage
-    const featuredProjects = PROJECTS.slice(0, 3);
+    // Fetch from MDX and slice the first 3
+    const featuredProjects = [...projectSource.getPages()].slice(0, 3);
 
     return (
         <section id="projects" className="py-24 bg-muted/30 border-y scroll-mt-16">
@@ -29,7 +29,16 @@ export function ProjectsSection() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {featuredProjects.map((project) => (
-                        <ProjectCard key={project.id} project={project} />
+                        <ProjectCard key={project.url} project={{
+                            url: project.url,
+                            title: project.data.title,
+                            description: project.data.description,
+                            tech: project.data.tech,
+                            video: project.data.video,
+                            image: project.data.image,
+                            live: project.data.live,
+                            github: project.data.github,
+                        }} />
                     ))}
                 </div>
             </div>

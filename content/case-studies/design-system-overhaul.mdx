@@ -1,0 +1,18 @@
+---
+title: "Standardizing the Frontend - A Custom UI Library"
+description: "How adopting a Shadcn-inspired custom component registry eliminated design debt across 5 internal products."
+date: "2023-04-05"
+image: "/projects/hyper admin dashboard.png"
+tags: ["Design Systems", "Tailwind", "Radix UI"]
+role: "Frontend Architect"
+timeline: "2 Months"
+---
+
+## The Mess
+Five different dashboards. Five different button components. The codebase was a nightmare of conflicting CSS modules and overriding classes.
+
+## The Strategy
+Instead of installing an oversized component library like MUI or AntD, I built an internal CLI tool that pulled raw, accessible components (based on Radix UI) directly into the codebases.
+
+## The Result
+Developers gained full control over the markup. Delivery speed for new features increased by 30%, and visual consistency was finally achieved across the suite.
