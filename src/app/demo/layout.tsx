@@ -10,7 +10,13 @@ const LayoutPage = ({ children }: Props) => {
     return (
         <>
             <SiteHeader />
-            <div>{children}</div>
+            <div className="container-wrapper 3xl:fixed:px-0 px-6 ">
+
+                <div className='3xl:fixed:container max-w-8xl mx-auto '>{children}</div>
+
+
+            </div>
+
             <SiteFooter />
         </>
     )

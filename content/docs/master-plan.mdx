@@ -1,0 +1,107 @@
+---
+title: Master Execution Plan - Bioinformatics Portfolio
+description: A comprehensive, step-by-step roadmap to build a world-class hybrid engineering portfolio by double-dipping web development skills with a Botany degree.
+lastUpdated: "2026-03-11"
+author: "Nahean Fardous"
+---
+
+<Callout variant="info" title="The Core Strategy">
+  **The "Mega-Clone" Approach:** Instead of building 5-10 small, disconnected tools, you will build ONE massive, enterprise-grade application (a Benchling/SnapGene clone). This single codebase will generate **all** the content for your Case Studies, Blogs, Publications, and Reflections, while simultaneously acting as your study tool for your National University exams.
+</Callout>
+
+## 🧬 The Mega-Project: `HelixWorkspace` (Benchling Clone)
+
+Your flagship project will be a cloud-based DNA/Protein workspace. This proves senior-level full-stack architecture, systems programming, and deep biological domain knowledge.
+
+### 1. The Sequence Editor (Syllabus: Molecular Biology & Bioinformatics)
+- **What it does:** A rich text editor for large DNA/RNA/Protein sequences. It highlights start/stop codons, identifies Open Reading Frames (ORFs), and calculates GC content in real-time.
+- **The Engineering Flex:** Handling massive strings (10k+ characters) efficiently in the browser by writing the string-parsing logic in **Rust** and compiling it to **WebAssembly (WASM)**.
+
+### 2. The Alignment Dashboard (Syllabus: Biodiversity & Evolution)
+- **What it does:** A UI where users select two viral sequences and hit "Align". It visualizes the mutations (SNPs) and evolutionary distance.
+- **The Engineering Flex:** Implementing Needleman-Wunsch or Smith-Waterman algorithms. You can run this via a Python backend API or directly in the browser via Rust/WASM.
+
+### 3. The AI Lab Notebook (Syllabus: Research Methodology)
+- **What it does:** A Notion-style editor for scientists with integrated AI. 
+- **The Engineering Flex:** Using the OpenAI/Anthropic API to summarize selected genetic sequences, predict viral vector compatibility, or format citations automatically.
+
+---
+
+## 📚 The Content Generation Engine
+
+By building `HelixWorkspace`, you automatically create the material needed to replace all the dummy data in your portfolio.
+
+### 1. Code Repositories (`data/projects.ts`)
+- **`HelixWorkspace`:** The main mega-project (Next.js 15, Tailwind, Prisma, PostgreSQL).
+- **`helix-core-rs`:** The open-source Rust library you extract from the project that handles the DNA math/alignment algorithms.
+- **`NU Botany Hub`:** Your digitized university notes platform (your current `/study` route, heavily polished).
+
+### 2. Case Studies (`content/case-studies/`)
+*Deep engineering architectural breakdowns.*
+- **Case Study 1:** *"Architecting a Cloud-Based DNA Editor: Building a Benchling Clone with Next.js 15"* (Focus on state management and UI/UX).
+- **Case Study 2:** *"Breaking the JavaScript Bottleneck: Moving Sequence Alignment to Rust & WASM"* (Include benchmark charts of JS vs Rust).
+- **Case Study 3:** *"My 3 Years as a Full-Stack Web Developer"* (Summarize your actual past freelance/agency work to prove professional experience).
+
+### 3. Research Publications (`content/publications/`)
+*Self-published, rigorous academic notes that serve as your university exam prep (Use the `type: "INDEPENDENT RESEARCH"` tag).*
+- **Pub 1:** *"Mathematical Models of Viral Evolution: Scoring Functions (PAM vs. BLOSUM) Explained"* (Aligns with Evolution & Virology).
+- **Pub 2:** *"Exhaustive vs. Heuristic Algorithms in Massive Sequence Databases"* (Bioinformatics).
+- **Pub 3:** *"A Computational Approach to Identifying Open Reading Frames (ORFs)"* (Molecular Biology).
+
+### 4. Blog (`content/blog/`)
+*Technical web-dev + biology crossover tutorials.*
+- **Post 1:** *"Parsing Genomic Data in Next.js: Streaming vs. Memory"*
+- **Post 2:** *"Prompt Engineering for Biology: Making LLMs Understand DNA"*
+- **Post 3:** *"Why Bioinformatics needs modern Full-Stack Developers (and better UX)"*
+
+### 5. Reflections & Life Notes (`content/reflections/`)
+*The human element for recruiters and collaborators.*
+- **Reflection 1:** *"From Web Divs to DNA Sequences: Why I transitioned into Bioinformatics."*
+- **Reflection 2:** *"The Intersection of Code and Genetics: What Software Engineering taught me about DNA."*
+- **Reflection 3:** *"Balancing a Botany Degree at National University with Global Open Source Engineering."*
+
+---
+
+## ⏱️ The 4-Week Execution Plan
+
+Since you have 3 years of experience and are working full-time on this, you can execute rapidly. 
+
+<Steps>
+
+<Step>
+### Week 1: The Content Avalanche & Setup
+- **Days 1-2:** Write the 3 **Reflections** and 2 **Blog** posts. These require no new coding and establish your narrative immediately.
+- **Day 3:** Clean up `data/projects.ts`. Remove all dummy projects. Add your real past 3 years of web dev work. Add your real work to `src/components/sections/experience.tsx`.
+- **Days 4-5:** Scaffold the `HelixWorkspace` repository. Set up Next.js 15, Tailwind, Prisma schema (Users, Projects, Sequences), and basic Auth.
+</Step>
+
+<Step>
+### Week 2: The Core Sequence Editor (Rust + Next.js)
+- **Days 1-2:** Build the basic UI for the Sequence Editor (textarea, formatting, basic stats like GC content).
+- **Days 3-4:** Write the Rust WASM module for heavy sequence parsing (finding ORFs, translating DNA to Protein). Integrate it into the Next.js app.
+- **Day 5:** Write **Case Study 1** about the architectural setup and **Research Pub 1** (ORFs) using your study notes.
+</Step>
+
+<Step>
+### Week 3: Alignment & AI Features
+- **Days 1-2:** Build the Alignment UI. Implement a basic alignment algorithm (either via a Python FastAPI microservice or pure Rust).
+- **Days 3-4:** Integrate the AI Lab Notebook feature using OpenAI API (allow the AI to analyze sequences saved in the database).
+- **Day 5:** Write **Case Study 2** (Rust vs JS benchmarks) and **Research Pub 2** (Algorithms) based on the code you just wrote.
+</Step>
+
+<Step>
+### Week 4: Polish, Deploy, & Study Hub
+- **Days 1-2:** Fix bugs, polish the UI/UX, deploy `HelixWorkspace` to Vercel/Render, and push the code to GitHub.
+- **Days 3-4:** Start migrating your actual handwritten/PDF Botany notes (Plant Pathology, Taxonomy) into the `content/study/` MDX files.
+- **Day 5:** Final review of the portfolio. Ensure all links work, SEO is set up, and dummy data is 100% eradicated.
+</Step>
+
+</Steps>
+
+
+
+## 🎯 First Action Items for TODAY
+
+1. Open `src/components/sections/experience.tsx` and replace "Tech Solutions Inc." with your **real 3 years of web dev history**.
+2. Create the file `content/reflections/code-and-genetics.mdx` and write a 500-word brain-dump about how programming makes you view Biology differently.
+3. Run `npx prisma init` in a fresh repository to start drafting the schema for your `HelixWorkspace` mega-clone.
