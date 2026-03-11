@@ -14,10 +14,11 @@ export const siteConfig = {
       email: "mailto:nahean.fardous@gmail.com",
     },
   },
- navItems: [
+  navItems: [
     { href: "/", label: "Home" },
-    { href: "/blog", label: "Blog" },    // Added
-    { href: "/docs", label: "Docs" },    // Added
+    { href: "/components", label: "Components" },
+    { href: "/blog", label: "Blog" },
+    { href: "/docs", label: "Docs" },
     { href: "#about", label: "About" },
     { href: "/projects", label: "Work" },
     { href: "#contact", label: "Contact" },
