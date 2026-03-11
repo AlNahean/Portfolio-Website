@@ -45,4 +45,20 @@ export const registry: Record<string, RegistryItem> = {
     files: ["src/registry/example/physics-badge-demo.tsx"],
     registryDependencies: ["physics-badge"],
   },
+  "helix-sidebar": {
+    name: "helix-sidebar",
+    type: "registry:ui",
+    dependencies: ["lucide-react"],
+    files: [
+      { path: "src/registry/ui/blocks/helix-sidebar.tsx", type: "registry:component", target: "components/helix-sidebar.tsx" }
+    ],
+  },
+  "alignment-block": {
+    name: "alignment-block",
+    type: "registry:ui",
+    dependencies: ["framer-motion"],
+    files: [
+      { path: "src/registry/ui/blocks/alignment-block.tsx", type: "registry:component", target: "components/alignment-block.tsx" }
+    ],
+  },
 };

@@ -37,6 +37,7 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import { CodeComponent } from "./components/code"
+import { BlockPreview } from "@/components/block-preview"
 import { json } from "stream/consumers"
 
 
@@ -52,8 +53,9 @@ function extractRawCode(children: React.ReactNode): string {
 
     if (React.isValidElement(children)) {
         // If it's a React element, extract text from its children
-        if (children.props && children.props.children) {
-            return extractRawCode(children.props.children);
+        const props = children.props as any;
+        if (props && props.children) {
+            return extractRawCode(props.children);
         }
     }
 
@@ -318,7 +320,7 @@ export const mdxComponents: MDXComponents = {
     }: React.ComponentProps<"img">) => (
         <Image
             className={cn(" rounded-md border", className)}
-            src={src || ""}
+            src={(src as string) || ""}
             width={Number(width)}
             height={Number(height)}
             alt={alt || ""}
@@ -389,6 +391,7 @@ export const mdxComponents: MDXComponents = {
     ComponentSource,
     CodeCollapsibleWrapper,
     ComponentsList,
+    BlockPreview,
     Link: ({ className, ...props }: React.ComponentProps<typeof Link>) => (
         <Link
             className={cn("font-medium underline underline-offset-4", className)}

@@ -54,6 +54,7 @@ export function CommandMenu({
 
     const toolsAndPages = [
         { name: "Journey", url: "/journey", keywords: ["life", "timeline"] },
+        { name: "Blocks", url: "/blocks", keywords: ["layouts", "templates", "sections", "gallery"] },
         { name: "Components", url: "/components", keywords: ["ui", "gallery", "showcase", "library"] },
         { name: "Photos", url: "/photos", keywords: ["gallery", "images"] },
         { name: "Guestbook", url: "/guestbook", keywords: ["messages", "comments"] },

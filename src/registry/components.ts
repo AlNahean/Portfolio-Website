@@ -3,7 +3,12 @@ import dynamic from "next/dynamic";
 import * as React from "react";
 
 export const registryComponents: Record<string, React.ComponentType<any>> = {
+  "my-button": dynamic(() => import("@/registry/ui/my-button")),
   "my-button-demo": dynamic(() => import("@/registry/example/my-button-demo")),
+  "file-uploader": dynamic(() => import("@/registry/ui/file-uploader/index")),
   "file-uploader-demo": dynamic(() => import("@/registry/example/file-uploader-demo")),
+  "physics-badge": dynamic(() => import("@/registry/ui/physics-badge")),
   "physics-badge-demo": dynamic(() => import("@/registry/example/physics-badge-demo")),
+  "helix-sidebar": dynamic(() => import("@/registry/ui/blocks/helix-sidebar")),
+  "alignment-block": dynamic(() => import("@/registry/ui/blocks/alignment-block")),
 };
