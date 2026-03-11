@@ -5,17 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, Play } from "lucide-react";
 import { Icons } from "@/components/icons";
-
-interface Project {
-    id: number;
-    title: string;
-    description: string;
-    tech: string[];
-    video?: string; // Made optional
-    image: string;
-    live?: string;
-    github?: string;
-}
+import { Project } from "@/data/projects";
 
 export function ProjectCard({ project }: { project: Project }) {
     const videoRef = useRef<HTMLVideoElement>(null);

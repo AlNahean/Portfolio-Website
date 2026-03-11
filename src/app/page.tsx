@@ -13,6 +13,12 @@ import { CuratedShelf } from "@/components/sections/curated-shelf";
 import { PublicationsSection } from "@/components/sections/publications";
 import { BioToolboxSection } from "@/components/sections/biotoolbox";
 
+// ---> Import the new components here <---
+import { ReflectionsSection } from "@/components/sections/reflections";
+import { PeopleSection } from "@/components/sections/people";
+import { RepositoriesSection } from "@/components/sections/repositories";
+import { CaseStudiesSection } from "@/components/sections/case-studies";
+
 export default function Home() {
     return (
         <div className="flex min-h-screen flex-col bg-background text-foreground font-sans selection:bg-blue-500/20 selection:text-blue-600">
@@ -29,6 +35,12 @@ export default function Home() {
                 <BioToolboxSection />
                 <GithubStatsSection />
                 <BlogSection />
+                {/* --- Newly Added Sections --- */}
+                <CaseStudiesSection />
+                <RepositoriesSection />
+                <ReflectionsSection />
+                <PeopleSection />
+                {/* ---------------------------- */}
                 <ContactSection />
             </main>
             <SiteFooter />

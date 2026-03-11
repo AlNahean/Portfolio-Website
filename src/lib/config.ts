@@ -19,7 +19,7 @@ export const siteConfig = {
     { href: "/blog", label: "Blog" },    // Added
     { href: "/docs", label: "Docs" },    // Added
     { href: "#about", label: "About" },
-    { href: "#projects", label: "Work" },
+    { href: "/projects", label: "Work" },
     { href: "#contact", label: "Contact" },
   ],
   footerText: "© 2024 Nahean Fardous. Crafted with Next.js.",
