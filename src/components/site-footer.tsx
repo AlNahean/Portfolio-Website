@@ -1,85 +1,89 @@
-import Link from "next/link"
-import { siteConfig } from "@/lib/config"
-import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/icons"
+import Link from "next/link";
+import { siteConfig } from "@/lib/config";
+import { Icons } from "@/components/icons";
+import { ArrowUpRight } from "lucide-react";
 
 export function SiteFooter() {
     return (
-        <footer className="relative border-t bg-background overflow-hidden">
-            <div className="container relative z-10 px-4 py-12 md:px-6 md:py-16 lg:py-20">
-                <div className="xl:grid xl:grid-cols-3 xl:gap-8 pb-20">
-                    {/* Brand Column */}
-                    <div className="space-y-8">
-                        <Link href="/" className="flex items-center gap-2">
-                            <Icons.logo className="size-6" />
-                            <span className="font-bold text-lg">{siteConfig.author.name}</span>
+        <footer className="border-t border-border/40 bg-background text-foreground">
+            <div className="container max-w-6xl mx-auto px-4 py-12 md:py-16">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+
+                    {/* Column 1: Brand & Intro */}
+                    <div className="md:col-span-2 space-y-6">
+                        <Link href="/" className="flex items-center gap-3 w-fit group">
+                            <div className="bg-muted/50 p-2 rounded-lg border border-border group-hover:border-primary/50 transition-colors">
+                                <Icons.logo className="size-5 text-primary" />
+                            </div>
+                            <span className="font-bold text-xl tracking-tight">{siteConfig.author.name}</span>
                         </Link>
-                        <p className="text-sm leading-6 text-muted-foreground max-w-sm">
-                            {siteConfig.description}
+
+                        <p className="text-muted-foreground text-sm leading-relaxed max-w-sm">
+                            Bridging the gap between complex biological data analysis and robust web software. Building high-performance tools for the modern web.
                         </p>
-                        <div className="flex space-x-4">
-                            <Button variant="ghost" size="icon" asChild className="h-9 w-9 rounded-md">
-                                <a href={siteConfig.author.links.github} target="_blank" rel="noreferrer">
-                                    <Icons.gitHub className="size-4" />
-                                    <span className="sr-only">GitHub</span>
-                                </a>
-                            </Button>
-                            <Button variant="ghost" size="icon" asChild className="h-9 w-9 rounded-md">
-                                <a href={siteConfig.author.links.twitter} target="_blank" rel="noreferrer">
-                                    <Icons.twitter className="size-4" />
-                                    <span className="sr-only">Twitter</span>
-                                </a>
-                            </Button>
-                            <Button variant="ghost" size="icon" asChild className="h-9 w-9 rounded-md">
-                                <a href={siteConfig.author.links.linkedin} target="_blank" rel="noreferrer">
-                                    <Icons.linkedin className="size-4" />
-                                    <span className="sr-only">LinkedIn</span>
-                                </a>
-                            </Button>
+
+                        {/* Status Indicator */}
+                        <div className="flex items-center gap-3 text-xs font-mono text-muted-foreground bg-muted/30 w-fit px-3 py-1.5 rounded-md border border-border/50">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                            </span>
+                            All systems operational
                         </div>
                     </div>
 
-                    {/* Links Grid */}
-                    <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-                        <div className="md:grid md:grid-cols-2 md:gap-8">
-                            <div>
-                                <h3 className="text-sm font-semibold leading-6 text-foreground">Resources</h3>
-                                <ul role="list" className="mt-6 space-y-4">
-                                    <li>
-                                        <Link href="/blog" className="text-sm leading-6 text-muted-foreground hover:text-primary transition-colors">
-                                            Blog
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/docs" className="text-sm leading-6 text-muted-foreground hover:text-primary transition-colors">
-                                            Documentation
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <a href={siteConfig.author.links.github} target="_blank" rel="noreferrer" className="text-sm leading-6 text-muted-foreground hover:text-primary transition-colors">
-                                            Source Code
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    {/* Column 2: Navigation */}
+                    <div className="space-y-5">
+                        <h3 className="text-xs font-bold tracking-widest uppercase text-foreground/80">Navigation</h3>
+                        <ul className="space-y-3 text-sm text-muted-foreground">
+                            <li><Link href="/projects" className="hover:text-primary transition-colors">Projects</Link></li>
+                            <li><Link href="/case-studies" className="hover:text-primary transition-colors">Case Studies</Link></li>
+                            <li><Link href="/docs" className="hover:text-primary transition-colors">Documentation</Link></li>
+                            <li><Link href="/blog" className="hover:text-primary transition-colors">Blog & Resources</Link></li>
+                            <li><Link href="/reflections" className="hover:text-primary transition-colors">Reflections</Link></li>
+                        </ul>
                     </div>
+
+                    {/* Column 3: Connect */}
+                    <div className="space-y-5">
+                        <h3 className="text-xs font-bold tracking-widest uppercase text-foreground/80">Connect</h3>
+                        <ul className="space-y-3 text-sm text-muted-foreground">
+                            <li>
+                                <a href={siteConfig.author.links.github} target="_blank" rel="noreferrer" className="group flex items-center w-fit hover:text-primary transition-colors">
+                                    <Icons.gitHub className="mr-2 size-4" />
+                                    GitHub
+                                    <ArrowUpRight className="ml-1 size-3 opacity-0 -translate-x-1 translate-y-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href={siteConfig.author.links.linkedin} target="_blank" rel="noreferrer" className="group flex items-center w-fit hover:text-primary transition-colors">
+                                    <Icons.linkedin className="mr-2 size-4" />
+                                    LinkedIn
+                                    <ArrowUpRight className="ml-1 size-3 opacity-0 -translate-x-1 translate-y-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href={siteConfig.author.links.email} className="group flex items-center w-fit hover:text-primary transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 size-4"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
+                                    Email
+                                    <ArrowUpRight className="ml-1 size-3 opacity-0 -translate-x-1 translate-y-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all" />
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
 
-                {/* Bottom Copyright */}
-                <div className="mt-8 border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-xs leading-5 text-muted-foreground">
+                {/* Bottom Bar */}
+                <div className="mt-16 pt-8 border-t border-border/40 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+                    <p>
                         &copy; {new Date().getFullYear()} {siteConfig.author.name}. All rights reserved.
+                    </p>
+                    <p className="font-mono flex items-center gap-2">
+                        Designed in BD <span className="text-border">|</span> Deployed on Vercel
                     </p>
                 </div>
             </div>
-
-            {/* Big "Cut" Text */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center pointer-events-none select-none overflow-hidden">
-                <h1 className="text-[23vw] font-bold leading-none tracking-tighter text-foreground/5 dark:text-foreground/10 translate-y-[35%]">
-                    nahean
-                </h1>
-            </div>
         </footer>
-    )
+    );
 }
