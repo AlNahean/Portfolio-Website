@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { blogSource } from "@/lib/source";
+import { blogSource, authorSource } from "@/lib/source";
 import { mdxComponents } from "@/mdx-components";
 import Link from "next/link";
 import Image from "next/image";
@@ -35,6 +35,11 @@ export default async function BlogPostPage({
     const MDX = page.data.body;
     const neighbours = await findNeighbour(blogSource.pageTree, page.url);
 
+    // Resolve authors from the authorSource collection
+    const resolvedAuthors = (page.data.authors ?? [])
+        .map((slug) => authorSource.getPage([slug]))
+        .filter(Boolean);
+
     return (
         <div className="flex min-h-screen flex-col bg-background">
             <SiteHeader />
@@ -61,12 +66,39 @@ export default async function BlogPostPage({
                                         {page.data.title}
                                     </h1>
 
-                                    <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                                        <div className="flex items-center gap-2">
-                                            <div className="size-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500" />
-                                            <span className="font-medium text-foreground">{page.data.author}</span>
-                                        </div>
-                                        <Separator orientation="vertical" className="h-4" />
+                                    {/* Author & Date Section */}
+                                    <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground mt-4">
+                                        {resolvedAuthors.length > 0 ? (
+                                            <div className="flex flex-wrap gap-4">
+                                                {resolvedAuthors.map((author) => author && (
+                                                    <Link
+                                                        key={author.url}
+                                                        href={`https://twitter.com/${author.data.twitter}`}
+                                                        target="_blank"
+                                                        className="flex items-center space-x-2 text-sm hover:opacity-80 transition-opacity"
+                                                    >
+                                                        <Image
+                                                            src={author.data.avatar}
+                                                            alt={author.data.title}
+                                                            width={42}
+                                                            height={42}
+                                                            className="rounded-full bg-white object-cover border border-border"
+                                                        />
+                                                        <div className="flex-1 text-left leading-tight">
+                                                            <p className="font-medium text-foreground">{author.data.title}</p>
+                                                            <p className="text-[12px] text-muted-foreground">
+                                                                @{author.data.twitter}
+                                                            </p>
+                                                        </div>
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        ) : null}
+
+                                        {resolvedAuthors.length > 0 && (
+                                            <Separator orientation="vertical" className="h-6 hidden sm:block" />
+                                        )}
+
                                         <div className="flex items-center gap-2">
                                             <Calendar className="size-4" />
                                             <span>{new Date(page.data.date ?? "").toLocaleDateString()}</span>
@@ -75,7 +107,7 @@ export default async function BlogPostPage({
                                 </div>
 
                                 {page.data.image && (
-                                    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border bg-muted">
+                                    <div className="relative aspect-video w-full overflow-hidden rounded-xl border bg-muted">
                                         <Image
                                             src={page.data.image}
                                             alt={page.data.title}

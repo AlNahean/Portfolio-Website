@@ -57,13 +57,24 @@ export const docs = defineDocs({
 export const study = defineDocs({
   dir: "content/study",
 });
-// Updated Blog Schema
+
+// 1. Add the authors collection
+export const authors = defineDocs({
+  dir: "content/authors",
+  docs: {
+    schema: frontmatterSchema.extend({
+      avatar: z.string(),
+      twitter: z.string(),
+    }),
+  },
+});
+// 2. Update the blog collection
 export const blog = defineDocs({
   dir: "content/blog",
   docs: {
     schema: frontmatterSchema.extend({
       date: z.string().date().or(z.date()).optional(),
-      author: z.string().optional(),
+      authors: z.array(z.string()).optional(), // Changed from 'author' to 'authors' array
       image: z.string().optional(),
       tags: z.array(z.string()).optional(),
     }),

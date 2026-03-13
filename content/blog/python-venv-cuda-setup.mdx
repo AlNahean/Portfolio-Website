@@ -1,0 +1,121 @@
+---
+title: Supercharge Your AI Development with Python venv & CUDA
+description: A comprehensive guide to setting up an isolated Python virtual environment and running CUDA-enabled AI models on your GPU.
+date: 2024-05-15
+authors: ["nahean"]
+tags: [Python, AI, CUDA, DevEx]
+image: https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=1974&auto=format&fit=crop
+---
+
+## Why Use Virtual Environments and GPUs?
+
+If you are diving into the world of Artificial Intelligence, Machine Learning, or Deep Learning, you’ve likely realized two things: 
+1. Python dependencies can quickly turn into a messy "dependency hell."
+2. Running AI models on a CPU is painfully slow.
+
+The solution? **Python Virtual Environments (`venv`)** to keep your projects clean, and **CUDA-enabled GPUs** to accelerate your AI models to blistering speeds.
+
+### The Setup
+
+To prevent dependency conflicts, creating an isolated environment is the first and most critical step. We will use the built-in `venv` module to create a folder named `.venv`.
+
+```bash
+python -m venv .venv
+```
+
+Once the environment is created, you must activate it. Activating the environment tells your terminal to use this isolated space for all subsequent Python and pip commands. 
+
+For Windows users, activate it using:
+
+```bash
+.\.venv\Scripts\activate
+```
+
+*Note: If you are using macOS or Linux, the command is `source .venv/bin/activate`.*
+
+### Installing CUDA-Enabled PyTorch
+
+To run AI models on your NVIDIA GPU, your underlying framework needs to know how to talk to it. **PyTorch** is currently the industry standard.
+
+By default, a simple `pip install torch` might only install the CPU version. We need to explicitly tell `pip` to download the version compiled with CUDA support. Using the specific index URL for CUDA 11.8, run the following command:
+
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
+
+<Callout>
+  Be prepared to wait a minute or two. CUDA-enabled PyTorch binaries are quite large! Make sure your NVIDIA graphics drivers are up to date and compatible with CUDA 11.8.
+</Callout>
+
+### Verifying Your CUDA Setup
+
+Before we load a massive AI model, let’s make sure Python can actually see your GPU. 
+
+Create a file named `check_gpu.py` and add the following code:
+
+```python
+import torch
+
+print(f"PyTorch Version: {torch.__version__}")
+print(f"CUDA Available: {torch.cuda.is_available()}")
+
+if torch.cuda.is_available():
+    print(f"GPU Device Name: {torch.cuda.get_device_name(0)}")
+else:
+    print("CUDA is not available. Check your drivers and PyTorch installation.")
+```
+
+Run the script from your terminal:
+
+```bash
+python check_gpu.py
+```
+
+If everything is set up correctly, it should print `CUDA Available: True` alongside the name of your NVIDIA graphics card!
+
+### Running an AI Model on Your GPU
+
+Now for the fun part. Let's load a pre-trained AI model and run it on your GPU. We’ll use the popular `transformers` library by Hugging Face to run a lightweight Text Generation model.
+
+First, install the required library:
+
+```bash
+pip install transformers
+```
+
+Next, create a file named `run_model.py` and paste the following code:
+
+```python
+import torch
+from transformers import pipeline
+
+# 1. Determine the device (0 is the first GPU, -1 is CPU)
+device = 0 if torch.cuda.is_available() else -1
+print(f"Loading model on device: {'GPU' if device == 0 else 'CPU'}...")
+
+# 2. Load a pre-trained text generation model
+generator = pipeline('text-generation', model='gpt2', device=device)
+
+# 3. Give the AI a prompt
+prompt = "The future of artificial intelligence is"
+print(f"\nPrompt: '{prompt}'\nGenerating text...\n")
+
+# 4. Generate the output
+output = generator(prompt, max_length=50, num_return_sequences=1)
+
+# 5. Print the result
+print("Result:")
+print(output[0]['generated_text'])
+```
+
+Run it:
+
+```bash
+python run_model.py
+```
+
+### What is happening under the hood?
+
+The magic happens with the `device=device` argument. By telling the Hugging Face pipeline to use device `0` (your primary CUDA GPU), the model weights are loaded directly into your GPU's VRAM (Video RAM). 
+
+When you pass the text prompt to the model, the mathematical matrix multiplications required to generate the next words are executed by the thousands of CUDA cores on your graphics card, making the inference process nearly instantaneous!

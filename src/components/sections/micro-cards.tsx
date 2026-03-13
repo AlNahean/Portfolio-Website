@@ -53,7 +53,7 @@ export function MicroCardsSection() {
                                 <motion.div
                                     initial="initial"
                                     whileHover="hover"
-                                    className="group relative flex flex-col rounded-[2rem] border border-border bg-card p-6 overflow-hidden h-[275px] md:h-[304px] lg:h-[220px]"
+                                    className="group relative flex flex-col rounded-[2rem] border-2 border-border bg-card p-6 overflow-hidden h-[275px] md:h-[304px] lg:h-[220px]"
                                 >
                                     <ArrowIcon />
                                     <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-tl from-purple-500/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
@@ -96,17 +96,17 @@ export function MicroCardsSection() {
                         </div>
 
                         {/* CARD 2: Connections */}
-                        <div className="md:col-span-12 lg:col-span-7 lg:row-span-8">
+                        <div className="md:col-span-12 lg:col-span-7 lg:row-span-8 ">
                             <Link href="/connections" className="block outline-none h-full">
                                 <motion.div
                                     initial="initial"
                                     whileHover="hover"
-                                    className="group relative flex flex-col rounded-[2rem] border border-border bg-card p-6 overflow-hidden h-[300px]"
+                                    className="group relative flex flex-col rounded-[2rem] border-2 border-border bg-card overflow-hidden h-[300px]"
                                 >
                                     <ArrowIcon />
                                     <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-tl from-purple-500/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
 
-                                    <div className="flex h-full flex-col relative z-20">
+                                    <div className="flex h-full flex-col relative z-20 p-6">
                                         <div className="absolute inset-y-0 left-0 z-20 w-1/3 bg-gradient-to-r from-card to-transparent group-hover:from-muted/30 transition-colors duration-300" />
                                         <div className="absolute inset-y-0 right-0 z-20 w-1/3 bg-gradient-to-l from-card to-transparent group-hover:from-muted/30 transition-colors duration-300" />
 
@@ -185,7 +185,7 @@ export function MicroCardsSection() {
                                 <motion.div
                                     initial="initial"
                                     whileHover="hover"
-                                    className="group relative flex flex-col rounded-[2rem] border border-border bg-card p-6 overflow-hidden md:h-[304px] lg:h-[300px]"
+                                    className="group relative flex flex-col rounded-[2rem] border-2 border-border bg-card p-6 overflow-hidden md:h-[304px] lg:h-[300px]"
                                 >
                                     <ArrowIcon />
                                     <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-tl from-purple-500/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
@@ -229,7 +229,7 @@ export function MicroCardsSection() {
                                                     className="rounded-[20px] border p-2 transition-colors duration-500 bg-background"
                                                     style={{ width: tool.size, height: tool.size }}
                                                 >
-                                                    <div className="grid h-full place-items-center rounded-xl border-2 border-border/50 bg-secondary shadow-[inset_0px_2px_1.5px_0px_rgba(0,0,0,0.05)] dark:shadow-[inset_0px_2px_1.5px_0px_rgba(255,255,255,0.05)]">
+                                                    <div className="grid h-full place-items-center rounded-xl border-2 hover:border-purple-500/50  bg-secondary shadow-[inset_0px_2px_1.5px_0px_rgba(0,0,0,0.05)] dark:shadow-[inset_0px_2px_1.5px_0px_rgba(255,255,255,0.05)]">
                                                         {tool.icon}
                                                     </div>
                                                 </motion.div>
@@ -246,7 +246,7 @@ export function MicroCardsSection() {
                                 <motion.div
                                     initial="initial"
                                     whileHover="hover"
-                                    className="group relative flex flex-col rounded-[2rem] border border-border bg-card p-6 overflow-hidden h-[220px]"
+                                    className="group relative flex flex-col rounded-[2rem] border-2 border-border bg-card p-6 overflow-hidden h-[220px]"
                                 >
                                     <ArrowIcon />
                                     <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-tl from-purple-500/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
@@ -319,3 +319,4 @@ export function MicroCardsSection() {
         </section>
     );
 }
+

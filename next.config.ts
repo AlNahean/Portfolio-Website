@@ -46,6 +46,10 @@ const nextConfig: NextConfig = {
         source: "/reflections/:path*.md",
         destination: "/llm/:path*",
       },
+      {
+        source: "/authors/:path*.md",
+        destination: "/llm/:path*",
+      },
     ];
 
   },

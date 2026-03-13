@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { blogSource } from "@/lib/source";
+import { blogSource, authorSource } from "@/lib/source";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Badge } from "@/components/ui/badge";
@@ -64,7 +64,13 @@ export default function BlogPage() {
                                     {heroPost.data.description}
                                 </p>
                                 <div className="mt-6 flex items-center gap-4 text-sm font-medium text-white/70">
-                                    <span>{heroPost.data.author}</span>
+                                    {(() => {
+                                        const firstAuthorSlug = heroPost.data.authors?.[0];
+                                        const heroAuthor = firstAuthorSlug ? authorSource.getPage([firstAuthorSlug]) : null;
+                                        return heroAuthor ? (
+                                            <span>{heroAuthor.data.title}</span>
+                                        ) : null;
+                                    })()}
                                     <span>•</span>
                                     <span>{new Date(heroPost.data.date ?? "").toLocaleDateString()}</span>
                                 </div>
@@ -110,14 +116,35 @@ export default function BlogPage() {
                                     {post.data.description}
                                 </p>
                                 <div className="flex items-center gap-3 pt-2">
-                                    <div className="size-8 rounded-full bg-muted overflow-hidden">
-                                        {/* Placeholder avatar */}
-                                        <div className="size-full bg-gradient-to-br from-primary/20 to-primary/50" />
-                                    </div>
-                                    <div className="text-xs">
-                                        <p className="font-medium text-foreground">{post.data.author}</p>
-                                        <p className="text-muted-foreground">{new Date(post.data.date ?? "").toLocaleDateString()}</p>
-                                    </div>
+                                    {(() => {
+                                        const firstSlug = post.data.authors?.[0];
+                                        const postAuthor = firstSlug ? authorSource.getPage([firstSlug]) : null;
+                                        return (
+                                            <>
+                                                <div className="size-8 rounded-full bg-muted overflow-hidden relative border border-border">
+                                                    {postAuthor?.data.avatar ? (
+                                                        <Image
+                                                            src={postAuthor.data.avatar}
+                                                            alt={postAuthor.data.title}
+                                                            fill
+                                                            className="object-cover"
+                                                            sizes="32px"
+                                                        />
+                                                    ) : (
+                                                        <div className="size-full bg-linear-to-br from-primary/20 to-primary/50" />
+                                                    )}
+                                                </div>
+                                                <div className="text-xs">
+                                                    <p className="font-medium text-foreground">
+                                                        {postAuthor?.data.title ?? firstSlug ?? "Anonymous"}
+                                                    </p>
+                                                    <p className="text-muted-foreground">
+                                                        {new Date(post.data.date ?? "").toLocaleDateString()}
+                                                    </p>
+                                                </div>
+                                            </>
+                                        );
+                                    })()}
                                 </div>
                             </div>
                         </Link>
