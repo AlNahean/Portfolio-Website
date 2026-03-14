@@ -10,7 +10,7 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import { type DialogProps } from "@radix-ui/react-dialog"
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react'; // Added Search icon
 
 import { CornerDownLeftIcon, SquareDashedIcon } from "lucide-react"
 
@@ -142,21 +142,25 @@ export function CommandMenu({
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
-                    variant="secondary"
+                    variant="ghost"
                     className={cn(
-                        "bg-surface text-foreground dark:bg-card relative h-8 w-full justify-start pl-3 font-medium shadow-none sm:pr-12 md:w-48 lg:w-56 xl:w-64"
+                        "relative h-9 w-9 p-0 md:h-8 md:w-48 md:justify-start md:px-3 md:py-2",
+                        "bg-transparent text-muted-foreground hover:text-foreground",
+                        "md:border md:bg-surface md:dark:bg-card md:shadow-none lg:w-56 xl:w-64"
                     )}
                     onClick={() => setOpen(true)}
                     {...props}
                 >
-                    <span className="hidden lg:inline-flex">Search documentation...</span>
-                    <span className="inline-flex lg:hidden">Search...</span>
-                    <div className="absolute top-1.5 right-1.5 hidden gap-1 sm:flex">
+                    <Search className="size-5 md:mr-2 md:size-4" />
+                    <span className="hidden md:inline-flex text-sm font-medium">Search...</span>
+                    
+                    <div className="absolute top-1.5 right-1.5 hidden gap-1 sm:hidden md:flex">
                         <KbdGroup>
                             <Kbd className="border">{isMac ? "⌘" : "Ctrl"}</Kbd>
                             <Kbd className="border">K</Kbd>
                         </KbdGroup>
                     </div>
+                    <span className="sr-only">Open Search</span>
                 </Button>
             </DialogTrigger>
             <DialogContent
