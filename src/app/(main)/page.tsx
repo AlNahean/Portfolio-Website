@@ -18,7 +18,7 @@ import { SiteFooter } from "@/components/site-footer";
 
 export default function Home() {
     return (
-        <div className="flex min-h-screen flex-col bg-background text-foreground font-sans selection:bg-blue-500/20 selection:text-blue-600">
+        <div className="flex min-h-screen flex-col bg-background text-foreground font-sans">
             {/* Header stays at the top */}
             <SiteHeader />
 

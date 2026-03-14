@@ -58,7 +58,7 @@ export default async function BlocksPage() {
     );
 
     return (
-        <div className="flex min-h-screen flex-col bg-background text-foreground font-sans selection:bg-blue-500/20 selection:text-blue-600 min-w-0">
+        <div className="flex min-h-screen flex-col bg-background text-foreground font-sans min-w-0">
             {/* Header at the top */}
             <SiteHeader />
 
