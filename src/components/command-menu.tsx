@@ -1,3 +1,10 @@
+/* 
+ * CMDK v1.0.0+ Focus & Keyboard Navigation Fixes:
+ * 1. e.stopPropagation(): Added to the `Cmd+K` listener so the 'k' keypress doesn't bleed into the modal and break cmdk's internal navigation state.
+ * 2. setTimeout(..., 0): Replaced `requestAnimationFrame` for delayed rendering to ensure list items exist in the DOM *before* focus settles.
+ * 3. onOpenAutoFocus: Overrode Radix Dialog's default focus trap with `e.preventDefault()` and manually focused the input via `inputRef`.
+ */
+
 "use client"
 
 import * as React from "react"
@@ -46,11 +53,14 @@ export function CommandMenu({
     const isMac = useIsMac()
     const [config] = useConfig()
     const [open, setOpen] = React.useState(false)
+    const [renderDelayedGroups, setRenderDelayedGroups] = React.useState(false)
     const [selectedType, setSelectedType] = React.useState<
         "page" | "component" | null
     >(null)
     const [copyPayload, setCopyPayload] = React.useState("")
     const packageManager = config.packageManager || "pnpm"
+
+    const inputRef = React.useRef<HTMLInputElement>(null)
 
     const toolsAndPages = [
         { name: "Journey", url: "/journey", keywords: ["life", "timeline"] },
@@ -74,8 +84,7 @@ export function CommandMenu({
                 setSelectedType("page")
                 setCopyPayload("")
             }
-        },
-        [packageManager, setSelectedType, setCopyPayload]
+        }, [packageManager, setSelectedType, setCopyPayload]
     )
 
     const runCommand = React.useCallback((command: () => unknown) => {
@@ -96,6 +105,8 @@ export function CommandMenu({
                 }
 
                 e.preventDefault()
+                // FIX 1: Stop the event from bleeding into the dialog and messing up cmdk
+                e.stopPropagation()
                 setOpen((open) => !open)
             }
 
@@ -114,6 +125,18 @@ export function CommandMenu({
         document.addEventListener("keydown", down)
         return () => document.removeEventListener("keydown", down)
     }, [copyPayload, runCommand, selectedType, packageManager])
+
+    // FIX 2: Use setTimeout instead of requestAnimationFrame so the items exist
+    // in the DOM before focus is fully settled and navigation is attempted.
+    React.useEffect(() => {
+        if (open) {
+            const timer = setTimeout(() => {
+                setRenderDelayedGroups(true)
+            }, 0)
+            return () => clearTimeout(timer)
+        }
+        setRenderDelayedGroups(false)
+    }, [open])
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -138,6 +161,11 @@ export function CommandMenu({
             </DialogTrigger>
             <DialogContent
                 showCloseButton={false}
+                onOpenAutoFocus={(e) => {
+                    // FIX 3: Prevent Radix from stealing focus, and point it directly to our ref
+                    e.preventDefault();
+                    inputRef.current?.focus();
+                }}
                 className="rounded-xl border-none bg-clip-padding p-2 pb-11 shadow-2xl ring-4 ring-neutral-200/80 dark:bg-neutral-900 dark:ring-neutral-800"
             >
                 <DialogHeader className="sr-only">
@@ -154,112 +182,119 @@ export function CommandMenu({
                         return 0
                     }}
                 >
-                    <CommandInput placeholder="Search everything..." />
+                    <CommandInput
+                        ref={inputRef}
+                        placeholder="Search everything..."
+                    />
                     <CommandList className="no-scrollbar min-h-80 scroll-pt-2 scroll-pb-1.5">
                         <CommandEmpty className="text-muted-foreground py-12 text-center text-sm">
                             No results found.
                         </CommandEmpty>
 
-                        <CommandGroup
-                            heading="Tools & Pages"
-                            className="!p-0 [&_[cmdk-group-heading]]:scroll-mt-16 [&_[cmdk-group-heading]]:!p-3 [&_[cmdk-group-heading]]:!pb-1"
-                        >
-                            {toolsAndPages.map((item) => (
-                                <CommandMenuItem
-                                    key={item.url}
-                                    value={`Tools ${item.name}`}
-                                    keywords={item.keywords}
-                                    onHighlight={() => {
-                                        setSelectedType("page")
-                                        setCopyPayload("")
-                                    }}
-                                    onSelect={() => {
-                                        runCommand(() => router.push(item.url))
-                                    }}
+                        {renderDelayedGroups ? (
+                            <>
+                                <CommandGroup
+                                    heading="Tools & Pages"
+                                    className="!p-0 [&_[cmdk-group-heading]]:scroll-mt-16[&_[cmdk-group-heading]]:!p-3 [&_[cmdk-group-heading]]:!pb-1"
                                 >
-                                    <SquareDashedIcon className="size-4" />
-                                    {item.name}
-                                </CommandMenuItem>
-                            ))}
-                        </CommandGroup>
+                                    {toolsAndPages.map((item) => (
+                                        <CommandMenuItem
+                                            key={item.url}
+                                            value={`Tools ${item.name}`}
+                                            keywords={item.keywords}
+                                            onHighlight={() => {
+                                                setSelectedType("page")
+                                                setCopyPayload("")
+                                            }}
+                                            onSelect={() => {
+                                                runCommand(() => router.push(item.url))
+                                            }}
+                                        >
+                                            <SquareDashedIcon className="size-4" />
+                                            {item.name}
+                                        </CommandMenuItem>
+                                    ))}
+                                </CommandGroup>
 
-                        {navItems && navItems.length > 0 && (
-                            <CommandGroup
-                                heading="Navigation"
-                                className="!p-0 [&_[cmdk-group-heading]]:scroll-mt-16 [&_[cmdk-group-heading]]:!p-3 [&_[cmdk-group-heading]]:!pb-1"
-                            >
-                                {navItems.map((item) => (
-                                    <CommandMenuItem
-                                        key={item.href}
-                                        value={`Navigation ${item.label}`}
-                                        keywords={["nav", "navigation", item.label.toLowerCase()]}
-                                        onHighlight={() => {
-                                            setSelectedType("page")
-                                            setCopyPayload("")
-                                        }}
-                                        onSelect={() => {
-                                            runCommand(() => router.push(item.href))
-                                        }}
+                                {navItems && navItems.length > 0 && (
+                                    <CommandGroup
+                                        heading="Navigation"
+                                        className="!p-0 [&_[cmdk-group-heading]]:scroll-mt-16 [&_[cmdk-group-heading]]:!p-3 [&_[cmdk-group-heading]]:!pb-1"
                                     >
-                                        <ArrowRight />
-                                        {item.label}
-                                    </CommandMenuItem>
-                                ))}
-                            </CommandGroup>
-                        )}
-
-                        {trees.map(({ name: sourceName, tree }) => (
-                            <React.Fragment key={sourceName}>
-                                {tree.children.map((groupOrPage) => {
-                                    if (groupOrPage.type === "folder") {
-                                        return (
-                                            <CommandGroup
-                                                key={groupOrPage.$id || groupOrPage.name?.toString()}
-                                                heading={sourceName === "Docs" ? groupOrPage.name : `${sourceName}: ${groupOrPage.name}`}
-                                                className="!p-0 [&_[cmdk-group-heading]]:scroll-mt-16 [&_[cmdk-group-heading]]:!p-3 [&_[cmdk-group-heading]]:!pb-1"
-                                            >
-                                                {groupOrPage.children.map((item) => {
-                                                    if (item.type === "page") {
-                                                        const isComponent = item.url.includes("/components/") || item.url.includes("/file-uploader") || item.url.includes("/my-button") || item.url.includes("docs");
-                                                        if (!showMcpDocs && item.url.includes("/mcp")) return null;
-                                                        return (
-                                                            <CommandMenuItem
-                                                                key={item.url}
-                                                                value={`${sourceName} ${groupOrPage.name} ${item.name}`}
-                                                                keywords={isComponent ? ["component"] : undefined}
-                                                                onHighlight={() => handlePageHighlight(isComponent, item)}
-                                                                onSelect={() => runCommand(() => router.push(item.url))}
-                                                            >
-                                                                {isComponent ? <div className="border-muted-foreground aspect-square size-4 rounded-full border border-dashed" /> : <ArrowRight />}
-                                                                {item.name}
-                                                            </CommandMenuItem>
-                                                        )
-                                                    }
-                                                    return null;
-                                                })}
-                                            </CommandGroup>
-                                        )
-                                    }
-                                    if (groupOrPage.type === "page") {
-                                        const isComponent = groupOrPage.url.includes("/components/") || groupOrPage.url.includes("/file-uploader") || groupOrPage.url.includes("/my-button") || groupOrPage.url.includes("docs");
-                                        if (!showMcpDocs && groupOrPage.url.includes("/mcp")) return null;
-                                        return (
+                                        {navItems.map((item) => (
                                             <CommandMenuItem
-                                                key={groupOrPage.url}
-                                                value={`${sourceName} ${groupOrPage.name?.toString() || ""}`}
-                                                keywords={isComponent ? ["component"] : undefined}
-                                                onHighlight={() => handlePageHighlight(isComponent, groupOrPage)}
-                                                onSelect={() => runCommand(() => router.push(groupOrPage.url))}
+                                                key={item.href}
+                                                value={`Navigation ${item.label}`}
+                                                keywords={["nav", "navigation", item.label.toLowerCase()]}
+                                                onHighlight={() => {
+                                                    setSelectedType("page")
+                                                    setCopyPayload("")
+                                                }}
+                                                onSelect={() => {
+                                                    runCommand(() => router.push(item.href))
+                                                }}
                                             >
-                                                {isComponent ? <div className="border-muted-foreground aspect-square size-4 rounded-full border border-dashed" /> : <ArrowRight />}
-                                                {groupOrPage.name}
+                                                <ArrowRight />
+                                                {item.label}
                                             </CommandMenuItem>
-                                        )
-                                    }
-                                    return null;
-                                })}
-                            </React.Fragment>
-                        ))}
+                                        ))}
+                                    </CommandGroup>
+                                )}
+
+                                {trees.map(({ name: sourceName, tree }) => (
+                                    <React.Fragment key={sourceName}>
+                                        {tree.children.map((groupOrPage) => {
+                                            if (groupOrPage.type === "folder") {
+                                                return (
+                                                    <CommandGroup
+                                                        key={groupOrPage.$id || groupOrPage.name?.toString()}
+                                                        heading={sourceName === "Docs" ? groupOrPage.name : `${sourceName}: ${groupOrPage.name}`}
+                                                        className="!p-0 [&_[cmdk-group-heading]]:scroll-mt-16 [&_[cmdk-group-heading]]:!p-3 [&_[cmdk-group-heading]]:!pb-1"
+                                                    >
+                                                        {groupOrPage.children.map((item) => {
+                                                            if (item.type === "page") {
+                                                                const isComponent = item.url.includes("/components/") || item.url.includes("/file-uploader") || item.url.includes("/my-button") || item.url.includes("docs");
+                                                                if (!showMcpDocs && item.url.includes("/mcp")) return null;
+                                                                return (
+                                                                    <CommandMenuItem
+                                                                        key={item.url}
+                                                                        value={`${sourceName} ${groupOrPage.name} ${item.name}`}
+                                                                        keywords={isComponent ? ["component"] : undefined}
+                                                                        onHighlight={() => handlePageHighlight(isComponent, item)}
+                                                                        onSelect={() => runCommand(() => router.push(item.url))}
+                                                                    >
+                                                                        {isComponent ? <div className="border-muted-foreground aspect-square size-4 rounded-full border border-dashed" /> : <ArrowRight />}
+                                                                        {item.name}
+                                                                    </CommandMenuItem>
+                                                                )
+                                                            }
+                                                            return null;
+                                                        })}
+                                                    </CommandGroup>
+                                                )
+                                            }
+                                            if (groupOrPage.type === "page") {
+                                                const isComponent = groupOrPage.url.includes("/components/") || groupOrPage.url.includes("/file-uploader") || groupOrPage.url.includes("/my-button") || groupOrPage.url.includes("docs");
+                                                if (!showMcpDocs && groupOrPage.url.includes("/mcp")) return null;
+                                                return (
+                                                    <CommandMenuItem
+                                                        key={groupOrPage.url}
+                                                        value={`${sourceName} ${groupOrPage.name?.toString() || ""}`}
+                                                        keywords={isComponent ? ["component"] : undefined}
+                                                        onHighlight={() => handlePageHighlight(isComponent, groupOrPage)}
+                                                        onSelect={() => runCommand(() => router.push(groupOrPage.url))}
+                                                    >
+                                                        {isComponent ? <div className="border-muted-foreground aspect-square size-4 rounded-full border border-dashed" /> : <ArrowRight />}
+                                                        {groupOrPage.name}
+                                                    </CommandMenuItem>
+                                                )
+                                            }
+                                            return null;
+                                        })}
+                                    </React.Fragment>
+                                ))}
+                            </>
+                        ) : null}
                     </CommandList>
                 </Command>
                 <div className="text-muted-foreground absolute inset-x-0 bottom-0 z-20 flex h-10 items-center gap-2 rounded-b-xl border-t border-t-neutral-100 bg-neutral-50 px-4 text-xs font-medium dark:border-t-neutral-700 dark:bg-neutral-800">
@@ -329,7 +364,7 @@ function CommandMenuKbd({ className, ...props }: React.ComponentProps<"kbd">) {
     return (
         <kbd
             className={cn(
-                "bg-background text-muted-foreground pointer-events-none flex h-5 items-center justify-center gap-1 rounded border px-1 font-sans text-[0.7rem] font-medium select-none [&_svg:not([class*='size-'])]:size-3",
+                "bg-background text-muted-foreground pointer-events-none flex h-5 items-center justify-center gap-1 rounded border px-1 font-sans text-[0.7rem] font-medium select-none[&_svg:not([class*='size-'])]:size-3",
                 className
             )}
             {...props}

@@ -131,7 +131,7 @@ const Layout = ({
   const [isHydrated, setIsHydrated] = React.useState(false)
   React.useEffect(() => {
     setIsHydrated(true)
-  }, [])
+  },[])
 
   const providerValue = React.useMemo(
     () => ({
@@ -154,7 +154,27 @@ const LayoutProvider = (props: LayoutProviderProps) => {
 
   // Ignore nested context providers, just passthrough children
   if (context) return <>{props.children}</>
-  return <Layout {...props} />
+
+  const defaultLayout = props.defaultLayout || "full";
+  const storageKey = props.storageKey || "layout";
+
+  // This script runs immediately during HTML parsing before React hydratation,
+  // preventing the layout class (and subsequent UI) from shifting.
+  const scriptCode = `
+    try {
+      var layout = localStorage.getItem('${storageKey}') || '${defaultLayout}';
+      var d = document.documentElement;
+      d.classList.remove('layout-fixed', 'layout-full');
+      d.classList.add('layout-' + layout);
+    } catch (e) {}
+  `;
+
+  return (
+    <Layout {...props}>
+      <script dangerouslySetInnerHTML={{ __html: scriptCode }} suppressHydrationWarning />
+      {props.children}
+    </Layout>
+  )
 }
 
 export { useLayout, LayoutProvider }
