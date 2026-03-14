@@ -35,14 +35,16 @@ async function build() {
       JSON.stringify(registryEntry, null, 2)
     );
 
+    // Convert keys like "my-button" to "MyButton" to safely grab named exports
+    const componentName = key.split('-').map(p => p.charAt(0).toUpperCase() + p.slice(1)).join('');
+
     if (item.type === "registry:example") {
-      componentsIndex.push(`  "${key}": dynamic(() => import("@/registry/example/${key}")),`);
+      componentsIndex.push(`  "${key}": dynamic(() => import("@/registry/example/${key}").then((m: any) => ({ default: m.default || m.${componentName} })) as any),`);
     } else if (item.type === "registry:ui") {
         const file = item.files[0];
         const filePath = typeof file === "string" ? file : file.path;
-        // Convert src/registry/ui/blocks/helix-sidebar.tsx to @/registry/ui/blocks/helix-sidebar
         const importPath = filePath.replace("src/", "@/").replace(/\.tsx?$/, "");
-        componentsIndex.push(`  "${key}": dynamic(() => import("${importPath}")),`);
+        componentsIndex.push(`  "${key}": dynamic(() => import("${importPath}").then((m: any) => ({ default: m.default || m.${componentName} })) as any),`);
     }
 }
 

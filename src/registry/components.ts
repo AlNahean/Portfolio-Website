@@ -3,12 +3,12 @@ import dynamic from "next/dynamic";
 import * as React from "react";
 
 export const registryComponents: Record<string, React.ComponentType<any>> = {
-  "my-button": dynamic(() => import("@/registry/ui/my-button")),
-  "my-button-demo": dynamic(() => import("@/registry/example/my-button-demo")),
-  "file-uploader": dynamic(() => import("@/registry/ui/file-uploader/index")),
-  "file-uploader-demo": dynamic(() => import("@/registry/example/file-uploader-demo")),
-  "physics-badge": dynamic(() => import("@/registry/ui/physics-badge")),
-  "physics-badge-demo": dynamic(() => import("@/registry/example/physics-badge-demo")),
-  "helix-sidebar": dynamic(() => import("@/registry/ui/blocks/helix-sidebar")),
-  "alignment-block": dynamic(() => import("@/registry/ui/blocks/alignment-block")),
+  "my-button": dynamic(() => import("@/registry/ui/my-button").then((m: any) => ({ default: m.default || m.MyButton })) as any),
+  "my-button-demo": dynamic(() => import("@/registry/example/my-button-demo").then((m: any) => ({ default: m.default || m.MyButtonDemo })) as any),
+  "file-uploader": dynamic(() => import("@/registry/ui/file-uploader/index").then((m: any) => ({ default: m.default || m.FileUploader })) as any),
+  "file-uploader-demo": dynamic(() => import("@/registry/example/file-uploader-demo").then((m: any) => ({ default: m.default || m.FileUploaderDemo })) as any),
+  "physics-badge": dynamic(() => import("@/registry/ui/physics-badge").then((m: any) => ({ default: m.default || m.PhysicsBadge })) as any),
+  "physics-badge-demo": dynamic(() => import("@/registry/example/physics-badge-demo").then((m: any) => ({ default: m.default || m.PhysicsBadgeDemo })) as any),
+  "helix-sidebar": dynamic(() => import("@/registry/ui/blocks/helix-sidebar").then((m: any) => ({ default: m.default || m.HelixSidebar })) as any),
+  "alignment-block": dynamic(() => import("@/registry/ui/blocks/alignment-block").then((m: any) => ({ default: m.default || m.AlignmentBlock })) as any),
 };

@@ -62,12 +62,13 @@ export default function AlignmentBlock() {
                             {SEQUENCE.slice(0, 24).map((base, i) => {
                                 // Simulate some mismatches/gaps
                                 const isMismatch = i === 5 || i === 12 || i === 18;
-                                const displayBase = isMismatch ? (["A", "T", "G", "C"].filter(b => b !== base)[Math.floor(Math.random() * 3)]) : base;
+                                // FIX: Use a deterministic selection instead of Math.random() to prevent hydration errors
+                                const displayBase = isMismatch ? (["A", "T", "G", "C"].filter(b => b !== base)[i % 3]) : base;
                                 return (
-                                    <SequenceBase 
-                                        key={`s2-${i}`} 
-                                        base={displayBase} 
-                                        delay={i * 0.05 + 0.5} 
+                                    <SequenceBase
+                                        key={`s2-${i}`}
+                                        base={displayBase}
+                                        delay={i * 0.05 + 0.5}
                                         highlight={isMismatch}
                                     />
                                 );
@@ -107,7 +108,7 @@ function SequenceBase({ base, delay, highlight = false }: { base: string, delay:
 function MetricCard({ label, value, trend }: { label: string, value: string, trend: string }) {
     const isNegative = trend.startsWith("-");
     const isStable = trend === "Stable" || trend === "0.0%";
-    
+
     return (
         <div className="p-3 rounded-lg border bg-muted/50 space-y-1">
             <div className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">{label}</div>

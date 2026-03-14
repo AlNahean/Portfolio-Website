@@ -4,7 +4,7 @@
   "files": [
     {
       "path": "src/registry/example/physics-badge-demo.tsx",
-      "content": "\"use client\";\r\n\r\nimport PhysicsBadge from \"@/registry/ui/physics-badge\";\r\n\r\nexport default function PhysicsBadgeDemo() {\r\n    return (\r\n        <div className=\"w-full h-[600px] flex items-center justify-center bg-muted/20 border rounded-lg relative overflow-hidden\">\r\n            {/* Note: Ensure the 3D assets exist in your public directory */}\r\n            <PhysicsBadge\r\n                className=\"w-full h-full\"\r\n            />\r\n        </div>\r\n    );\r\n}\r\n",
+      "content": "\"use client\";\r\n\r\nimport dynamic from \"next/dynamic\";\r\n\r\n// Dynamically import the badge with SSR disabled to prevent \r\n// WebGL/WASM crashes during Next.js server-side rendering.\r\nconst PhysicsBadge = dynamic(() => import(\"@/registry/ui/physics-badge\"), {\r\n    ssr: false,\r\n    loading: () => (\r\n        <div className=\"w-full h-full flex items-center justify-center text-muted-foreground animate-pulse\">\r\n            Loading 3D Physics...\r\n        </div>\r\n    )\r\n});\r\n\r\nexport default function PhysicsBadgeDemo() {\r\n    return (\r\n        <div className=\"w-full h-[600px] flex items-center justify-center bg-muted/20 border rounded-lg relative overflow-hidden\">\r\n            {/* Note: Ensure the 3D assets exist in your public directory */}\r\n            <PhysicsBadge\r\n                className=\"w-full h-full\"\r\n            />\r\n        </div>\r\n    );\r\n}\r\n",
       "type": "registry:ui"
     }
   ],
