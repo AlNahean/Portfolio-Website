@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge";
 
 export function CaseStudyCard({ study }: { study: any }) {
     return (
-        <Link href={study.url} className="group relative flex flex-col md:flex-row gap-6 lg:gap-10 border rounded-3xl p-4 lg:p-6 bg-card hover:bg-muted/20 transition-colors hover:border-primary/30">
-            <div className="relative aspect-video md:aspect-[4/3] md:w-2/5 overflow-hidden rounded-2xl bg-muted shrink-0">
+        <Link href={study.url} className="group relative flex flex-col gap-6 border rounded-3xl p-4 lg:p-6 bg-card hover:bg-muted/20 transition-colors hover:border-primary/30">
+            <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-muted shrink-0">
                 <Image
                     src={study.data.image}
                     alt={study.data.title}
@@ -15,7 +15,7 @@ export function CaseStudyCard({ study }: { study: any }) {
                 />
             </div>
             
-            <div className="flex flex-col justify-center flex-1 py-2 pr-4">
+            <div className="flex flex-col justify-center flex-1 py-2">
                 <div className="flex flex-wrap gap-2 mb-4">
                     {study.data.tags?.slice(0, 3).map((tag: string) => (
                         <Badge key={tag} variant="secondary" className="bg-primary/5 text-primary border-primary/10">
@@ -24,7 +24,7 @@ export function CaseStudyCard({ study }: { study: any }) {
                     ))}
                 </div>
                 
-                <h3 className="font-heading text-2xl lg:text-3xl font-bold tracking-tight mb-4 group-hover:text-primary transition-colors">
+                <h3 className="font-heading text-2xl font-bold tracking-tight mb-4 group-hover:text-primary transition-colors line-clamp-2">
                     {study.data.title}
                 </h3>
                 

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function CaseStudiesPage() {
-    const studies = [...caseStudySource.getPages()].sort(
+    const studies =[...caseStudySource.getPages()].sort(
         (a, b) => new Date((b.data as any).date).getTime() - new Date((a.data as any).date).getTime()
     );
 
@@ -26,7 +26,7 @@ export default function CaseStudiesPage() {
                         Deep dives into the technical challenges I've faced, the architectural decisions I made, and the impact of the final delivery.
                     </p>
                 </div>
-                <div className="flex flex-col gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:grid-cols-3">
                     {studies.map((study) => (
                         <CaseStudyCard key={study.url} study={study} />
                     ))}
