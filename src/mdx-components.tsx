@@ -19,17 +19,12 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
-import {
-    Alert,
-    AlertDescription,
-    AlertTitle,
-} from "@/components/ui/alert"
+import { Alert, AlertTitle, AlertDescription } from "@/components/mdx-alert"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Kbd } from "@/components/ui/kbd"
 import {
     Tabs,
     TabsContent,
@@ -39,6 +34,7 @@ import {
 import { CodeComponent } from "./components/code"
 import { BlockPreview } from "@/components/block-preview"
 import { json } from "stream/consumers"
+import { Kbd, KbdGroup } from "@/components/ui/kbd"
 
 
 // Helper function to extract raw code from children
@@ -82,7 +78,7 @@ export const mdxComponents: MDXComponents = {
                     .replace(/\?/g, "")
                     .toLowerCase()}
                 className={cn(
-                    "font-heading [&+]*:[code]:text-xl mt-10 scroll-m-28 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0 lg:mt-16 [&+.steps]:!mt-0 [&+.steps>h3]:!mt-4 [&+h3]:!mt-6 [&+p]:!mt-4",
+                    "font-heading [&+]*:[code]:text-xl mt-10 mb-4 scroll-m-28 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0 lg:mt-16 [&+.steps]:!mt-0 [&+.steps>h3]:!mt-4 [&+h3]:!mt-6 [&+p]:!mt-4",
                     className
                 )}
                 {...props}
@@ -162,7 +158,7 @@ export const mdxComponents: MDXComponents = {
         <img className={cn("rounded-md", className)} alt={alt} {...props} />
     ),
     hr: ({ ...props }: React.ComponentProps<"hr">) => (
-        <hr className="my-4 md:my-8" {...props} />
+        <hr className="my-4 md:my-8 pb-4" {...props} />
     ),
     table: ({ className, ...props }: React.ComponentProps<"table">) => (
         <div className="no-scrollbar my-6 w-full overflow-y-auto rounded-lg border max-w-[90vw] overflow-auto">
@@ -295,20 +291,26 @@ export const mdxComponents: MDXComponents = {
             </div>
         )
     },
-    Step: ({ className, ...props }: React.ComponentProps<"h3">) => (
-        <h3
-            className={cn(
-                "font-heading mt-8 scroll-m-32 text-xl font-medium tracking-tight",
-                className
-            )}
+    Steps: ({ className, ...props }: React.ComponentProps<"div">) => (
+        <div
+            className={cn("steps my-12", className)}
             {...props}
         />
     ),
-    Steps: ({ ...props }) => (
-        <div
-            className="[&>h3]:step steps mb-12 [counter-reset:step] *:[h3]:first:!mt-0"
+
+    Step: ({ className, title, children, ...props }: any) => (
+        <h3
+            className={cn(
+                "step font-heading scroll-m-28 text-xl font-semibold tracking-tight",
+                className
+            )}
             {...props}
-        />
+        >
+            <span className="block mb-2">{title}</span>
+            <div className="font-normal text-base text-muted-foreground leading-relaxed">
+                {children}
+            </div>
+        </h3>
     ),
     Image: ({
         src,
@@ -316,16 +318,17 @@ export const mdxComponents: MDXComponents = {
         width,
         height,
         alt,
+        fill,
         ...props
     }: React.ComponentProps<"img">) => (
         <Image
-            className={cn(" rounded-md border", className)}
+            className={cn("rounded-md border-2", className)}
             src={(src as string) || ""}
-            width={Number(width)}
-            height={Number(height)}
+            width={fill ? undefined : Number(width)}
+            height={fill ? undefined : Number(height)}
             alt={alt || ""}
+            fill={!!fill}
             {...props}
-
         />
     ),
     Tabs: ({ className, ...props }: React.ComponentProps<typeof Tabs>) => {
@@ -385,6 +388,7 @@ export const mdxComponents: MDXComponents = {
     CardHeader,
     CardTitle,
     CardContent,
+    CardFooter,
     Checkbox,
     CodeTabs,
     ComponentPreview,
@@ -408,4 +412,5 @@ export const mdxComponents: MDXComponents = {
         />
     ),
     Kbd,
+    KbdGroup,
 }

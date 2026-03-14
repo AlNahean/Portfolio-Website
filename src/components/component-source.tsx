@@ -1,4 +1,5 @@
-// src/components/component-source.tsx
+"use client"
+
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -6,18 +7,38 @@ export function ComponentSource({
     name,
     className,
 }: { name: string, className?: string }) {
-    // Note: In a real shadcn-like system, this would fetch the registry JSON 
-    // and extract the code. Since we have build-registry, we need to ensure 
-    // the source code is passed or fetched.
+    const [code, setCode] = React.useState<string>("Loading source...");
 
-    // Quick fix: Just display a message if it's empty, or ensure the registry 
-    // build includes the raw code.
+    React.useEffect(() => {
+        async function fetchSource() {
+            try {
+                const res = await fetch(`/r/${name}.json`);
+                const data = await res.json();
+
+                if (data.files && data.files.length > 0) {
+                    // Use the first file's content
+                    setCode(data.files[0].content);
+                } else {
+                    setCode("// No source code available");
+                }
+            } catch (e) {
+                setCode("// Failed to load source code.");
+            }
+        }
+        fetchSource();
+    }, [name]);
+
     return (
-        <div className={cn("my-6 rounded-md border p-4 bg-muted/50 overflow-auto", className)}>
-            <code className="text-sm">
-                {/* This requires your registry to have stored the source */}
-                {`// Source code for ${name} will appear here.`}
-            </code>
+        <div className={cn("my-6 rounded-lg border bg-muted/30 overflow-hidden", className)}>
+            <div className="border-b px-4 py-2 text-xs font-mono text-muted-foreground bg-muted/50">
+                {name}.tsx
+            </div>
+            {/* Added overflow-x-auto and min-w-0 to fix the layout break */}
+            <div className="overflow-x-auto min-w-0">
+                <pre className="p-4 text-sm font-mono leading-relaxed whitespace-pre">
+                    <code>{code}</code>
+                </pre>
+            </div>
         </div>
     )
 }

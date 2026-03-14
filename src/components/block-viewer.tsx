@@ -57,20 +57,20 @@ export function BlockViewer({ item, highlightedFiles }: { item: any, highlighted
   const [view, setView] = React.useState<"preview" | "code">("preview")
   const [viewport, setViewport] = React.useState<keyof typeof VIEWPORTS>("desktop")
   const [iframeKey, setIframeKey] = React.useState(0)
-  
+
   // Prefer the target path to accurately represent where files install, fallback to original path
-  const filePaths = React.useMemo(() => 
-    item.files.map((f: any) => typeof f === 'string' ? f : (f.target || f.path)), 
+  const filePaths = React.useMemo(() =>
+    item.files.map((f: any) => typeof f === 'string' ? f : (f.target || f.path)),
     [item.files]
   )
-  
+
   const tree = React.useMemo(() => createFileTreeForRegistryItemFiles(filePaths), [filePaths])
   const [activeFile, setActiveFile] = React.useState<string | null>(filePaths[0])
 
   return (
-    <BlockViewerContext.Provider 
-      value={{ 
-        item, view, setView, activeFile, setActiveFile, tree, highlightedFiles, iframeKey, setIframeKey, viewport, setViewport 
+    <BlockViewerContext.Provider
+      value={{
+        item, view, setView, activeFile, setActiveFile, tree, highlightedFiles, iframeKey, setIframeKey, viewport, setViewport
       }}
     >
       <div className="flex flex-col gap-4 w-full min-w-0 border rounded-xl overflow-hidden bg-background shadow-sm">
@@ -96,28 +96,28 @@ function BlockViewerToolbar() {
           <TabsTrigger value="code" className="text-xs px-3">Code</TabsTrigger>
         </TabsList>
       </Tabs>
-      
+
       <Separator orientation="vertical" className="mx-2 h-4 shrink-0 hidden sm:block" />
-      
+
       {/* Device Toggles */}
       <div className="hidden sm:flex shrink-0 items-center gap-1 bg-background/50 border rounded-md p-0.5">
-        <Button 
-          variant={viewport === "desktop" ? "secondary" : "ghost"} 
-          size="icon" className="h-7 w-7" 
+        <Button
+          variant={viewport === "desktop" ? "secondary" : "ghost"}
+          size="icon" className="h-7 w-7"
           onClick={() => setViewport("desktop")}
         >
           <Monitor className="h-4 w-4" />
         </Button>
-        <Button 
-          variant={viewport === "tablet" ? "secondary" : "ghost"} 
-          size="icon" className="h-7 w-7" 
+        <Button
+          variant={viewport === "tablet" ? "secondary" : "ghost"}
+          size="icon" className="h-7 w-7"
           onClick={() => setViewport("tablet")}
         >
           <Tablet className="h-4 w-4" />
         </Button>
-        <Button 
-          variant={viewport === "mobile" ? "secondary" : "ghost"} 
-          size="icon" className="h-7 w-7" 
+        <Button
+          variant={viewport === "mobile" ? "secondary" : "ghost"}
+          size="icon" className="h-7 w-7"
           onClick={() => setViewport("mobile")}
         >
           <Smartphone className="h-4 w-4" />
@@ -128,18 +128,18 @@ function BlockViewerToolbar() {
 
       {/* Action Buttons */}
       <div className="flex items-center gap-1 shrink-0">
-          <Button variant="ghost" size="icon" className="h-7 w-7" asChild title="Open in new tab">
-              <Link href={`/view/${item.name}`} target="_blank">
-                  <Maximize2 className="h-3.5 w-3.5" />
-              </Link>
-          </Button>
-          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setIframeKey(k => k + 1)} title="Refresh">
-              <RotateCw className="h-3.5 w-3.5" />
-          </Button>
+        <Button variant="ghost" size="icon" className="h-7 w-7" asChild title="Open in new tab">
+          <Link href={`/view/${item.name}`} target="_blank">
+            <Maximize2 className="h-3.5 w-3.5" />
+          </Link>
+        </Button>
+        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setIframeKey(k => k + 1)} title="Refresh">
+          <RotateCw className="h-3.5 w-3.5" />
+        </Button>
       </div>
-      
+
       <div className="ml-auto hidden lg:flex shrink min-w-0 items-center rounded-md border bg-background px-3 py-1 text-[11px] font-mono text-muted-foreground shadow-sm gap-2">
-        <Terminal className="h-3.5 w-3.5 shrink-0" /> 
+        <Terminal className="h-3.5 w-3.5 shrink-0" />
         <span className="truncate">{cliCommand}</span>
         <button onClick={() => copyToClipboard(cliCommand)} className="hover:text-foreground transition-colors ml-1 shrink-0">
           {isCopied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Clipboard className="h-3.5 w-3.5" />}
@@ -153,23 +153,23 @@ function BlockPreviewArea() {
   const { item, iframeKey, viewport } = useBlockViewer()
   return (
     <div className="p-4 sm:p-8 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#262626_1px,transparent_1px)] [background-size:20px_20px] flex items-center justify-center min-h-[600px] w-full min-w-0">
-        <div 
-          style={{ width: VIEWPORTS[viewport], maxWidth: "100%" }} 
-          className="transition-all duration-500 ease-in-out shadow-2xl rounded-xl overflow-hidden border bg-background min-w-0"
-        >
-          <iframe 
-            key={iframeKey}
-            src={`/view/${item.name}`} 
-            className="w-full h-[600px] border-none"
-          />
-        </div>
+      <div
+        style={{ width: VIEWPORTS[viewport], maxWidth: "100%" }}
+        className="transition-all duration-500 ease-in-out shadow-2xl rounded-xl overflow-hidden border bg-background min-w-0"
+      >
+        <iframe
+          key={iframeKey}
+          src={`/view/${item.name}`}
+          className="w-full h-[600px] border-none"
+        />
+      </div>
     </div>
   )
 }
 
 function BlockCodeArea() {
   const { activeFile, item, highlightedFiles } = useBlockViewer()
-  
+
   const fileData = highlightedFiles?.find(f => f.target === activeFile || f.path === activeFile) || item.files.find((f: any) => (f.target || f.path || f) === activeFile)
   const content = fileData?.content || ""
   const highlightedContent = fileData?.highlightedContent
@@ -185,26 +185,26 @@ function BlockCodeArea() {
           <BlockViewerFileTree />
         </div>
       )}
-      
+
       <figure
         data-rehype-pretty-code-figure=""
         className="m-0 flex min-w-0 flex-1 flex-col border-none"
       >
         <figcaption
-            className="flex h-12 shrink-0 items-center gap-2 border-b border-zinc-800 px-4 py-2 text-sm text-zinc-400 [&_svg]:size-4"
-            data-language={language}
+          className="flex h-12 shrink-0 items-center gap-2 border-b border-zinc-800 px-4 py-2 text-sm text-zinc-400 [&_svg]:size-4"
+          data-language={language}
         >
-            {getIconForLanguageExtension(language)}
-            <span className="truncate">{activeFile}</span>
-            <div className="ml-auto flex items-center gap-2 shrink-0">
-                <BlockCopyCodeButton content={content} />
-            </div>
+          {getIconForLanguageExtension(language)}
+          <span className="truncate">{activeFile}</span>
+          <div className="ml-auto flex items-center gap-2 shrink-0">
+            <BlockCopyCodeButton content={content} />
+          </div>
         </figcaption>
-        
+
         {/* We use specific shiki target classes to override Tailwind's prose/pre resetting if any */}
-        <div 
-            className="flex-1 min-h-0 overflow-auto p-4 text-[13px] font-mono leading-relaxed scrollbar-thin scrollbar-thumb-zinc-800 [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre]:!m-0 [&_.line]:inline-block [&_.line]:min-h-[1rem] [&_.line]:w-full"
-            dangerouslySetInnerHTML={{ __html: highlightedContent ?? `<pre><code>${content}</code></pre>` }} 
+        <div
+          className="flex-1 min-h-0 overflow-auto p-4 text-[13px] font-mono leading-relaxed scrollbar-thin scrollbar-thumb-zinc-800 [&_pre]:!bg-transparent [&_pre]:!p-0 [&_pre]:!m-0 [&_.line]:inline-block [&_.line]:min-h-[1rem] [&_.line]:w-full"
+          dangerouslySetInnerHTML={{ __html: highlightedContent ?? `<pre><code>${content}</code></pre>` }}
         />
       </figure>
     </div>
@@ -237,16 +237,16 @@ export function BlockViewerFileTree() {
 
 function Tree({ item }: { item: FileTree }) {
   const { activeFile, setActiveFile } = useBlockViewer()
-  
+
   if (!item.children) {
     return (
       <SidebarMenuItem>
-        <SidebarMenuButton 
-            isActive={item.path === activeFile} 
-            onClick={() => setActiveFile(item.path!)}
-            className="hover:bg-zinc-800 hover:text-white data-[active=true]:bg-zinc-800 data-[active=true]:text-white text-xs w-full min-w-0 overflow-hidden"
+        <SidebarMenuButton
+          isActive={item.path === activeFile}
+          onClick={() => setActiveFile(item.path!)}
+          className="hover:bg-zinc-800 hover:text-white data-[active=true]:bg-zinc-800 data-[active=true]:text-white text-xs w-full min-w-0 overflow-hidden"
         >
-          <File className="h-3.5 w-3.5 mr-1.5 shrink-0" /> 
+          <File className="h-3.5 w-3.5 mr-1.5 shrink-0" />
           <span className="truncate">{item.name}</span>
         </SidebarMenuButton>
       </SidebarMenuItem>
@@ -258,7 +258,7 @@ function Tree({ item }: { item: FileTree }) {
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
           <SidebarMenuButton className="hover:bg-zinc-800 hover:text-white text-xs font-semibold w-full min-w-0 overflow-hidden">
-            <Folder className="h-3.5 w-3.5 mr-1.5 text-zinc-400 shrink-0" /> 
+            <Folder className="h-3.5 w-3.5 mr-1.5 text-zinc-400 shrink-0" />
             <span className="truncate">{item.name}</span>
             <ChevronRight className="ml-auto h-3 w-3 shrink-0 transition-transform group-data-[state=open]/collapsible:rotate-90" />
           </SidebarMenuButton>

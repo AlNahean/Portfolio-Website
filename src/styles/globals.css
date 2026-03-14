@@ -174,11 +174,23 @@
   button:active {
     @apply opacity-60 md:opacity-100;
   }
-  .maplibregl-popup-content {
-    @apply bg-transparent! shadow-none! p-0! rounded-none!;
+
+
+  /* If any map related issue see here */
+
+  /* .maplibregl-popup-content {
+    @apply bg-transparent ! shadow-none ! p-0 ! rounded-none !;
   }
+
   .maplibregl-popup-tip {
-    @apply hidden!;
+    @apply hidden !;
+  } */
+  .maplibregl-popup-content {
+    @apply bg-transparent !shadow-none !p-0 !rounded-none;
+  }
+
+  .maplibregl-popup-tip {
+    @apply !hidden;
   }
 }
 
@@ -215,12 +227,31 @@
   @apply after:border-border relative after:absolute after:inset-0 after:border after:mix-blend-darken dark:after:mix-blend-lighten;
 }
 
-@utility step {
+/* @utility step {
   counter-increment: step;
   @apply relative;
 
   &:before {
     @apply text-muted-foreground right-0 mr-2 hidden size-7 items-center justify-center rounded-full text-center -indent-px font-mono text-sm font-medium md:absolute;
+    content: counter(step);
+  }
+} */
+
+.steps {
+  /* Increased margin-left and padding-left to give the line room */
+  @apply ml-6 border-l-4 border-border/40 pl-9 space-y-12;
+}
+
+@utility step {
+  counter-increment: step;
+  @apply relative;
+
+  &:before {
+    /* 
+       - left: -54px pushes it left enough to center on the 2px line 
+       - size-8 (32px) matches the circle size
+    */
+    @apply absolute -left-[54px] top-0 flex size-8 items-center justify-center rounded-full border-2 border-border bg-background text-sm font-semibold text-foreground shadow-sm;
     content: counter(step);
   }
 }

@@ -1,79 +1,373 @@
 ---
-title: Introduction
-description: Run your own code registry.
+title: "Testing: Batch 1"
+description: "Verifying layout and core components."
 ---
 
-You can use the `shadcn` CLI to run your own code registry. Running your own registry allows you to distribute your custom components, hooks, pages, config, rules and other files to any project.
+## 1. Buttons & Badges
+<div className="flex flex-wrap gap-4 items-center">
+  <Button>Primary</Button>
+  <Button variant="outline">Outline</Button>
+  <Badge>Default Badge</Badge>
+  <Badge variant="destructive">Destructive Badge</Badge>
+</div>
 
-<Callout>
-  **Note:** The registry works with any project type and any framework, and is
-  not limited to React.
-</Callout>
+## 2. Alerts
+{/* Functional */}
+<Alert variant="info" title="Update">New version 1.2 is live.</Alert>
+<Alert variant="warning" title="Deprecation">This method will be removed soon.</Alert>
+<Alert variant="success" title="Published">Your article is now live.</Alert>
+<Alert variant="error" title="Failed">Upload failed due to network.</Alert>
 
-<figure className="flex flex-col gap-4">
-  <Image
-    src="https://ui.shadcn.com/_next/image?url=%2Fimages%2Fregistry-dark.png&w=1920&q=75&dpl=dpl_A4GdA5bcGukkN2ZBaD8uaQNMKBBB"
-    width="1432"
-    height="960"
-    alt="Registry"
-    className="mt-6 w-full overflow-hidden rounded-lg border dark:hidden"
-  />
-  <Image
-    src="https://ui.shadcn.com/_next/image?url=%2Fimages%2Fregistry-dark.png&w=1920&q=75&dpl=dpl_A4GdA5bcGukkN2ZBaD8uaQNMKBBB"
-    width="1432"
-    height="960"
-    alt="Registry"
-    className="mt-6 hidden w-full overflow-hidden rounded-lg border shadow-sm dark:block"
-  />
-  <figcaption className="text-center text-sm text-gray-500">
-    A distribution system for code
-  </figcaption>
-</figure>
+{/* Documentation/Contextual */}
+<Alert variant="note" title="Note">Keep this in mind when configuring Prisma.</Alert>
+<Alert variant="tip" title="Pro Tip">Use the keyboard shortcut 'Cmd+K' to open search.</Alert>
+<Alert variant="important" title="Critical">Backup your database before running migrations.</Alert>
+<Alert variant="bug" title="Known Issue">This feature currently flickers on Safari.</Alert>
+<Alert variant="reference" title="Read more">Check the official docs for advanced usage.</Alert>
+<Alert variant="performance" title="Optimization">This query is optimized for large datasets.</Alert>
 
-Ready to create your own registry? In the next section, we'll walk you through setting up your own custom registry step-by-step, from creating your first component to publishing it for others to use.
+## 3. Callout
+<Callout variant="note" title="Note">This is a general note.</Callout>
+<Callout variant="tip" title="Pro Tip">Use these variants to keep your docs clean!</Callout>
+<Callout variant="important" title="Important">Pay close attention to this section.</Callout>
+<Callout variant="bug" title="Known Issue">This component is still in beta.</Callout>
+<Callout variant="error" title="Warning">Be careful with this operation.</Callout>
+## 4. Cards (Advanced Demos)
 
-<div className="mt-6 grid gap-4 sm:grid-cols-2">
-  <LinkedCard href="/docs/registry/getting-started" className="items-start text-sm md:p-6">
-    <div className="font-medium">Getting Started</div>
-    <div className="text-muted-foreground">
-      Set up and build your own registry
+### A. Minimalist Info Card
+<Card>
+  <CardHeader>
+    <CardTitle>Core Concepts</CardTitle>
+  </CardHeader>
+  <CardContent>
+    A simple card used for text-heavy content. Notice the clean borders and standard spacing.
+  </CardContent>
+</Card>
+
+### B. Card with Action Footer
+<Card className="mt-6">
+  <CardHeader>
+    <CardTitle>Settings Update</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <p className="text-sm text-muted-foreground">This card includes a footer action to demonstrate how buttons align within the card context.</p>
+  </CardContent>
+  <CardFooter className="border-t pt-4">
+    <Button size="sm">Save Changes</Button>
+    <Button variant="ghost" size="sm" className="ml-2">Cancel</Button>
+  </CardFooter>
+</Card>
+
+### C. Feature/Icon Card
+<Card className="mt-6">
+  <CardHeader>
+    <div className="p-3 w-fit rounded-lg bg-primary/10 text-primary mb-2 font-bold font-mono text-xs">
+      ⚡
     </div>
+    <CardTitle>High Performance</CardTitle>
+  </CardHeader>
+  <CardContent>
+    This card layout is perfect for showcasing feature sets or service offerings.
+  </CardContent>
+</Card>
+
+### D. Media-Rich Card
+<Card className="mt-6 overflow-hidden">
+  <AspectRatio ratio={16/9} className="bg-muted">
+    <Image 
+      src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" 
+      alt="Nature" 
+      fill 
+      className="object-cover"
+    />
+  </AspectRatio>
+  <CardHeader>
+    <CardTitle>Nature Exploration</CardTitle>
+  </CardHeader>
+  <CardContent>
+    This card tests the integration of the AspectRatio component and Image component within a card container.
+  </CardContent>
+</Card>
+
+### E. Multi-Column Card Layout
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+  <Card>
+    <CardHeader><CardTitle>Left Pane</CardTitle></CardHeader>
+    <CardContent>Nested layout test.</CardContent>
+  </Card>
+  <Card>
+    <CardHeader><CardTitle>Right Pane</CardTitle></CardHeader>
+    <CardContent>Nested layout test.</CardContent>
+  </Card>
+</div>
+
+## 5. Table (Advanced Layouts)
+
+### A. Alignment and Formatting
+| Feature | Status | Priority |
+| :--- | :---: | ---: |
+| Accordion | 🟡 Pending | Medium |
+| Tabs | 🟢 Verified | High |
+| Steps | 🔴 Testing | Low |
+| Images | ⚪ Not started | High |
+
+### B. Table with Content Formatting
+| Component | Description | Example |
+| :--- | :--- | :--- |
+| **Alert** | Displays status messages | `variant="success"` |
+| **Callout** | Highlighted box for docs | **Important** |
+| **Code** | Inline code blocks | `console.log()` |
+
+### C. Table with Long Text (Stress Test)
+| Column A | Column B | Column C |
+| :--- | :--- | :--- |
+| Short | This is a very long sentence that should trigger the horizontal scroll bar in the table container if the screen width is too small. | Standard |
+| Another long text | Testing how the overflow-x-auto wrapper handles content that exceeds the parent container width gracefully. | Standard |
+
+
+## title: "Testing: Batch 2"
+
+## 1. Accordion
+<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Is the Accordion working?</AccordionTrigger>
+    <AccordionContent>
+      Yes, it is! The `Accordion` components are properly registered in `mdxComponents`.
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-2">
+    <AccordionTrigger>Can I nest components?</AccordionTrigger>
+    <AccordionContent>
+      Yes. You can put <Badge variant="secondary">Badges</Badge>, buttons, or even alerts inside these items.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+
+## 2. Tabs
+<Tabs defaultValue="overview">
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="details">Details</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">
+    <Alert variant="info" title="Overview">
+      This is the content for the overview tab.
+    </Alert>
+  </TabsContent>
+  <TabsContent value="details">
+    <p>Detailed technical information goes here.</p>
+  </TabsContent>
+</Tabs>
+
+## 3. Steps
+<Steps>
+  <Step title="Setup Project">
+    Install dependencies using `pnpm install`.
+  </Step>
+  <Step title="Configure Registry">
+    Run `pnpm build:registry` to generate the component index.
+  </Step>
+  <Step title="Deploy">
+    Push your changes to Vercel and verify the build.
+  </Step>
+</Steps>
+
+## 4. Aspect Ratio & Image
+
+### A. Landscape (16/9) - Standard
+<div className="max-w-xl border rounded-lg p-2 bg-muted">
+  <AspectRatio ratio={16 / 9} className="bg-muted overflow-hidden rounded-md">
+    <Image 
+      src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" 
+      alt="Landscape" 
+      fill 
+      className="object-cover" 
+    />
+  </AspectRatio>
+</div>
+
+### B. Portrait (3/4)
+<div className="max-w-[250px] border rounded-lg p-2 bg-muted">
+  <AspectRatio ratio={3 / 4} className="bg-muted overflow-hidden rounded-md">
+    <Image 
+      src="https://images.unsplash.com/photo-1449824913929-79ae76035d75?q=80&w=800&auto=format&fit=crop" 
+      alt="Portrait" 
+      fill 
+      className="object-cover" 
+    />
+  </AspectRatio>
+</div>
+
+### C. Square (1/1)
+<div className="max-w-[200px] border rounded-lg p-2 bg-muted">
+  <AspectRatio ratio={1 / 1} className="bg-muted overflow-hidden rounded-md">
+    <Image 
+      src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop" 
+      alt="Square" 
+      fill 
+      className="object-cover" 
+    />
+  </AspectRatio>
+</div>
+
+### D. Responsive Container Test
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div className="border rounded-lg p-2 bg-muted">
+    <AspectRatio ratio={4 / 3} className="bg-muted overflow-hidden rounded-md">
+       <div className="flex items-center justify-center h-full bg-primary/20 text-primary font-bold">4:3 Ratio</div>
+    </AspectRatio>
+  </div>
+  <div className="border rounded-lg p-2 bg-muted">
+    <AspectRatio ratio={21 / 9} className="bg-muted overflow-hidden rounded-md">
+       <div className="flex items-center justify-center h-full bg-primary/20 text-primary font-bold">21:9 UltraWide</div>
+    </AspectRatio>
+  </div>
+</div>
+
+
+# title: "Testing: Batch 3"
+
+## 1. Checkbox
+<div className="flex items-center space-x-2">
+  <Checkbox id="terms" />
+  <label htmlFor="terms" className="text-sm font-medium leading-none">
+    Accept terms and conditions
+  </label>
+</div>
+
+## 2. Keyboard Shortcuts (Kbd)
+Press <Kbd>⌘</Kbd> + <Kbd>K</Kbd> to open the command menu. 
+You can also use <KbdGroup><Kbd>Ctrl</Kbd><Kbd>S</Kbd></KbdGroup> to save.
+
+## 3. Linked Cards
+<div className="grid gap-4 mt-4">
+  <LinkedCard href="/blog">
+    <h3 className="font-bold text-lg">Blog</h3>
+    <p className="text-muted-foreground text-sm">Read my latest reflections.</p>
   </LinkedCard>
-
-<LinkedCard
-  href="/docs/registry/authentication"
-  className="items-start text-sm md:p-6"
->
-  <div className="font-medium">Authentication</div>
-  <div className="text-muted-foreground">
-    Secure your registry with authentication
-  </div>
-</LinkedCard>
-<LinkedCard
-  href="/docs/registry/namespace"
-  className="items-start text-sm md:p-6"
->
-  <div className="font-medium">Namespaces</div>
-  <div className="text-muted-foreground">
-    Configure registries with namespaces
-  </div>
-</LinkedCard>
-<LinkedCard
-  href="/docs/registry/examples"
-  className="items-start text-sm md:p-6"
->
-  <div className="font-medium">Examples</div>
-  <div className="text-muted-foreground">
-    Registry item examples and configurations
-  </div>
-</LinkedCard>
-  <LinkedCard
-    href="/docs/registry/registry-json"
-    className="items-start text-sm md:p-6"
-  >
-    <div className="font-medium">Schema</div>
-    <div className="text-muted-foreground">
-      Schema specification for registry.json
-    </div>
+  <LinkedCard href="/projects">
+    <h3 className="font-bold text-lg">Projects</h3>
+    <p className="text-muted-foreground text-sm">See what I've been building.</p>
   </LinkedCard>
 </div>
+
+## 4. Code Blocks (Tabs & Collapsible)
+
+### A. Code Tabs
+<CodeTabs>
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+    ```bash
+    npx shadcn@latest add button
+    ```
+  </TabsContent>
+  <TabsContent value="manual">
+    ```tsx
+    import { Button } from "@/components/ui/button"
+    ```
+  </TabsContent>
+</CodeTabs>
+
+### B. Collapsible Code Wrapper
+### B. Collapsible Code Wrapper
+<CodeCollapsibleWrapper>
+```tsx
+function ComplexComponent() {
+  return (
+    <div className="p-4">
+      <p>This code block is hidden by default.</p>
+      <p>Click expand to reveal the rest of this long logic.</p>
+      <p>Click expand to reveal the rest of this long logic.</p>
+      <p>Click expand to reveal the rest of this long logic.</p>
+      <p>This code block is hidden by default.</p>
+      <p>Click expand to reveal the rest of this long logic.</p>
+      <p>Click expand to reveal the rest of this long logic.</p>
+      <p>Click expand to reveal the rest of this long logic.</p>
+      
+    </div>
+  )
+}
+```
+</CodeCollapsibleWrapper>
+
+
+
+# Batch 4
+
+
+## 1. Component Preview
+This component renders the `my-button-demo` from your registry.
+
+<ComponentPreview name="my-button-demo" />
+
+
+
+## 3. Components List
+A grid layout for showcasing multiple components at once.
+
+<ComponentsList>
+  <Card>
+    <CardHeader><CardTitle>Block One</CardTitle></CardHeader>
+    <CardContent>Description for block one.</CardContent>
+  </Card>
+  <Card>
+    <CardHeader><CardTitle>Block Two</CardTitle></CardHeader>
+    <CardContent>Description for block two.</CardContent>
+  </Card>
+</ComponentsList>
+
+## 4. Block Preview (The Helix Sidebar)
+This tests the full-blown block viewer which requires the registry and shiki highlight to work correctly.
+
+<BlockPreview name="helix-sidebar" title="Helix Sidebar" />
+
+
+
+## 5. Image Component Tests
+
+### A. Explicitly Sized Image
+Use this when you know the fixed dimensions of your image.
+<Image 
+  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" 
+  alt="Mountain Landscape" 
+  width={800} 
+  height={450} 
+/>
+
+### B. Responsive Fill (via AspectRatio)
+Use this when you want the image to fill its container while maintaining a specific aspect ratio. 
+*(No width/height needed here, the component handles the "fill" logic for you)*
+<div className="max-w-md border p-2 rounded-lg bg-muted">
+  <AspectRatio ratio={16 / 9}>
+    <Image 
+      src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=800&auto=format&fit=crop" 
+      alt="Golden Hour" 
+      fill 
+      className="object-cover rounded-md"
+    />
+  </AspectRatio>
+</div>
+
+### C. Portrait Fill (3/4 Ratio)
+<div className="max-w-[200px] border p-2 rounded-lg bg-muted">
+  <AspectRatio ratio={3 / 4}>
+    <Image 
+      src="https://images.unsplash.com/photo-1449824913929-79ae76035d75?q=80&w=800&auto=format&fit=crop" 
+      alt="Portrait Architecture" 
+      fill 
+      className="object-cover rounded-md"
+    />
+  </AspectRatio>
+</div>
+
+### D. Standard Markdown Image (Native)
+This tests if your `img` mapping in `mdx-components.tsx` is working for standard Markdown syntax.
+![Standard Markdown Image](https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800&auto=format&fit=crop)
+
+
+  ```bash
+    npx shadcn@latest add button
+    ```

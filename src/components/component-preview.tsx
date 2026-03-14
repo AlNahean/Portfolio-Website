@@ -15,7 +15,7 @@ export function ComponentPreview({
     return (
         <div
             className={cn(
-                "my-6 flex min-h-[350px] w-full flex-col items-center justify-center rounded-lg border bg-background/50 p-10 shadow-sm backdrop-blur-sm",
+                "my-6 flex min-h-[350px] w-full flex-col items-center justify-center rounded-lg border-2 bg-background/50 p-10 ",
                 className
             )}
             {...props}
