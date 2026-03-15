@@ -21,10 +21,10 @@ import { z } from "zod";
  */
 export default defineConfig({
   mdxOptions: {
-    remarkImageOptions: {
-  useImport: false,
-  placeholder: "none",
-},
+//     remarkImageOptions: {
+//   useImport: false,
+//   placeholder: "none",
+// },
     rehypePlugins: (plugins) => {
       plugins.shift();
       plugins.push([
