@@ -140,3 +140,13 @@ export const reflections = defineDocs({
     }),
   },
 });
+
+export const guides = defineDocs({
+  dir: "content/guides",
+  docs: {
+    schema: frontmatterSchema.extend({
+      description: z.string().optional(),
+      date: z.string().date().or(z.date()).optional(),
+    }),
+  },
+});

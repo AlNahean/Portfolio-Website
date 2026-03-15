@@ -50,7 +50,7 @@ export function DocsSidebar({
                                         <SidebarMenuButton
                                             asChild
                                             isActive={page.url === pathname}
-                                            className="data-[active=true]:bg-accent data-[active=true]:border-accent 3xl:fixed:w-full 3xl:fixed:max-w-48 relative h-[30px] w-fit overflow-visible border border-transparent text-[0.8rem] font-medium after:absolute after:inset-x-0 after:-inset-y-1 after:z-0 after:rounded-md"
+                                            className="data-[active=true]:bg-accent data-[active=true]:border-accent 3xl:fixed:w-full 3xl:fixed:max-w-48 relative h-auto min-h-[30px] py-1.5 w-fit overflow-visible border border-transparent text-[0.8rem] font-medium after:absolute after:inset-x-0 after:-inset-y-1 after:z-0 after:rounded-md"
                                         >
                                             <Link href={page.url}>
                                                 <span className="absolute inset-0 flex w-(--sidebar-width) bg-transparent" />
@@ -71,9 +71,9 @@ export function DocsSidebar({
                 )}
 
                 {/* Render folders */}
-                {folders.map((item) => {
+                {folders.map((item, index) => {
                     return (
-                        <SidebarGroup key={item.name}>
+                        <SidebarGroup key={index}>
                             <SidebarGroupLabel className="text-muted-foreground font-medium">
                                 {item.name}
                             </SidebarGroupLabel>
@@ -94,7 +94,7 @@ export function DocsSidebar({
                                                     <SidebarMenuButton
                                                         asChild
                                                         isActive={child.url === pathname}
-                                                        className="data-[active=true]:bg-accent data-[active=true]:border-accent 3xl:fixed:w-full 3xl:fixed:max-w-48 relative h-[30px] w-fit overflow-visible border border-transparent text-[0.8rem] font-medium after:absolute after:inset-x-0 after:-inset-y-1 after:z-0 after:rounded-md"
+                                                        className="data-[active=true]:bg-accent data-[active=true]:border-accent 3xl:fixed:w-full 3xl:fixed:max-w-48 relative h-auto min-h-[30px] py-1.5 w-fit overflow-visible border border-transparent text-[0.8rem] font-medium after:absolute after:inset-x-0 after:-inset-y-1 after:z-0 after:rounded-md"
                                                     >
                                                         <Link href={child.url}>
                                                             <span className="absolute inset-0 flex w-(--sidebar-width) bg-transparent" />

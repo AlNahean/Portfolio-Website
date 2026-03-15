@@ -1,0 +1,81 @@
+---
+title: "Adding Reflections"
+description: "Guidelines for writing and organizing personal and professional reflections. Learn how to maintain a consistent tone and use the unique UI elements of the reflections section."
+date: 2026-03-15
+---
+
+# Adding Reflections
+
+Reflections are short-form pieces that capture your thoughts on industry trends, personal growth, or technical philosophy. They are more personal than a case study and more philosophical than a blog post.
+
+---
+
+## The Reflections Collection
+
+Reflections are stored in `content/reflections/`. The UI for reflections is designed to be minimal and text-focused, emphasizing readability.
+
+Create a new file: `content/reflections/my-philosophy.mdx`.
+
+### Frontmatter Configuration
+
+```yaml
+---
+title: "The Importance of Slow Engineering"
+description: "In an era of AI speed, the most valuable skill is the ability to slow down and think deeply about architecture."
+date: 2026-03-15
+category: "Philosophy"
+readTime: "4 MIN READ"
+---
+```
+
+### ⚠️ Special Logic for `description`:
+In the reflections section, the `description` isn't just metadata for SEO. The UI often renders this description as a **large, italicized quote** or a lead-in paragraph. 
+*   **Tip:** Make sure your description is "quotable" and captures the essence of the entire piece.
+
+---
+
+## Step 1: Choosing a Category
+
+Consistency is key for filtering. Try to stick to an established set of categories:
+- **Philosophy:** High-level thoughts on engineering.
+- **Mentorship:** Lessons learned from leading teams.
+- **Tutorial:** Short "how-to" snippets that don't fit in a full guide.
+- **Growth:** Personal career milestones and lessons.
+
+---
+
+## Step 2: Writing the Content
+
+Keep reflections concise. Use MDX to add emphasis without clutter.
+
+```mdx
+## The Core Idea
+
+Why do we rush? 
+
+> "Premature optimization is the root of all evil." — Donald Knuth
+
+I've found that this applies to more than just code; it applies to career decisions and product roadmaps.
+
+### The Takeaway
+
+1. **Wait** until you have data.
+2. **Review** with a peer.
+3. **Execute** with confidence.
+```
+
+---
+
+## 🔮 Future-Proofing your Reflections
+
+### 1. "Read Time" Accuracy
+While the `readTime` is a string you manually enter (e.g., `"5 MIN READ"`), try to be honest. A reflection that is 200 words shouldn't be marked as 10 minutes. A good rule of thumb is **200 words per minute**.
+
+### 2. Maintenance
+As you write more, you might find that the `/reflections` page gets crowded. Since these are validated by `date`, they will always appear in chronological order. However, if you want a specific reflection to stay at the top, you might need to "pin" it by updating its date to a future time, or (the senior way) update the UI logic to support a `featured: boolean` flag in the schema.
+
+### 3. SEO vs. Intimacy
+Reflections are personal, but they still help with SEO. Use your H2 and H3 tags to include keywords relevant to the topic (e.g., "Software Engineering Philosophy") to help search engines index your thought leadership.
+
+### 4. Image Warning
+The reflections layout is **intentionally text-only** in its current iteration to minimize distractions. Avoid adding heavy images within the MDX. If you must use a visual, use a simple SVG or a small, centered image to maintain the "clean" aesthetic.

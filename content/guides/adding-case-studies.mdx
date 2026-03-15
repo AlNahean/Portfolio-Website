@@ -1,0 +1,89 @@
+---
+title: "Adding a Case Study"
+description: "Master the art of storytelling in your portfolio by adding deep-dive case studies. Learn about the schema, required assets, and senior-level presentation tips."
+date: 2026-03-15
+---
+
+# Adding a Case Study
+
+Case studies are the heart of a senior developer's portfolio. While projects show *what* you built, case studies explain *why* and *how*. This guide will walk you through adding a case study to the `content/case-studies/` directory.
+
+---
+
+## The Core Concept
+
+Unlike a quick project highlight, a case study is an immersive narrative. It focuses on the **Problem**, **Process**, and **Outcome**. This project uses a dedicated `caseStudies` collection with strict validation to ensure your narrative is well-structured and searchable.
+
+---
+
+## Step 1: Schema Configuration
+
+Create a new file in `content/case-studies/your-slug.mdx`. Your frontmatter must match the following Zod schema:
+
+```yaml
+---
+title: "Architecting a Scalable Design System"
+description: "How we consolidated 50+ isolated components into a unified, accessible library for 300+ engineers."
+date: 2026-03-15
+author: "Al Nahean"
+image: "/images/case-studies/design-system-hero.webp"
+tags: ["Design System", "Accessibility", "Infrastructure"]
+timeline: "6 Months"
+role: "Lead Frontend Engineer"
+---
+```
+
+### ⚠️ Critical Requirements:
+- **`date`**: Must be `YYYY-MM-DD`. This is used for sorting.
+- **`image`**: This is your hero background. Use a high-quality, high-contrast image.
+- **`tags`**: Must be an array of strings. These are used for filtering in the UI.
+- **`role` & `timeline`**: Optional but highly recommended for professional credibility.
+
+---
+
+## Step 2: Visual Storytelling (Assets)
+
+A case study without visuals is just a blog post. To keep things fast:
+
+1. **Location:** Store all images in `public/images/case-studies/`.
+2. **Optimization:** Always use `.webp`. 
+3. **Consistency:** If you are showing "Before vs. After", ensure both images have the same aspect ratio to prevent the layout from jumping when the user scrolls.
+
+---
+
+## Step 3: Writing the Narrative
+
+As a senior engineer, don't just list features. Structure your MDX content like this:
+
+### The Challenge
+Define the business or technical problem. Use the `<Callout>` component to highlight key constraints.
+
+```mdx
+<Callout variant="error" title="The Problem">
+  The legacy system was costing the company $20k/month in maintenance due to non-reusable code.
+</Callout>
+```
+
+### The Solution
+Explain your technical choices. Why React over Vue? Why SQL over NoSQL? 
+
+### The Impact
+Use data where possible. "Increased conversion by 15%" or "Reduced bundle size by 40%".
+
+---
+
+## 🔮 Senior Pitfalls & Future-Proofing
+
+### 1. Tag Overload
+Avoid adding 20 tags. Stick to 3-5 core competencies. Too many tags dilute your expertise and can break the UI layout on mobile screens where tags wrap.
+
+### 2. The "Wall of Text"
+Use semantic headers (`##`, `###`) and lists. In a year, when you have 10 case studies, users will scan them rather than read every word. Give them "anchor points" to scan.
+
+### 3. Image Paths
+The `image` field in the frontmatter must be an absolute path starting with `/`. 
+*   **Correct:** `/images/case-studies/hero.webp`
+*   **Incorrect:** `../../public/images/hero.webp`
+
+### 4. Slug Collisions
+Ensure your filename is unique. If you have a project and a case study with the same name, ensure their slugs differ slightly (e.g., `projects/my-app.mdx` and `case-studies/my-app-architecture.mdx`) to avoid SEO confusion.

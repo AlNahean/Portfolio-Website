@@ -20,6 +20,7 @@ export const siteConfig = {
     { href: "/components", label: "Components" },
     { href: "/blog", label: "Blog" },
     { href: "/docs", label: "Docs" },
+    { href: "/guides", label: "Guides" },
     { href: "#about", label: "About" },
     { href: "/projects", label: "Work" },
     { href: "#contact", label: "Contact" },

@@ -1,0 +1,91 @@
+---
+title: "Adding Research Publications"
+description: "A professional guide on how to document your academic and industry research within your portfolio, including BibTeX handling and external resource linking."
+date: 2026-03-15
+---
+
+# Adding Research Publications
+
+Academic and industry research adds a layer of deep technical authority to your portfolio. This guide covers how to add your publications to the `content/publications/` directory.
+
+---
+
+## The Publication Schema
+
+Your publications are managed via the `publications` collection. This collection is specifically designed to handle metadata like DOI links, PDF downloads, and venue information.
+
+Create a new file: `content/publications/your-paper-title.mdx`.
+
+### Frontmatter Boilerplate
+
+```yaml
+---
+title: "Neural-Symbolic Integration in Real-time Systems"
+fullTitle: "A Comprehensive Approach to Neural-Symbolic Integration for Error-Correcting Real-time Systems" # Optional but recommended
+date: 2025-11-20
+venue: "IEEE International Conference on AI"
+authors: "Al Nahean, John Doe, Jane Smith"
+type: "Conference Paper" # e.g., Journal, Pre-print, Workshop
+links:
+  pdf: "/files/publications/neural-symbolic.pdf"
+  arxiv: "https://arxiv.org/abs/xxxx.xxxxx"
+  code: "https://github.com/AlNahean/research-repo"
+  doi: "10.1109/ICAI.2025.0001"
+---
+```
+
+---
+
+## Step 1: Handling Assets (PDFs)
+
+Linking to external PDFs (like Arxiv) is great, but hosting a local copy ensures that your portfolio remains a one-stop-shop for recruiters and peers.
+
+1. **Storage:** Place PDFs in `public/files/publications/`.
+2. **Naming:** Use lowercase, kebab-case for filenames: `neural-symbolic-approach.pdf`.
+
+---
+
+## Step 2: Content Structure
+
+Research MDX files are typically shorter than case studies. They usually contain:
+
+1. **Abstract:** A summary of the research.
+2. **Key Findings:** Use bullet points.
+3. **BibTeX:** Add a code block so others can easily cite your work.
+
+```mdx
+## Abstract
+
+This paper presents a new method for...
+
+## Key Findings
+
+- **Efficiency:** 20% reduction in latency.
+- **Accuracy:** 98.5% on standard benchmarks.
+
+## Cite as (BibTeX)
+
+```bibtex
+@inproceedings{nahean2025neural,
+  title={Neural-Symbolic Integration...},
+  author={Nahean, Al and Doe, John},
+  booktitle={IEEE International...},
+  year={2025}
+}
+```
+
+---
+
+## 🔮 Senior Tips for Academic Content
+
+### 1. Linking Strategies
+If your paper is under review, set the `type` to "Pre-print" and use the `arxiv` link. Once published, update the `venue` and add the `doi`. The UI handles optional links gracefully—if you don't provide a `code` link, the button simply won't appear.
+
+### 2. Character Sensitivity
+In the `fullTitle` or `title` fields, avoid using complex LaTeX math symbols directly. Since this is YAML, it may cause parsing errors. Use plain text or standard UTF-8 characters where possible.
+
+### 3. "Authors" Field
+The `authors` field is a string. Ensure you follow standard academic formatting (e.g., "Me, First Author, Second Author"). In the future, if you want to link authors to their own pages, you'll need to update the schema to an array of slugs, but for now, a string is the most flexible approach.
+
+### 4. Searchability
+Fumadocs indexes your publications. Using a `fullTitle` that is different from your `title` (the one on the card) allows you to keep the UI clean while still having the full academic title searchable via the search bar.

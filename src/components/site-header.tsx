@@ -8,7 +8,7 @@ import { SiteConfig } from "@/components/site-config"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { CommandMenu } from "@/components/command-menu"
-import { source, blogSource, studySource } from "@/lib/source"
+import { source, blogSource, studySource, guidesSource } from "@/lib/source"
 
 export function SiteHeader() {
     return (
@@ -41,6 +41,8 @@ export function SiteHeader() {
                                     { name: "Docs", tree: source.pageTree },
                                     { name: "Blog", tree: blogSource.pageTree },
                                     { name: "Study", tree: studySource.pageTree },
+                                    { name: "Guides", tree: guidesSource.pageTree },
+
                                 ]}
                                 navItems={siteConfig.navItems}
                             />

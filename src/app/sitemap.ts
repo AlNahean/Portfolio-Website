@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/config";
-import { blogSource, source, projectSource, publicationSource, caseStudySource, reflectionSource } from "@/lib/source";
+import { blogSource, source, projectSource, publicationSource, caseStudySource, reflectionSource, guidesSource } from "@/lib/source";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -12,8 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/case-studies",
     "/reflections",
     "/changelog",
-
+    "/guides",
     "/journey",
+
     "/photos",
     "/guestbook",
     "/todo",
@@ -67,7 +68,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }));
+  const guidesRoutes = guidesSource.getPages().map((page) => ({
+    url: `${siteConfig.url}${page.url}`,
+    lastModified: page.data.date ? new Date(page.data.date) : new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
 
-  return [...staticRoutes, ...blogRoutes, ...docRoutes, ...projectRoutes, ...publicationRoutes, ...caseStudyRoutes, ...reflectionRoutes];
+  return [...staticRoutes, ...blogRoutes, ...docRoutes, ...projectRoutes, ...publicationRoutes, ...caseStudyRoutes, ...reflectionRoutes, ...guidesRoutes];
 }
 

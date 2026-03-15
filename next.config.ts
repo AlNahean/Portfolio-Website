@@ -50,6 +50,10 @@ const nextConfig: NextConfig = {
         source: "/authors/:path*.md",
         destination: "/llm/:path*",
       },
+      {
+        source: "/guides/:path*.md",
+        destination: "/llm/:path*",
+      },
     ];
 
   },

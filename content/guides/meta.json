@@ -1,0 +1,13 @@
+{
+  "title": "Guides",
+  "pages": [
+    "index",
+    "getting-started",
+    "component-to-block",
+    "adding-a-new-component",
+    "your-new-project",
+    "adding-case-studies",
+    "adding-research-publications",
+    "adding-reflections"
+  ]
+}

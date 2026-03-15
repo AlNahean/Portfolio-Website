@@ -2,12 +2,12 @@ import { User, Linkedin, Twitter, Globe, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const PEOPLE = [
-    {
-        name: "Ayyüce Demirbaş",
-        role: "PH.D. STUDENT & RESEARCH ASSISTANT",
-        tag: "Computer Science and Engineering",
-        bio: "\"Research focuses on graph-based multi-omics integration and drug discovery.\""
-    },
+    // {
+    //     name: "Ayyüce Demirbaş",
+    //     role: "PH.D. STUDENT & RESEARCH ASSISTANT",
+    //     tag: "Computer Science and Engineering",
+    //     bio: "\"Research focuses on graph-based multi-omics integration and drug discovery.\""
+    // },
     {
         name: "Al-Nahean",
         role: "SOFTWARE DEVELOPER & RESEARCHER",

@@ -1,0 +1,174 @@
+---
+title: Adding a Component to the Showcase Blocks
+description: A step-by-step guide on how to create a new UI component, register it in the registry, and feature it in the Blocks showcase page.
+date: 2026-03-16
+---
+
+# Adding a Component to the Showcase Blocks
+
+This guide walks you through the entire process of turning a new idea into a fully functional, showcase-ready UI component in this project.
+
+## Step 1: Create the Component (e.g., `NewAwesomeButton.tsx`)
+
+First, create the actual component file inside your UI components directory. For this guide, let's assume you are creating a new button variant in `src/components/ui/`.
+
+**File:** `src/components/ui/new-awesome-button.tsx` (Create this file)
+
+```tsx
+// src/components/ui/new-awesome-button.tsx
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+
+export function NewAwesomeButton({ className, ...props }: React.ComponentProps<typeof Button>) {
+  return (
+    <Button
+      className={cn("bg-orange-500 hover:bg-orange-600 text-white shadow-lg", className)}
+      {...props}
+    />
+  );
+}
+```
+
+**Careful Points:**
+1.  **Use Existing Primitives:** Try to build upon existing components (like `Button`) where possible to maintain design consistency.
+2.  **`"use client"`:** Ensure any component that uses React hooks or browser APIs has `"use client"` at the top.
+
+## Step 2: Register the Component for Demo/Showcase
+
+To show off your component on the `/blocks` page, you need to register it in the central component registry.
+
+**File:** `src/registry/index.ts` (If it's a pure UI component) or `src/registry/ui/blocks/index.tsx` (If it's a block like `alignment-block`). Since you want it in `/blocks`, we'll treat it like a block/UI component.
+
+You need to **update** `src/registry/index.ts` to include your new component and **re-run the build script** to generate `src/registry/components.ts`.
+
+1.  **Add to `src/registry/index.ts`:**
+
+    ```typescript
+    // src/registry/index.ts (Add your component here)
+    // ... existing entries
+    "new-awesome-button": {
+        name: "new-awesome-button",
+        type: "registry:ui",
+        dependencies: ["lucide-react"], // Add any necessary dependencies
+        files: [
+            { path: "src/registry/ui/new-awesome-button.tsx", type: "registry:component", target: "components/ui/new-awesome-button.tsx" }
+        ],
+    },
+    // ... existing entries
+    ```
+
+2.  **Add a Demo (Optional but Recommended for Showcase):**
+    Create a demo file for the showcase.
+
+    **File:** `src/registry/example/new-awesome-button-demo.tsx` (Create this file)
+
+    ```tsx
+    // src/registry/example/new-awesome-button-demo.tsx
+    import { MyButton } from "@/registry/ui/my-button"; // <-- Use your existing button for base, or import your new one
+    import { Rocket } from "lucide-react";
+    import { NewAwesomeButton } from "@/components/ui/new-awesome-button"; // Import your new component
+
+    export default function NewAwesomeButtonDemo() {
+        return (
+            <div className="flex items-center gap-4">
+                <NewAwesomeButton>
+                    Awesome Button
+                </NewAwesomeButton>
+                <NewAwesomeButton variant="outline" size="sm">
+                    Small Variant
+                </NewAwesomeButton>
+            </div>
+        )
+    }
+    ```
+
+3.  **Add Demo to Registry:** Update `src/registry/index.ts` again to register the demo.
+
+    ```typescript
+    // src/registry/index.ts (Add the demo entry)
+    // ... existing entries
+    "new-awesome-button-demo": {
+        name: "new-awesome-button-demo",
+        type: "registry:example",
+        files: ["src/registry/example/new-awesome-button-demo.tsx"],
+        registryDependencies: ["new-awesome-button"], // Reference the UI component
+    },
+    // ... existing entries
+    ```
+
+4.  **Regenerate Registry Files:** Run the build script to update `src/registry/components.ts`.
+
+    ```bash
+    pnpm build:registry
+    ```
+
+    **Careful Points:**
+    *   Ensure the import path in the demo file (`@/registry/ui/new-awesome-button`) is correct relative to the registry structure.
+    *   The component in the demo must have a `default` export or a named export matching the component name (e.g., `NewAwesomeButton`).
+
+## Step 3: Feature the Block on `/blocks`
+
+Now, you need to update the file that lists the blocks for the showcase.
+
+**File:** `src/app/(main)/blocks/page.tsx`
+
+1.  **Update `blockNames`**: Add your new block and its demo to the list.
+
+    ```tsx
+    // src/app/(main)/blocks/page.tsx (inside BlocksPage function)
+    // ...
+    // List the blocks you want to show
+    const blockNames = [
+        "helix-sidebar", 
+        "alignment-block", 
+        "file-uploader", 
+        "physics-badge", 
+        "my-button",
+        "new-awesome-button" // <-- ADDED
+    ];
+    // ...
+    ```
+
+2.  **Add a new Showcase Entry**: Add a new section in the return block of `BlocksPage` to display your component.
+
+    ```tsx
+    // src/app/(main)/blocks/page.tsx (inside return block)
+    // ...
+    {/* Blocks Grid */}
+    <div className="grid gap-24 min-w-0 w-full">
+        {/* ... existing blocks ... */}
+
+        {/* --- Your New Block Entry --- */}
+        <div key="new-awesome-button" className="space-y-6 min-w-0 w-full">
+            <div className="flex items-center justify-between">
+                <div className="flex items-baseline gap-4">
+                    <h2 className="text-2xl font-bold tracking-tight capitalize">
+                        New Awesome Button
+                    </h2>
+                    <Separator orientation="vertical" className="h-4 hidden sm:block" />
+                    <span className="text-xs font-mono text-muted-foreground uppercase hidden sm:inline-block">
+                        UI
+                    </span>
+                </div>
+                <div className="flex gap-2">
+                    <span className="text-[10px] font-mono bg-muted px-1.5 py-0.5 rounded text-muted-foreground">
+                        shadcn
+                    </span>
+                </div>
+            </div>
+            {/* The Interactive Viewer */}
+            <BlockViewer item={{ name: "new-awesome-button" }} highlightedFiles={undefined} /> {/* Assuming no custom highlighting needed for simple demo */}
+        </div>
+        {/* --- End of New Block Entry --- */}
+
+    </div>
+    // ...
+    ```
+
+**Careful Points:**
+1.  The `item` object passed to `BlockViewer` needs a `name` matching the registry key (`new-awesome-button`).
+2.  The `highlightedFiles` property is derived from the registry build script, so for a simple demo, you can pass `undefined` or an empty array if you don't need custom highlighting on the code view.
+
+By following these steps, your new component will be available for preview on `/blocks`!
+```

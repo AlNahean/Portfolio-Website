@@ -1,0 +1,178 @@
+---
+title: Adding a New Reusable UI Component
+description: A comprehensive guide for creating, registering, and demonstrating a new UI component within the project ecosystem.
+date: 2026-03-17
+---
+
+# Adding a New Reusable UI Component
+
+As a senior developer, establishing clear, reproducible patterns for adding new UI primitives is key to maintaining a scalable design system. This guide details the necessary steps to introduce a new, reusable component that will be available throughout the application and in the showcase.
+
+## Step 1: Create the Component Source
+
+Create your new component inside the component library directory. For standard UI elements, this is typically `src/components/ui/`.
+
+**File to Create:** `src/components/ui/my-new-component.tsx`
+
+```tsx
+// src/components/ui/my-new-component.tsx
+"use client"
+
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@/lib/utils"
+
+// 1. Define Variants (if applicable)
+const myNewComponentVariants = cva(
+  "rounded-md border shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        outline: "border-input bg-background hover:bg-accent hover:text-accent-foreground",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+// 2. Define Props and Component
+export interface MyNewComponentProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof myNewComponentVariants> {
+  asChild?: boolean
+}
+
+export const MyNewComponent = React.forwardRef<HTMLButtonElement, MyNewComponentProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button" // Use Slot for extensibility
+
+    return (
+      <Comp
+        data-slot="my-new-component"
+        data-variant={variant}
+        data-size={size}
+        className={cn(myNewComponentVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
+MyNewComponent.displayName = "MyNewComponent"
+```
+
+**Key Architectural Details:**
+*   **`"use client"`:** Mandatory for any component using hooks or client-side DOM manipulation.
+*   **`class-variance-authority` (`cva`):** Used for defining style variants, ensuring component styles are utility-first and maintainable.
+*   **`Slot` (from Radix):** Import `Slot` from `@radix-ui/react-slot` and use it as the base for the root element if you intend for the component to support composition (e.g., rendering as an `<a>` tag when used inside a `Link`).
+*   **`data-slot`:** Add explicit `data-slot` attributes for easier targeting in global CSS utilities (like in `src/styles/globals.css`).
+
+## Step 2: Register the Component for Documentation/Showcase
+
+To make your component discoverable, previewable on `/blocks`, and properly source-tracked, you must register it in the central registry file.
+
+**File to Update:** `src/registry/index.ts`
+
+You need to define the component and optionally a demo example.
+
+```typescript
+// src/registry/index.ts (Add the following entries)
+import { RegistryItem } from "./schema";
+
+export const registry: Record<string, RegistryItem> = {
+  // ... existing entries
+  "my-new-component": {
+    name: "my-new-component",
+    type: "registry:ui",
+    dependencies: ["lucide-react"], // List external dependencies here
+    files: [
+      { path: "src/registry/ui/my-new-component.tsx", type: "registry:component", target: "components/ui/my-new-component.tsx" }
+    ],
+  },
+  "my-new-component-demo": {
+    name: "my-new-component-demo",
+    type: "registry:example",
+    files: ["src/registry/example/my-new-component-demo.tsx"],
+    registryDependencies: ["my-new-component"], // Reference the UI component
+  },
+  // ... existing entries
+};
+```
+
+**Crucial Step: Regenerate Registry Files**
+After updating `src/registry/index.ts`, you **must** run the build script to generate the necessary import map (`src/registry/components.ts`).
+
+```bash
+pnpm build:registry
+```
+
+**Careful Points:**
+*   The registry key (`my-new-component`) should be kebab-cased.
+*   `registryDependencies` ensures this demo/example component correctly imports the base UI component.
+
+## Step 3: Create the Demo Component
+
+Create a small example file to demonstrate your component's usage, which will be rendered on the `/blocks` page.
+
+**File to Create:** `src/registry/example/my-new-component-demo.tsx`
+
+```tsx
+// src/registry/example/my-new-component-demo.tsx
+import { MyNewComponent } from "@/components/ui/my-new-component"; // Check the correct path
+
+export default function MyNewComponentDemo() {
+    return (
+        <div className="flex items-center gap-4">
+            <MyNewComponent>
+                Primary Action
+            </MyNewComponent>
+            <MyNewComponent variant="outline" size="sm">
+                Secondary Action
+            </MyNewComponent>
+        </div>
+    )
+}
+```
+
+## Step 4: Integrate into the Showcase (`/blocks`)
+
+Finally, update the blocks page to display your new component demo.
+
+**File to Update:** `src/app/(main)/blocks/page.tsx`
+
+1.  **Update `blockNames`:** Add the demo key.
+2.  **Add Showcase Entry:** Add a new section that renders your demo component.
+
+```tsx
+// src/app/(main)/blocks/page.tsx (Inside BlocksPage function)
+// ...
+// List the blocks you want to show
+const blockNames = [
+    // ... existing names
+    "my-new-component" // <-- ADDED
+];
+// ...
+
+// ... Inside the return block, where you map over blocks ...
+{blocks.map((block: any) => (
+    <div key={block.name} className="space-y-6 min-w-0 w-full">
+        {/* ... existing code for block header ... */}
+        
+        {/* The Interactive Viewer */}
+        <BlockViewer item={block} highlightedFiles={block.highlightedFiles} />
+    </div>
+))}
+```
+
+**Final Verification:**
+1.  Run `pnpm dev` to ensure everything runs.
+2.  Check `/blocks` to see your component preview.
+3.  Check `/docs` to ensure the registry build didn't break anything else (it shouldn't if steps 1-3 were followed correctly).

@@ -1,0 +1,119 @@
+---
+title: Adding a New Project
+description: A comprehensive, senior-level guide on how to add a new project to your portfolio, manage assets, and avoid common content-management pitfalls.
+date: 2026-03-15
+---
+
+# Adding a New Project to the Portfolio
+
+As your portfolio grows, maintaining consistency, performance, and type safety becomes critical. This project is architected using **Fumadocs MDX collections**, meaning your projects are entirely content-driven. You do *not* need to touch any React code to add a new project. 
+
+However, because the content is strictly validated using Zod schemas (`source.config.ts`), failing to follow the exact structure will break your build.
+
+This guide covers the end-to-end process, including asset optimization and troubleshooting future edge cases.
+
+---
+
+## Step 1: Asset Preparation (Crucial)
+
+Before writing any content, prepare your media. Heavy images or unoptimized videos are the #1 cause of poor Lighthouse scores and clunky UI rendering.
+
+1. **Images:** 
+   * **Format:** Convert your images to `.webp` format for maximum compression.
+   * **Aspect Ratio:** Crop your hero image to exactly **16:9** (e.g., `1920x1080` or `1280x720`). The `ProjectCard` component relies on an `aspect-video` container. Inconsistent ratios will cause layout shifts or ugly cropping.
+   * **Placement:** Place the image in `public/projects/compressed/`.
+
+2. **Videos (Optional but recommended):**
+   * **Format:** Use `.mp4` encoded with H.264, or `.webm`.
+   * **Audio:** **Remove the audio track entirely.** The `ProjectCard` plays videos on hover. Mobile browsers and strict desktop policies will block autoplaying videos if an audio track exists, even if the HTML tag says `muted`. Removing the audio track also saves massive amounts of bandwidth.
+   * **Placement:** Place the video in `public/projects/video/`.
+
+---
+
+## Step 2: Create the MDX File
+
+Navigate to the `content/projects/` directory and create a new `.mdx` file. 
+
+> **Senior Tip regarding Slugs:** 
+> The filename dictates the URL slug (e.g., `content/projects/my-awesome-app.mdx` becomes `/projects/my-awesome-app`). Always use lowercase, kebab-case naming conventions. Avoid spaces and special characters to prevent hydration and routing errors.
+
+---
+
+## Step 3: Configure the Frontmatter
+
+At the very top of your `.mdx` file, you must include the YAML frontmatter. This data is intercepted by `fumadocs-mdx` and validated against the Zod schema defined in `source.config.ts`.
+
+Here is the exact boilerplate you need:
+
+```yaml
+---
+title: "My Awesome App"
+description: "A brief, 1-2 sentence summary of what the app does. This appears on the project card."
+date: 2026-03-15
+image: "/projects/compressed/my-awesome-app_result.webp"
+video: "/projects/video/my-awesome-app-demo.mp4" # Optional
+tech: 
+  - "Next.js"
+  - "Tailwind CSS"
+  - "PostgreSQL"
+live: "https://my-awesome-app.vercel.app" # Optional
+github: "https://github.com/AlNahean/my-awesome-app" # Optional
+---
+```
+
+### ⚠️ Strict Validation Rules to Remember:
+- **`title`**, **`description`**, **`image`**, and **`tech`** are **REQUIRED**. If you miss one, your Vercel build will fail with a Zod validation error.
+- **`tech` must be an array**. Don't write it as a single comma-separated string.
+- **`date`** is technically optional in the schema, but **highly recommended**. The `/projects` page and the homepage `ProjectsSection` rely on chronological sorting. If dates are missing, projects will render in alphabetical order by filename, which often ruins the timeline illusion. Use the `YYYY-MM-DD` format.
+
+---
+
+## Step 4: Write the Project Content
+
+Below the frontmatter, you can write the full case study or documentation for the project using standard Markdown and MDX components.
+
+```mdx
+## Overview
+
+Explain the problem you were trying to solve. What was the motivation behind this project?
+
+## Technical Architecture
+
+You can use all the custom MDX components available in your system. For example, show off your folder structure:
+
+<Callout variant="info" title="Architecture Decision">
+  We chose to use a monolithic repository to share types between the frontend and backend easily.
+</Callout>
+
+## Key Features
+
+1. **Feature A:** Description of feature A.
+2. **Feature B:** Description of feature B.
+```
+
+---
+
+## 🔮 Future-Proofing & Troubleshooting
+
+As a senior developer, you should anticipate these potential issues:
+
+### 1. "My project isn't showing up on the homepage!"
+The homepage `ProjectsSection` (`src/components/sections/projects.tsx`) slices the first 3 projects returned by the source:
+```typescript
+const featuredProjects = [...projectSource.getPages()].slice(0, 3);
+```
+If your new project isn't appearing, it's likely because it lacks a `date` field in the frontmatter, or the date is older than your other top 3 projects. Ensure your `date` is correctly formatted and recent.
+
+### 2. "The build failed with a ZodError"
+This happens when your YAML syntax is slightly off. 
+- Did you forget a quotation mark?
+- Did you indent the `tech` array correctly? (YAML relies on strict spaces, not tabs).
+- Did you use a relative path for the image instead of an absolute public path? (Always start image paths with `/`).
+
+### 3. The Legacy `src/data/projects.ts` File
+You might notice a file at `src/data/projects.ts`. **Ignore it.** 
+Historically, projects might have been hardcoded there, but the application has been refactored to use the App Router with `fumadocs-core` reading directly from the `.mdx` files. Modifying `projects.ts` will not update the website. Only the `content/projects/` directory matters now.
+
+### 4. Hydration Mismatches with Videos
+If you notice the React tree complaining about hydration mismatches on the `ProjectCard`, check your video source. If the video fails to load or the path is wrong, the fallback UI might render differently on the server vs. the client. Always verify the `video` path matches the exact location in your `/public` folder.
+```
