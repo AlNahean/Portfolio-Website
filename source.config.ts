@@ -67,8 +67,13 @@ export const authors = defineDocs({
   dir: "content/authors",
   docs: {
     schema: frontmatterSchema.extend({
-      avatar: z.string(),
-      twitter: z.string(),
+      avatar: z.string().optional(),
+      twitter: z.string().optional(),
+      github: z.string().optional(),
+      linkedin: z.string().optional(),
+      website: z.string().optional(),
+      role: z.string().optional(),
+      bio: z.string().optional(),
     }),
   },
 });

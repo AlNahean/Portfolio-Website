@@ -4,7 +4,7 @@ import { mdxComponents } from "@/mdx-components";
 import Link from "next/link";
 import Image from "next/image";
 import { findNeighbour } from "fumadocs-core/server";
-import { ArrowLeft, ArrowRight, Calendar } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, User } from "lucide-react";
 
 import { absoluteUrl, cn } from "@/lib/utils";
 import { DocsCopyPage } from "@/components/docs-copy-page";
@@ -73,22 +73,29 @@ export default async function BlogPostPage({
                                                 {resolvedAuthors.map((author) => author && (
                                                     <Link
                                                         key={author.url}
-                                                        href={`https://twitter.com/${author.data.twitter}`}
-                                                        target="_blank"
+                                                        href={author.url}
                                                         className="flex items-center space-x-2 text-sm hover:opacity-80 transition-opacity"
                                                     >
-                                                        <Image
-                                                            src={author.data.avatar}
-                                                            alt={author.data.title}
-                                                            width={42}
-                                                            height={42}
-                                                            className="rounded-full bg-white object-cover border border-border"
-                                                        />
-                                                        <div className="flex-1 text-left leading-tight">
-                                                            <p className="font-medium text-foreground">{author.data.title}</p>
-                                                            <p className="text-[12px] text-muted-foreground">
-                                                                @{author.data.twitter}
-                                                            </p>
+                                                        {author.data.avatar ? (
+                                                            <Image
+                                                                src={author.data.avatar}
+                                                                alt={author.data.title}
+                                                                width={42}
+                                                                height={42}
+                                                                className="rounded-full bg-white object-cover border border-border shrink-0"
+                                                            />
+                                                        ) : (
+                                                            <div className="size-[42px] rounded-full bg-muted flex items-center justify-center border border-border shrink-0">
+                                                                <User className="size-5 text-muted-foreground" />
+                                                            </div>
+                                                        )}
+                                                        <div className="flex-1 text-left leading-tight min-w-0">
+                                                            <p className="font-medium text-foreground truncate">{author.data.title}</p>
+                                                            {author.data.twitter && (
+                                                                <p className="text-[12px] text-muted-foreground truncate">
+                                                                    @{author.data.twitter.replace('@', '')}
+                                                                </p>
+                                                            )}
                                                         </div>
                                                     </Link>
                                                 ))}
@@ -172,14 +179,14 @@ export default async function BlogPostPage({
                         {page.data.toc?.length ? (
                             <div className="flex flex-col gap-4">
                                 <span className="font-semibold text-sm">On This Page</span>
-                                <DocsDesktopTOC toc={page.data.toc} className="p-0 !pt-0" />
+                                <DocsDesktopTOC toc={page.data.toc} className="p-0 pt-0!" />
                             </div>
                         ) : null}
 
                         <Separator />
 
                         <div className="flex flex-col gap-4">
-                            <OpenAuthorsProfileCta />
+                            <OpenAuthorsProfileCta authors={resolvedAuthors} />
                         </div>
                     </div>
 

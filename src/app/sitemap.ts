@@ -1,9 +1,9 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/config";
-import { blogSource, source, projectSource, publicationSource, caseStudySource, reflectionSource, guidesSource } from "@/lib/source";
+import { blogSource, source, projectSource, publicationSource, caseStudySource, reflectionSource, guidesSource, authorSource } from "@/lib/source";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = [
+  const staticRoutes =[
     "",
     "/blog",
     "/components",
@@ -14,7 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/changelog",
     "/guides",
     "/journey",
-
     "/photos",
     "/guestbook",
     "/todo",
@@ -68,6 +67,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }));
+
   const guidesRoutes = guidesSource.getPages().map((page) => ({
     url: `${siteConfig.url}${page.url}`,
     lastModified: page.data.date ? new Date(page.data.date) : new Date(),
@@ -75,6 +75,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...blogRoutes, ...docRoutes, ...projectRoutes, ...publicationRoutes, ...caseStudyRoutes, ...reflectionRoutes, ...guidesRoutes];
-}
+  const authorRoutes = authorSource.getPages().map((page) => ({
+    url: `${siteConfig.url}${page.url}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.5,
+  }));
 
+  return[...staticRoutes, ...blogRoutes, ...docRoutes, ...projectRoutes, ...publicationRoutes, ...caseStudyRoutes, ...reflectionRoutes, ...guidesRoutes, ...authorRoutes];
+}
