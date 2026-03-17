@@ -1,117 +1,97 @@
 "use client";
-import { useState } from "react";
-import { Activity, AlignHorizontalSpaceAround, Box, Calculator, TerminalSquare } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
 
+import { useState } from "react";
+import {
+    Search, Hexagon, AlignLeft, Calculator,
+    LineChart, Table, AlignCenter, Network, FileCode
+} from "lucide-react";
+
+// Import the functional components we built in the previous phases
+import FastaFormatter from "@/app/(main)/biotoolbox/_components/fasta-formatter";
+import SequenceDashboard from "@/app/(main)/biotoolbox/_components/sequence-dashboard";
+import SequenceViewer from "@/app/(main)/biotoolbox/_components/sequence-viewer";
+import PairwiseAlignment from "@/app/(main)/biotoolbox/_components/pairwise-alignment";
+import VcfViewer from "@/app/(main)/biotoolbox/_components/vcf-viewer";
+import VolcanoPlot from "@/app/(main)/biotoolbox/_components/volcano-plot";
+import NetworkBuilder from "@/app/(main)/biotoolbox/_components/network-builder";
+import Protein3D from "@/app/(main)/biotoolbox/_components/protein-3d";
+import GenomeBrowser from "@/app/(main)/biotoolbox/_components/genome-browser";
+
+// Notice: AlphaFold Colab is hidden as requested
 const TOOLS = [
-    { name: "Sequence Alignment", icon: <AlignHorizontalSpaceAround className="size-4" /> },
-    { name: "3D Protein Viewer", icon: <Box className="size-4" /> },
-    { name: "Bio Calculators", icon: <Calculator className="size-4" /> },
-    { name: "Gradio Demos", icon: <TerminalSquare className="size-4" /> },
+    { id: "dashboard", name: "Sequence Dashboard", icon: Calculator, component: <SequenceDashboard /> },
+    { id: "viewer", name: "Sequence Viewer", icon: AlignLeft, component: <SequenceViewer /> },
+    { id: "formatter", name: "FASTA Formatter", icon: FileCode, component: <FastaFormatter /> },
+    { id: "vcf-viewer", name: "VCF Viewer", icon: Table, component: <VcfViewer /> },
+    { id: "alignment", name: "Pairwise Alignment", icon: AlignCenter, component: <PairwiseAlignment /> },
+    { id: "volcano", name: "Volcano Plot", icon: LineChart, component: <VolcanoPlot /> },
+    { id: "structure", name: "3D Protein Structure", icon: Hexagon, component: <Protein3D /> },
+    { id: "genome", name: "Genome Browser", icon: Search, component: <GenomeBrowser /> },
+    { id: "network", name: "Network Builder", icon: Network, component: <NetworkBuilder /> },
 ];
 
 export function BioToolboxSection() {
-    const [activeTool, setActiveTool] = useState("Sequence Alignment");
+    const [activeTool, setActiveTool] = useState(TOOLS[0].id);
+    const ActiveComponent = TOOLS.find((t) => t.id === activeTool)?.component;
 
     return (
-        <section className="py-24 container-wrapper 3xl:fixed:px-0 px-6">
-            <div className="3xl:fixed:container max-w-8xl mx-auto">
+        <section id="biotoolbox" className="py-24 container-wrapper 3xl:fixed:px-0 px-6 scroll-mt-16">
+            <div className="3xl:fixed:container max-w-8xl mx-auto flex flex-col h-full">
+
+                {/* Section Header */}
                 <div className="mb-12">
                     <h2 className="text-3xl font-black uppercase tracking-tighter mb-2 text-foreground">
                         BioToolbox
                     </h2>
-                    <p className="text-muted-foreground font-mono text-sm">
+                    <p className="text-muted-foreground font-mono text-sm max-w-2xl">
                         Interactive web-based bioinformatics tools and research utilities.
+                        Select a tool from the menu below to start analyzing data directly in your browser.
                     </p>
                 </div>
 
-                <div className="grid lg:grid-cols-[260px_1fr] gap-8 md:gap-12">
-                    {/* Sidebar Navigation */}
-                    <div className="flex flex-col gap-2">
+                {/* Embedded Application Container */}
+                <div className="flex flex-col md:flex-row gap-4 md:gap-6 min-h-[600px] h-[70vh] max-h-[850px]">
+
+                    {/* Navigation: Horizontal scroll on mobile, Vertical on desktop */}
+                    <div className="w-full md:w-64 bg-card border rounded-2xl p-2 md:p-4 flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto shrink-0 shadow-sm no-scrollbar">
+                        <h2 className="hidden md:block text-[10px] font-bold tracking-widest uppercase text-muted-foreground mb-3 px-2 mt-2">
+                            Tools Suite
+                        </h2>
                         {TOOLS.map((tool) => (
                             <button
-                                key={tool.name}
-                                onClick={() => setActiveTool(tool.name)}
-                                className={cn(
-                                    "w-full flex items-center gap-3 px-4 py-3 text-sm font-bold transition-all border rounded-lg text-left",
-                                    activeTool === tool.name
-                                        ? "bg-foreground text-background border-foreground shadow-sm"
-                                        : "bg-transparent border-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
-                                )}
+                                key={tool.id}
+                                onClick={() => setActiveTool(tool.id)}
+                                className={`flex items-center gap-2 md:gap-3 px-3 py-2 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-colors text-left shrink-0 ${activeTool === tool.id
+                                    ? "bg-primary/10 text-primary border-primary/20 border"
+                                    : "bg-muted/30 md:bg-transparent border border-transparent hover:bg-muted text-muted-foreground hover:text-foreground"
+                                    }`}
                             >
-                                {tool.icon}
-                                {tool.name}
+                                <tool.icon className="size-3.5 md:size-4 shrink-0" />
+                                <span className="whitespace-nowrap md:truncate">{tool.name}</span>
                             </button>
                         ))}
                     </div>
 
-                    {/* Main Tool Application Area */}
-                    <div className="bg-muted/30 border border-border rounded-3xl p-6 md:p-10 relative overflow-hidden">
-                        {/* Status Bar */}
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
-                            <div>
-                                <div className="flex items-center gap-2 text-primary mb-2">
-                                    <Activity className="size-5" />
-                                    <span className="font-mono text-xs uppercase tracking-widest font-black">
-                                        Sequence Alignment Playground
-                                    </span>
-                                </div>
-                                <p className="text-muted-foreground text-sm max-w-md">
-                                    Paste two DNA/RNA sequences to calculate alignment score in real-time.
-                                </p>
-                            </div>
-                            <span className="text-[10px] font-black font-mono border border-border px-3 py-1.5 rounded-full text-muted-foreground bg-background/50 uppercase tracking-tight">
-                                V1.2.0 STABLE
-                            </span>
-                        </div>
-
-                        <div className="space-y-8">
-                            {/* Input Fields */}
-                            <div className="grid gap-6">
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">
-                                        Sequence 1 (Template)
-                                    </label>
-                                    <Textarea
-                                        className="bg-background border-input font-mono text-sm h-28 focus-visible:ring-primary/30 resize-none shadow-sm"
-                                        placeholder="e.g. ATGCGTATAGC..."
-                                    />
-                                </div>
-                                <div className="space-y-3">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">
-                                        Sequence 2 (Query)
-                                    </label>
-                                    <Textarea
-                                        className="bg-background border-input font-mono text-sm h-28 focus-visible:ring-primary/30 resize-none shadow-sm"
-                                        placeholder="e.g. ATGGGTATAGC..."
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Actions */}
-                            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-                                <Button className="flex-1 font-black uppercase tracking-widest h-12 shadow-lg hover:scale-[1.02] transition-transform">
-                                    Calculate Score
-                                </Button>
-                                <Button variant="outline" className="border-border text-muted-foreground uppercase tracking-widest font-bold h-12 hover:bg-background">
-                                    Clear Input
-                                </Button>
-                            </div>
-
-                            {/* Result Area Placeholder */}
-                            <div className="border-2 border-dashed border-border rounded-2xl h-40 flex flex-col items-center justify-center text-center p-6 bg-background/20 mt-4 transition-colors">
-                                <div className="bg-muted p-3 rounded-full mb-3">
-                                    <Activity className="size-6 text-muted-foreground/40" />
-                                </div>
-                                <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground/60 max-w-xs">
-                                    Enter genomic sequences above to compute the alignment matrix
-                                </span>
-                            </div>
-                        </div>
+                    {/* Main Content Area */}
+                    <div className="flex-1 bg-card border rounded-2xl p-4 md:p-6 overflow-y-auto shadow-sm relative min-h-[60vh] md:min-h-0">
+                        {ActiveComponent}
                     </div>
+
                 </div>
+
+                {/* Attribution Footer */}
+                <div className="mt-8 text-center text-sm text-muted-foreground">
+                    This BioToolbox section was inspired by the work of{" "}
+                    <a
+                        href="https://ayyucedemirbas.github.io/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline font-semibold"
+                    >
+                        Ayyuce Demirbas
+                    </a>.
+                </div>
+
             </div>
         </section>
     );
