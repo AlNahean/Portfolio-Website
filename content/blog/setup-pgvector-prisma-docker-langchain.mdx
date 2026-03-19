@@ -1,0 +1,259 @@
+---
+title: How to Build a Local Vector Database with pgvector, Prisma, and Docker
+description: A complete, senior-level guide to setting up a local PostgreSQL vector database using the pgvector extension, Docker, and Prisma. Includes LangChain Python integration for RAG.
+date: 2026-03-19
+authors: ["your-author-id"]
+image:  "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop"
+tags: ["pgvector", "prisma", "docker", "postgresql", "langchain", "vector-database", "ai"]
+---
+
+
+
+If you're building Retrieval-Augmented Generation (RAG) applications or any AI feature requiring semantic search, you need a vector database. While managed cloud vector stores are great, relying on them for local development is slow, expensive, and a hassle to wipe and seed.
+
+Instead, the modern standard for local AI development is **PostgreSQL with the `pgvector` extension**. 
+
+Today, I'll walk you through exactly how I set up a robust, locally containerized `pgvector` instance using Docker Compose, manage the schema safely with Prisma ORM, and even hook it up to LangChain for a complete local AI stack.
+
+---
+
+## 1. The Infrastructure: Dockerizing pgvector
+
+First, we need a PostgreSQL instance with the `pgvector` extension pre-compiled. The community-maintained `ankane/pgvector` image is the absolute gold standard here. 
+
+Using the local volume bind-mount trick we discussed in previous articles, create a `docker-compose.yml` file in your project root:
+
+```yaml title="docker-compose.yml"
+services:
+  db:
+    image: ankane/pgvector
+    ports:
+      - "5432:5432"
+    volumes:
+      # Keeps your vector data persisted locally between container restarts!
+      - ./pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_USER=user
+      - POSTGRES_DB=mydb
+    restart: unless-stopped
+```
+
+Spin it up in the background:
+
+<div className="mt-4 flex gap-2">
+  <KbdGroup>
+    <Kbd>docker-compose</Kbd>
+    <Kbd>up</Kbd>
+    <Kbd>-d</Kbd>
+  </KbdGroup>
+</div>
+
+---
+
+## 2. Managing the Schema with Prisma
+
+Prisma is fantastic, but it doesn't have native, first-class support for PostgreSQL extensions right out of the box. We have to be smart about how we declare vector fields and enable the extension.
+
+### Initialize Prisma
+
+Install Prisma as a dev dependency and initialize it:
+
+<div className="mt-4 flex gap-2 mb-6">
+  <KbdGroup>
+    <Kbd>npm</Kbd>
+    <Kbd>install</Kbd>
+    <Kbd>prisma</Kbd>
+    <Kbd>--save-dev</Kbd>
+  </KbdGroup>
+</div>
+
+Update your `.env` file to match our Docker credentials:
+
+```bash title=".env"
+DATABASE_URL="postgresql://user:pass@localhost:5432/mydb"
+```
+
+### Defining the Vector Field
+
+In your `prisma/schema.prisma` file, we use Prisma's `Unsupported` type to define the vector column. 
+
+```prisma title="prisma/schema.prisma"
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Document {
+  id      String                 @id @default(cuid())
+  content String
+  // We use Unsupported to tell Prisma to let PostgreSQL handle this type
+  vector  Unsupported("vector")?
+}
+```
+
+---
+
+## 3. The Migration Trick: Enabling pgvector
+
+Here is where junior developers get stuck. If you try to push this schema right now, Postgres will throw an error because the `vector` type doesn't exist yet. We must explicitly enable the extension inside the database *before* the table is created.
+
+<Steps>
+
+<Step title="Create a Draft Migration">
+Generate the SQL migration files, but tell Prisma **not** to apply them yet.
+
+<div className="mt-4 flex gap-2">
+  <KbdGroup>
+    <Kbd>npx</Kbd>
+    <Kbd>prisma</Kbd>
+    <Kbd>migrate</Kbd>
+    <Kbd>dev</Kbd>
+    <Kbd>--create-only</Kbd>
+  </KbdGroup>
+</div>
+</Step>
+
+<Step title="Inject the Extension SQL">
+Open the newly generated `migration.sql` file (found in `prisma/migrations/`) and add this exact line to the **very top** of the file:
+
+<Alert className="mt-4">
+  <AlertTitle>Crucial Step</AlertTitle>
+  <AlertDescription>
+    If you do not add this line before the `CREATE TABLE` execution, the migration will crash permanently.
+  </AlertDescription>
+</Alert>
+
+```sql title="migration.sql"
+-- Add this line to the top!
+CREATE EXTENSION IF NOT EXISTS vector;
+
+-- Prisma's generated SQL will follow below...
+CREATE TABLE "Document" (
+    "id" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "vector" vector,
+    CONSTRAINT "Document_pkey" PRIMARY KEY ("id")
+);
+```
+</Step>
+
+<Step title="Apply the Migration">
+Now, safely apply the migration to your database.
+
+<div className="mt-4 flex gap-2">
+  <KbdGroup>
+    <Kbd>npx</Kbd>
+    <Kbd>prisma</Kbd>
+    <Kbd>migrate</Kbd>
+    <Kbd>dev</Kbd>
+  </KbdGroup>
+</div>
+</Step>
+
+</Steps>
+
+---
+
+## 4. Querying Vector Similarity in Node.js
+
+Because the `vector` type is mapped as `Unsupported`, we bypass Prisma's standard methods and use raw SQL via `$executeRaw` and `$queryRaw`.
+
+To safely format vectors for SQL, install the official Node.js helper:
+
+<div className="mt-4 flex gap-2 mb-6">
+  <KbdGroup>
+    <Kbd>npm</Kbd>
+    <Kbd>install</Kbd>
+    <Kbd>pgvector</Kbd>
+  </KbdGroup>
+</div>
+
+Here is a production-ready snippet demonstrating how to insert embeddings and perform a **K-Nearest Neighbors (KNN)** similarity search using the `<->` (L2 distance) operator:
+
+```javascript title="vector-search.js"
+import { PrismaClient } from "@prisma/client";
+import pgvector from "pgvector/pg";
+
+const prisma = new PrismaClient();
+
+async function main() {
+  // 1. Register vector types with the underlying pg driver
+  await pgvector.registerTypes(prisma);
+
+  // 2. Insert a document with a vector embedding
+  const content = "The quick brown fox jumps over the lazy dog.";
+  const embedding =[0.1, 0.2, 0.3]; // In reality, this comes from OpenAI/Open-source models
+  
+  await prisma.$executeRaw`
+    INSERT INTO "Document" (id, content, vector) 
+    VALUES ('doc_123', ${content}, ${pgvector.toSql(embedding)})
+  `;
+  console.log("✅ Inserted vector document.");
+
+  // 3. Perform Semantic Similarity Search
+  const queryVector =[0.15, 0.25, 0.35];
+  
+  const documents = await prisma.$queryRaw`
+    SELECT 
+      content, 
+      1 - (vector <-> ${pgvector.toSql(queryVector)}) as similarity 
+    FROM "Document" 
+    ORDER BY vector <-> ${pgvector.toSql(queryVector)} 
+    LIMIT 5
+  `;
+
+  console.log("🔍 Search Results:", documents);
+}
+
+main().finally(async () => {
+  await prisma.$disconnect();
+});
+```
+
+---
+
+## 5. Integrating with LangChain (Python)
+
+If you're building out your agentic logic in Python using **LangChain**, connecting to this same local Postgres instance is incredibly straightforward using the new `langchain-postgres` package.
+
+<Callout>
+  **Important Note on Drivers:** The latest LangChain Postgres integration drops `psycopg2` in favor of `psycopg3`. Your connection string **must** use `postgresql+psycopg://` (not `psycopg2` or `psycopg3`).
+</Callout>
+
+```python title="langchain-pgvector.py"
+from langchain_openai import OpenAIEmbeddings
+from langchain_postgres import PGVector
+
+# Initialize your embeddings model
+embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+
+# Connect to the local Docker container we set up earlier
+# Notice the psycopg protocol!
+connection_string = "postgresql+psycopg://user:pass@localhost:5432/mydb"
+
+# Initialize the vector store abstraction
+vector_store = PGVector(
+    embeddings=embeddings,
+    collection_name="my_docs",
+    connection=connection_string,
+    use_jsonb=True,
+)
+
+# You can now seamlessly use it as a retriever in your RAG chains
+retriever = vector_store.as_retriever(search_type="mmr", search_kwargs={"k": 3})
+results = retriever.invoke("cats in the pond")
+
+print(results)
+```
+
+### Wrapping Up
+
+By combining Dockerized `pgvector` with Prisma migrations and raw SQL, you gain a massive advantage in local AI development. You get the strict type-safety and schema management of Prisma for your application data, while maintaining absolute control over the high-performance vector operations needed for modern semantic search and RAG architectures.
+
+If your database ever gets out of sync or polluted with bad embeddings, just nuke the local `./pgdata` folder, restart your container, and rerun `npx prisma migrate dev`. Boom—fresh vector database in under 5 seconds.
+```

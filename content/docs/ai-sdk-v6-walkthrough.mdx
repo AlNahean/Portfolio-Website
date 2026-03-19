@@ -1,0 +1,66 @@
+---
+title: "AI SDK v6 Walkthrough"
+description: "A comprehensive overview of Nahean's background, technical stack, career trajectory, and unique positioning as a hybrid Bioinformatics Software Engineer."
+lastUpdated: "2026-03-11"
+---
+
+
+
+# RAG Agent Guide
+
+In this guide, you will learn how to build a retrieval-augmented generation (RAG) agent.
+
+
+
+Before we dive in, let's look at what RAG is, and why we would want to use it.
+
+### What is RAG?
+
+RAG stands for retrieval augmented generation. In simple terms, RAG is the process of providing a Large Language Model (LLM) with specific information relevant to the prompt.
+
+### Why is RAG important?
+
+While LLMs are powerful, the information they can reason on is restricted to the data they were trained on. This problem becomes apparent when asking an LLM for information outside of their training data, like proprietary data or common knowledge that has occurred after the model’s training cutoff. RAG solves this problem by fetching information relevant to the prompt and then passing that to the model as context.
+
+To illustrate with a basic example, imagine asking the model for your favorite food:
+
+```txt
+**input**
+What is my favorite food?
+
+**generation**
+I don't have access to personal information about individuals, including their
+favorite foods.
+```
+
+Not surprisingly, the model doesn’t know. But imagine, alongside your prompt, the model received some extra context:
+
+```txt
+**input**
+Respond to the user's prompt using only the provided context.
+user prompt: 'What is my favorite food?'
+context: user loves chicken nuggets
+
+**generation**
+Your favorite food is chicken nuggets!
+```
+
+Just like that, you have augmented the model’s generation by providing relevant information to the query. Assuming the model has the appropriate information, it is now highly likely to return an accurate response to the users query. But how does it retrieve the relevant information? The answer relies on a concept called embedding.
+
+<callout>
+  You could fetch any context for your RAG application (eg. Google search).
+  Embeddings and Vector Databases are just a specific retrieval approach to
+  achieve semantic search.
+</callout>
+
+### Embedding
+
+[Embeddings](/docs/ai-sdk-core/embeddings) are a way to represent words, phrases, or images as vectors in a high-dimensional space. In this space, similar words are close to each other, and the distance between words can be used to measure their similarity.
+
+In practice, this means that if you embedded the words `cat` and `dog`, you would expect them to be plotted close to each other in vector space. The process of calculating the similarity between two vectors is called ‘cosine similarity’ where a value of 1 would indicate high similarity and a value of -1 would indicate high opposition.
+
+<callout>
+  Don’t worry if this seems complicated. a high level understanding is all you
+  need to get started! For a more in-depth introduction to embeddings, check out
+  [this guide](https://jalammar.github.io/illustrated-word2vec/).
+</callout>
