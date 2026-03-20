@@ -282,9 +282,9 @@ export const mdxComponents: MDXComponents = {
 
         const rawCode = extractRawCode(props.children);
 
-        // Default codeblock. dont remove the max-w-[80vw], it is needed for overflow issue in mobile devices and dont remove this comment either
+        // Default codeblock. Using a larger offset for calc to ensure it fits beside the Steps counter and line
         return (
-            <div className="max-w-[80vw]  overflow-scroll md:overflow-hidden">
+            <div className="max-w-[calc(100vw-120px)] md:max-w-full overflow-x-auto md:overflow-hidden">
                 {/* {JSON.stringify(props)} */}
                 {rawCode && <CopyButton value={rawCode} src={__src__} />}
                 <code {...props} />
@@ -307,7 +307,7 @@ export const mdxComponents: MDXComponents = {
             {...props}
         >
             <span className="block mb-2">{title}</span>
-            <div className="font-normal text-base text-muted-foreground leading-relaxed">
+            <div className="font-normal text-base text-muted-foreground leading-relaxed overflow-x-auto w-full min-w-0 max-w[80vw]">
                 {children}
             </div>
         </h3>
@@ -364,7 +364,7 @@ export const mdxComponents: MDXComponents = {
     }: React.ComponentProps<typeof TabsContent>) => (
         <TabsContent
             className={cn(
-                "relative [&_h3.font-heading]:text-base [&_h3.font-heading]:font-medium *:[figure]:first:mt-0 [&>.steps]:mt-6",
+                "relative min-w-0 w-full [&_h3.font-heading]:text-base [&_h3.font-heading]:font-medium *:[figure]:first:mt-0 [&>.steps]:mt-6",
                 className
             )}
             {...props}
