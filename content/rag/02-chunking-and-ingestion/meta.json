@@ -1,0 +1,10 @@
+{
+  "title": "Ingestion & Chunking",
+  "pages": [
+    "index",
+    "choose-chunk-size",
+    "semantic-chunking",
+    "propositions-chunking",
+    "contextual-chunk-headers-cch"
+  ]
+}

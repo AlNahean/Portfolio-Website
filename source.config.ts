@@ -21,10 +21,10 @@ import { z } from "zod";
  */
 export default defineConfig({
   mdxOptions: {
-//     remarkImageOptions: {
-//   useImport: false,
-//   placeholder: "none",
-// },
+    //     remarkImageOptions: {
+    //   useImport: false,
+    //   placeholder: "none",
+    // },
     rehypePlugins: (plugins) => {
       plugins.shift();
       plugins.push([
@@ -164,10 +164,23 @@ export const rag = defineDocs({
   dir: "content/rag",
   docs: {
     schema: frontmatterSchema.extend({
-      category: z
-        .enum(["Foundational", "Query Enhancement", "Context Enrichment"])
-        .optional(),
-      difficulty: z.enum(["beginner", "intermediate", "advanced"]).optional(),
+      // High-level grouping for the sidebar
+      category: z.string().optional(),
+
+      // Specific keywords for SEO and internal search filtering
+      tags: z.array(z.string()).default([]).optional(),
+
+      // Standardize but don't restrict
+      difficulty: z.string().optional(),
+
+      // Metadata for the "Senior" feel
+      author: z.string().optional(),
+      stack: z.array(z.string()).optional(),
+      lastTested: z.string().optional(),
+      isStable: z.boolean().default(true).optional(),
+
+      // For the "Next Steps" or "Related" components
+      relatedDocs: z.array(z.string()).optional(),
     }),
   },
 });

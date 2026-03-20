@@ -1,0 +1,8 @@
+{
+  "title": "Foundational Concepts",
+  "pages": [
+    "index",
+    "basic-rag",
+    "hypothetical-document-embedding-hyde"
+  ]
+}

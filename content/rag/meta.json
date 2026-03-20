@@ -1,0 +1,9 @@
+{
+  "title": "RAG Techniques",
+  "pages": [
+    "00-getting-started",
+    "01-foundational",
+    "02-chunking-and-ingestion",
+    "index"
+  ]
+}
