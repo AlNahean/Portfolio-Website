@@ -1,0 +1,242 @@
+---
+title: Semantic Chunking
+description: Implement subject-aware text splitting by identifying natural thematic boundaries using sentence embeddings and Vercel AI SDK v6.
+category: Foundational
+difficulty: intermediate
+---
+
+Traditional chunking relies on arbitrary character or token counts, which often severs a sentence or paragraph in the middle of a logical thought. **Semantic Chunking** solves this by analyzing the meaning of the text to find "natural" breakpoints. 
+
+By calculating the cosine similarity between adjacent sentences, the system identifies where a topic ends and a new one begins, ensuring that every chunk passed to the LLM is a complete, self-contained concept.
+
+## How the Pipeline Works
+
+The process moves beyond fixed-width counters into adaptive linguistic analysis:
+
+1.  **Sentence Tokenization**: The document is first broken down into individual sentences using LangChain.
+2.  **Vector Comparison**: Every sentence is embedded. We then measure the "distance" between sentence A and sentence B.
+3.  **Breakpoint Detection**: If the similarity between two adjacent sentences drops below a specific threshold (e.g., 0.8), the system triggers a split.
+4.  **Buffer Management**: Related sentences are grouped into a single semantic block until the next thematic shift is detected.
+
+<Callout>
+**The Paragraph Analogy**
+Fixed chunking is like a **paper shredder** that cuts every 5 inches regardless of what is written. **Semantic Chunking** is like a **human editor** who only cuts the paper at the end of a cohesive paragraph or chapter.
+</Callout>
+
+## Architecture Overview
+
+```text
+       [Full Text]
+            │
+            ▼
+  ┌──────────────────────┐
+  │ Sentence Tokenizer   │ (Break into Sentences)
+  └─────────┬────────────┘
+            │
+    ┌───────┴───────┐
+    ▼               ▼
+[Sentence 1] <─?─> [Sentence 2] (Calculate Embedding Similarity)
+    │               │
+    └───────┬───────┘
+            ▼
+  ┌──────────────────────┐
+  │ Threshold Processor  │ (Similarity < 0.8? Split : Merge)
+  └─────────┬────────────┘
+            │
+            ▼
+  ┌──────────────────────┐
+  │   Semantic Chunks    │ (Cohesive logical units)
+  └──────────────────────┘
+```
+
+## Implementation Walkthrough
+
+<Steps>
+
+<Step title="Environment Configuration">
+
+Install the required packages for text processing and embedding generation.
+
+```bash
+npm install ai @ai-sdk/openai unpdf @langchain/textsplitters dotenv
+```
+
+</Step>
+
+<Step title="Semantic Splitting Logic">
+
+We leverage the AI SDK to embed sentences and identify thematic shifts. In this senior workflow, we calculate the "Similarity Gap" to determine splits.
+
+<Tabs defaultValue="code">
+<TabsList>
+  <TabsTrigger value="code">Code</TabsTrigger>
+  <TabsTrigger value="expected-output">Expected Output</TabsTrigger>
+</TabsList>
+<TabsContent value="code">
+```javascript
+import { embedMany, cosineSimilarity } from 'ai';
+import { openai } from '@ai-sdk/openai';
+
+Log.step("Thematic Analysis");
+
+// 1. Group sentences into pairs to find transitions
+const { embeddings } = await embedMany({
+  model: openai.embedding('text-embedding-3-small'),
+  values: sentences,
+});
+
+const semanticChunks = [];
+let currentGroup = [sentences[0]];
+
+for (let i = 0; i < sentences.length - 1; i++) {
+  const similarity = cosineSimilarity(embeddings[i], embeddings[i + 1]);
+  
+  if (similarity < 0.82) { // The thematic threshold
+    semanticChunks.push(currentGroup.join(" "));
+    currentGroup = [sentences[i + 1]];
+  } else {
+    currentGroup.push(sentences[i + 1]);
+  }
+}
+Log.info(`Extracted ${semanticChunks.length} topic-aligned chunks.`);
+```
+</TabsContent>
+<TabsContent value="expected-output">
+```text
+--- STEP: THEMATIC ANALYSIS ---
+[INFO] 12:40:02 PM | Processing 150 sentences.
+[INFO] 12:40:03 PM | Extracted 12 topic-aligned chunks.
+```
+</TabsContent>
+</Tabs>
+
+</Step>
+
+</Steps>
+
+## Complete Production Script (index.js)
+
+<Tabs defaultValue="code">
+<TabsList>
+  <TabsTrigger value="code">Code</TabsTrigger>
+  <TabsTrigger value="expected-output">Expected Output</TabsTrigger>
+</TabsList>
+<TabsContent value="code">
+```javascript
+import fs from 'fs/promises';
+import { getDocumentProxy, extractText } from 'unpdf';
+import { embedMany, embed, cosineSimilarity, generateText } from 'ai';
+import { openai } from '@ai-sdk/openai';
+import 'dotenv/config';
+
+const CONFIG = {
+  pdfPath: './data/AI_Information.pdf',
+  embeddingModel: 'text-embedding-3-small',
+  generationModel: 'gpt-5.4-nano',
+  similarityThreshold: 0.82,
+};
+
+const Log = {
+  info: (msg) => console.log(`[INFO]  ${msg}`),
+  step: (step) => console.log(`\n--- ${step.toUpperCase()} ---`),
+  success: (msg) => console.log(`[OK]    ${msg}`),
+};
+
+async function runSemanticPipeline() {
+  try {
+    Log.step("Extraction");
+    const dataBuffer = await fs.readFile(CONFIG.pdfPath);
+    const pdfProxy = await getDocumentProxy(new Uint8Array(dataBuffer));
+    const { text: fullText } = await extractText(pdfProxy, { mergePages: true });
+
+    // Simple sentence splitter (regex)
+    const sentences = fullText.match(/[^\.!\?]+[\.!\?]+/g) || [fullText];
+    Log.info(`Extracted ${sentences.length} raw sentences.`);
+
+    Log.step("Semantic Grouping");
+    const { embeddings } = await embedMany({
+      model: openai.embedding(CONFIG.embeddingModel),
+      values: sentences,
+    });
+
+    const chunks = [];
+    let currentChunk = [sentences[0]];
+
+    for (let i = 0; i < sentences.length - 1; i++) {
+      const similarity = cosineSimilarity(embeddings[i], embeddings[i + 1]);
+      if (similarity < CONFIG.similarityThreshold) {
+        chunks.push(currentChunk.join(" "));
+        currentChunk = [sentences[i + 1]];
+      } else {
+        currentChunk.push(sentences[i + 1]);
+      }
+    }
+    chunks.push(currentChunk.join(" "));
+    Log.success(`Created ${chunks.length} semantic chunks.`);
+
+    Log.step("Indexing & Query");
+    const { embeddings: chunkVectors } = await embedMany({
+      model: openai.embedding(CONFIG.embeddingModel),
+      values: chunks,
+    });
+    
+    const vectorStore = chunks.map((text, i) => ({ text, embedding: chunkVectors[i] }));
+    const query = "What is the primary risk profile?";
+    const { embedding: queryVector } = await embed({
+      model: openai.embedding(CONFIG.embeddingModel),
+      value: query,
+    });
+
+    const context = vectorStore
+      .map(item => ({ text: item.text, similarity: cosineSimilarity(queryVector, item.embedding) }))
+      .sort((a, b) => b.similarity - a.similarity)
+      .slice(0, 2)
+      .map(m => m.text).join("\n\n");
+
+    const { text } = await generateText({
+      model: openai(CONFIG.generationModel),
+      system: "You are a senior analyst. Use the provided semantic blocks to answer.",
+      prompt: `Context:\n${context}\n\nQuestion: ${query}`,
+    });
+
+    console.log(`\nAI Response:\n${text}`);
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+runSemanticPipeline();
+```
+</TabsContent>
+<TabsContent value="expected-output">
+```text
+--- STEP: EXTRACTION ---
+[INFO]  Extracted 152 raw sentences.
+
+--- STEP: SEMANTIC GROUPING ---
+[OK]    Created 14 semantic chunks.
+
+--- STEP: INDEXING & QUERY ---
+
+AI Response:
+The risk profile highlights systemic biases and safety alignment challenges...
+```
+</TabsContent>
+</Tabs>
+
+## Summary of Impact
+
+| Metric | Fixed-Size Chunking | Semantic Chunking |
+| :--- | :--- | :--- |
+| **Context Retention** | Moderate (Splits thoughts) | **Superior** (Keeps thoughts whole) |
+| **Noise Level** | High | Low |
+| **Preprocessing Time** | Very Fast | Slow (Requires N embeddings) |
+| **LLM Reasoning** | Variable | Highly Consistent |
+
+## When to Use This
+- Complex academic papers where single concepts span multiple sentences.
+- Legal documents where "Contextual Drift" leads to dangerous misinterpretations.
+- Building RAG systems where accuracy is prioritized over ingestion speed.
+- Reducing the total number of chunks by merging highly related sentences into larger, cleaner units.
+```

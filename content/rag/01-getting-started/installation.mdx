@@ -1,0 +1,66 @@
+---
+title: Installation & Base Utility
+description: Setup your environment and the core utilities used across all RAG patterns.
+---
+
+# Installation
+
+To get started, install the core dependencies. We use `pdf-parse` for document extraction and `ai` with `@ai-sdk/openai` for LLM operations.
+
+```bash
+npm install ai @ai-sdk/openai pdf-parse zod
+```
+
+## The Base Utility (`lib/rag-utils.ts`)
+
+Instead of writing the same vector math on every page, create this utility file. Every technique in this library assumes you have these helpers available.
+
+```typescript
+import { embed, cosineSimilarity } from 'ai';
+import { openai } from '@ai-sdk/openai';
+
+/**
+ * Generates a semantic vector for a string.
+ */
+export async function getEmbedding(value: string) {
+  const { embedding } = await embed({
+    model: openai.embedding('text-embedding-3-small'),
+    value,
+  });
+  return embedding;
+}
+
+/**
+ * Finds the most relevant chunks using cosine similarity.
+ */
+export function findRelevantChunks(
+  queryEmbedding: number[], 
+  chunks: { text: string; embedding: number[] }[], 
+  topK = 3
+) {
+  return chunks
+    .map((chunk) => ({
+      ...chunk,
+      similarity: cosineSimilarity(queryEmbedding, chunk.embedding),
+    }))
+    .sort((a, b) => b.similarity - a.similarity)
+    .slice(0, topK);
+}
+```
+
+## Environment Variables
+
+Ensure your `.env.local` has your API key:
+
+```text
+OPENAI_API_KEY=sk-proj-xxxx...
+```
+
+
+
+### Senior Dev Advice on Merging Files:
+You have several files with "LlamaIndex" in the title or version "2" (e.g., `reliable-rag-2.mdx`). 
+*   **Action:** Do not keep separate pages for LlamaIndex. Instead, write **one authoritative page** using the Vercel AI SDK logic. 
+*   **Result:** This reduces your 39 files down to about 25-30 high-quality, high-intent pages.
+
+**Shall we start rewriting the "Basic RAG" page from your list using this new Vercel AI SDK pattern?**   please generate this again and i will ask antigravity to geenrate these files e so as a senior developer mape a bulletproof plan for this 

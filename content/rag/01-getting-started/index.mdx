@@ -1,0 +1,35 @@
+---
+title: Introduction
+description: A comprehensive library of Retrieval-Augmented Generation (RAG) techniques implemented with Vercel AI SDK.
+---
+
+# Introduction
+
+Welcome to the RAG Pattern Library. This documentation is designed to help you move beyond "Basic RAG" and build production-grade AI systems that are accurate, reliable, and fast.
+
+## Why Vercel AI SDK?
+
+Most RAG tutorials use heavy frameworks like LlamaIndex or LangChain. While powerful, they often hide the underlying logic. We use the **Vercel AI SDK** because:
+
+1. **Transparency:** You see exactly how the embeddings and prompts are handled.
+2. **Edge Compatibility:** These patterns work in Next.js Server Actions, Edge Functions, and standard Node.js environments.
+3. **Streaming First:** Built-in support for real-time UI updates.
+
+## How to use this documentation
+
+This library is organized by the **RAG Lifecycle**:
+
+- **Chunking:** How to split your data without losing meaning.
+- **Retrieval:** How to find the right information even when the user is vague.
+- **Refinement:** How to clean up the data before the LLM sees it.
+- **Advanced:** Complex, multi-step architectures like GraphRAG and Self-RAG.
+
+<Callout>
+Each page includes a **"Pain Point"** section. Read this first to see if that specific technique solves the problem you are currently facing in your app.
+</Callout>
+
+---
+
+### 3. Drafting the "Base Utility" (`installation.mdx`)
+
+To keep our MDX files clean, we won't repeat the math and API setup on every page. We will point users to create a `lib/rag-utils.ts` file first.

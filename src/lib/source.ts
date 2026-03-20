@@ -1,5 +1,5 @@
 import { loader } from "fumadocs-core/source";
-import { docs, study, blog, publications, projects, caseStudies, reflections, authors, guides } from "../../.source";
+import { docs, study, blog, publications, projects, caseStudies, reflections, authors, guides, rag } from "../../.source";
 
 // Restored: Legacy Docs Source (Required for /app/docs)
 export const source = loader({
@@ -52,4 +52,9 @@ export const authorSource = loader({
 export const guidesSource = loader({
   baseUrl: "/guides",
   source: guides.toFumadocsSource(),
+});
+
+export const ragSource = loader({
+  baseUrl: "/rag",
+  source: rag.toFumadocsSource(),
 });

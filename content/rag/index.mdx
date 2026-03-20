@@ -1,0 +1,27 @@
+---
+title: RAG Techniques
+description: A practical guide to Retrieval-Augmented Generation patterns in TypeScript.
+---
+
+Retrieval-Augmented Generation (RAG) is the standard for building LLM applications that reason over private, up-to-date data. Instead of relying solely on the model's static training weights, RAG retrieves relevant facts from your own documents and injects them directly into the prompt as context.
+
+This guide moves beyond simple vector search to explore the advanced patterns used in production. The "right" RAG implementation is never one-size-fits-all; it depends entirely on your document density, query complexity, and latency requirements.
+
+### Foundational
+- [Basic RAG](/rag/foundational/basic-rag) — The baseline pattern of chunking, embedding, and retrieving.
+- [Chunk Sizes](/rag/foundational/chunk-sizes.mdx) — Finding the optimal balance between precision and context.
+- [Proposition Chunking](/rag/foundational/proposition-chunking.mdx) — Deconstructing text into atomic factual statements for higher accuracy.
+- [Reliable RAG](/rag/foundational/reliable-rag.mdx) — Adding a verification loop to catch and eliminate hallucinations.
+
+### Query Enhancement
+- [HyDE](/rag/query-enhancement/hyde.mdx) — Using hypothetical answers to bridge the gap between questions and documents.
+- [HyPE](/rag/query-enhancement/hype.mdx) — Generating hypothetical questions at ingest time for faster, more relevant search.
+- [Query Transformations](/rag/query-enhancement/query-transformations.mdx) — Rewriting user queries into multiple perspectives to handle ambiguity.
+
+### Context Enrichment
+- [Semantic Chunking](/rag/context-enrichment/semantic-chunking.mdx) — Splitting documents at semantic boundaries instead of fixed counts.
+- [Contextual Compression](/rag/context-enrichment/contextual-compression.mdx) — Summarizing retrieved chunks to fit more relevant signal into the window.
+- [Contextual Headers](/rag/context-enrichment/contextual-headers.mdx) — Preserving structure by prepending metadata to every chunk.
+- [Relevant Segment Extraction](/rag/context-enrichment/relevant-segment-extraction.mdx) — Isolating exact sentences within a chunk that answer the query.
+- [Context Window Enhancement](/rag/context-enrichment/context-window-enhancement.mdx) — Including neighboring chunks to provide wider document context.
+- [Document Augmentation](/rag/context-enrichment/document-augmentation.mdx) — Enriching chunks with generated metadata during ingestion.

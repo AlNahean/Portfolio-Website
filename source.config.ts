@@ -159,3 +159,15 @@ export const guides = defineDocs({
     }),
   },
 });
+
+export const rag = defineDocs({
+  dir: "content/rag",
+  docs: {
+    schema: frontmatterSchema.extend({
+      category: z
+        .enum(["Foundational", "Query Enhancement", "Context Enrichment"])
+        .optional(),
+      difficulty: z.enum(["beginner", "intermediate", "advanced"]).optional(),
+    }),
+  },
+});
