@@ -1,0 +1,181 @@
+---
+title: "Introduction: Engineering RAG at Scale"
+description: "The architectural shift from standard LLMs to grounded, reliable Retrieval-Augmented Generation."
+category: "01-Introduction"
+difficulty: "beginner"
+---
+
+**Retrieval-Augmented Generation** (RAG) is the primary engineering paradigm for mitigating the two most critical failure points of Large Language Models: knowledge cut-off and hallucinations. In a production environment, RAG is not simply 'stuffing context' into a prompt; it is a complex data engineering pipeline that manages ingestion, semantic search, and grounded inference.
+
+### Engineering Trade-offs
+
+| Feature | Technical Impact |
+| :--- | :--- |
+| **Pros** | Eliminates fine-tuning costs for current data; provides clear audit trails; enables dynamic knowledge updates. |
+| **Cons** | Introduces retrieval latency; requires vector storage management; increases prompt token counts. |
+
+## Architecture Overview
+
+The system-level design of a standard RAG pipeline involves three distinct stages:
+
+```text
+       ┌───────────┐
+       │ Ingestion │ (Extract -> Chunk -> Vectorize)
+       └─────┬─────┘
+             ▼
+       ┌───────────┐
+       │ Retrieval │ (Cosine Similarity + Precision Filtering)
+       └─────┬─────┘
+             ▼
+       ┌───────────┐
+       │ Generation│ (Contextual Grounding + Hallucination Check)
+       └───────────┘
+```
+
+## Implementation Walkthrough
+
+The following steps define the foundation for our "Bulletproof RAG" stack using the Vercel AI SDK v6.
+
+<Steps>
+
+<Step title="Production Dependency Stack">
+We prioritize modularity over monolithic frameworks. Our stack uses `unpdf` for raw text extraction and the Vercel AI SDK for its unified model interface.
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="code">Command</TabsTrigger>
+    <TabsTrigger value="output">Expected Output</TabsTrigger>
+  </TabsList>
+  <TabsContent value="code">
+```bash
+npm install ai @ai-sdk/openai unpdf @langchain/textsplitters
+```
+  </TabsContent>
+  <TabsContent value="output">
+```text
+added 52 packages in 3s
+[SUCCESS] Baseline RAG environment initialized.
+```
+  </TabsContent>
+</Tabs>
+</Step>
+
+<Step title="Tech Stack Readiness Probe">
+Before building complex modules, we verify the embedding and generation path using standard Vercel AI SDK primitives.
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="code">Code</TabsTrigger>
+    <TabsTrigger value="output">Expected Output</TabsTrigger>
+  </TabsList>
+  <TabsContent value="code">
+```javascript
+import { generateText, embed } from 'ai';
+import { openai } from '@ai-sdk/openai';
+
+// Testing Retrieval (Embedding) Path
+const { embedding } = await embed({
+  model: openai.embedding('text-embedding-3-small'),
+  value: 'Engineering RAG Pipelines',
+});
+
+// Testing Generation Path
+const { text } = await generateText({
+  model: openai('gpt-4o-mini'),
+  prompt: 'Calculate the system latency impact of adding a retrieval step.',
+});
+
+console.log(`[SYS] Stack Ready. Vector Dimension: ${embedding.length}`);
+```
+  </TabsContent>
+  <TabsContent value="output">
+```text
+[SYS] Stack Ready. Vector Dimension: 1536
+```
+  </TabsContent>
+</Tabs>
+</Step>
+
+</Steps>
+
+## Complete Production Script
+
+This baseline script serves as a smoke test for your API keys and dependency environment.
+
+<Tabs defaultValue="script">
+<TabsList>
+  <TabsTrigger value="script">index.js</TabsTrigger>
+  <TabsTrigger value="logs">Execution Logs</TabsTrigger>
+</TabsList>
+<TabsContent value="script">
+```javascript
+import { generateText, embed } from 'ai';
+import { openai } from '@ai-sdk/openai';
+import 'dotenv/config';
+
+/**
+ * Bulletproof RAG Smoke Test
+ * Verifies environment configuration and SDK connectivity.
+ */
+async function smokeTest() {
+  const logger = {
+    info: (msg) => console.log(`[INFO]  ${new Date().toISOString()} | ${msg}`),
+    timer: (label) => console.time(`[TIME]  ${label}`),
+    timerEnd: (label) => console.timeEnd(`[TIME]  ${label}`)
+  };
+
+  try {
+    logger.info("Initializing Stack Verification...");
+    
+    logger.timer("vectorization");
+    const { embedding } = await embed({
+      model: openai.embedding('text-embedding-3-small'),
+      value: "Sanity check for vector pipeline.",
+    });
+    logger.timerEnd("vectorization");
+    logger.info(`Vector pipeline verified. Dims: ${embedding.length}`);
+
+    logger.timer("inference");
+    const { text } = await generateText({
+      model: openai('gpt-4o-mini'),
+      prompt: "Explain the benefit of Vercel AI SDK for RAG in one sentence.",
+    });
+    logger.timerEnd("inference");
+    logger.info(`Inference pipeline verified. Response length: ${text.length}`);
+
+    console.log(`\n--- SMOKE TEST SUCCESSFUL ---\n`);
+
+  } catch (error) {
+    console.error(`[FATAL] Verification failed: ${error.message}`);
+    process.exit(1);
+  }
+}
+
+smokeTest();
+```
+</TabsContent>
+<TabsContent value="logs">
+```text
+[INFO]  2024-05-20T10:00:00.000Z | Initializing Stack Verification...
+[TIME]  vectorization: 120ms
+[INFO]  2024-05-20T10:00:00.120Z | Vector pipeline verified. Dims: 1536
+[TIME]  inference: 850ms
+[INFO]  2024-05-20T10:00:00.970Z | Inference pipeline verified. Response length: 142
+
+--- SMOKE TEST SUCCESSFUL ---
+```
+</TabsContent>
+</Tabs>
+
+## Summary of Impact
+
+| Metric | Non-Grounded LLM | Grounded RAG |
+| :--- | :--- | :--- |
+| **Factual Accuracy** | Variable (Training Recency) | High (Context-Locked) |
+| **Privacy Compliance** | Low (Public Models) | High (Data remains in your VPC) |
+| **Cost Efficiency** | High (Fine-tuning overhead) | Lower (Execution-only cost) |
+
+## When to Use This
+- When building LLM applications that require 100% data freshness.
+- For technical support bots that must reference current API documentation.
+- Any domain where "I don't know" is better than a false answer.

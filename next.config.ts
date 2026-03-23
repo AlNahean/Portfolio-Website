@@ -54,6 +54,10 @@ const nextConfig: NextConfig = {
         source: "/guides/:path*.md",
         destination: "/llm/:path*",
       },
+      {
+        source: "/rag/:path*.md",
+        destination: "/llm/:path*",
+      },
     ];
 
   },

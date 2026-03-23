@@ -1,0 +1,8 @@
+{
+  "title": "Module 03: Data Engineering",
+  "pages": [
+    "parsing-with-unpdf",
+    "chunking-strategies",
+    "contextual-metadata"
+  ]
+}

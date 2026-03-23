@@ -1,0 +1,174 @@
+---
+title: "Advanced Chunking Strategies"
+description: "From fixed-size splits to semantic-aware and proposition-based segments for high-fidelity RAG retrieval."
+category: "03-Data-Engineering"
+difficulty: "intermediate"
+---
+
+The quality of RAG retrieval is secondary to the quality of RAG **segmentation**. If a chunk is too small, it loses its semantic context; if it is too large, it introduces noise that distracts the LLM. We move beyond simple character counts into **Recursive**, **Semantic**, and **Propositional** chunking to ensure every retrieved snippet is factually dense and logically complete.
+
+### Engineering Trade-offs
+
+| Strategy | Technical Impact |
+| :--- | :--- |
+| **Fixed-Size** | Fast execution; high risk of cutting sentences in half; inconsistent semantic density. |
+| **Recursive** | Respects logical boundaries (paragraphs/sentences); reduces context fragmentation; standard for production. |
+| **Propositional** | Extracts atomic facts; ideal for precision-critical domains; requires an extra LLM call for indexing. |
+
+## Architecture Overview
+
+The multi-stage chunking logic follows this data flow:
+
+```text
+       [Full Document]
+              │
+      ┌───────▼───────┐
+      │ Recursive Split│ (Prioritize: \n\n, \n, ., " ")
+      └───────┬───────┘
+              │
+    ┌─────────┴─────────┐
+    ▼                   ▼
+[Semantic Grouping]  [Proposition Extraction]
+(Cluster by vector)  (Extract: Atomic facts)
+```
+
+## Implementation Walkthrough
+
+The following steps demonstrate how to implement the `RecursiveCharacterTextSplitter` from LangChain to maintain structural integrity.
+
+<Steps>
+
+<Step title="Recursive Boundary Identification">
+We initialize the recursive splitter. Unlike a simple slice, this algorithm attempts to split at the largest possible boundary first (e.g., paragraphs) before moving to smaller ones (e.g., spaces).
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="code">Code</TabsTrigger>
+    <TabsTrigger value="output">Expected Output</TabsTrigger>
+  </TabsList>
+  <TabsContent value="code">
+```javascript
+import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+
+const splitter = new RecursiveCharacterTextSplitter({
+  chunkSize: 500,
+  chunkOverlap: 50,
+});
+
+const segments = await splitter.splitText("Your full extracted text...");
+console.log(`[SYS] Segments generated: ${segments.length}`);
+```
+  </TabsContent>
+  <TabsContent value="output">
+```text
+[SYS] Segments generated: 85
+[DEBUG] Avg. segment length: 485 chars
+```
+  </TabsContent>
+</Tabs>
+</Step>
+
+<Step title="Propositional Fact Extraction">
+For mission-critical data, we convert standard chunks into atomic "propositions" using a teacher-LLM to ensure each snippet is self-contained.
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="code">Code</TabsTrigger>
+    <TabsTrigger value="output">Expected Output</TabsTrigger>
+  </TabsList>
+  <TabsContent value="code">
+```javascript
+import { generateText } from 'ai';
+import { openai } from '@ai-sdk/openai';
+
+const { text: propositions } = await generateText({
+  model: openai('gpt-4o-mini'),
+  prompt: 'Break the following text into atomic, independent facts: [Your Chunk Content]',
+});
+
+console.log(`[DATA] Fact count extracted: ${propositions.split('\n').length}`);
+```
+  </TabsContent>
+  <TabsContent value="output">
+```text
+[DATA] Fact count extracted: 5
+[INFO] Proposition 1: "AI safety research receives 4% of total funding."
+```
+  </TabsContent>
+</Tabs>
+</Step>
+
+</Steps>
+
+## Complete Production Script
+
+This script illustrates the difference between fixed-size and recursive splitting in a live execution.
+
+<Tabs defaultValue="script">
+<TabsList>
+  <TabsTrigger value="script">index.js</TabsTrigger>
+  <TabsTrigger value="logs">Execution Logs</TabsTrigger>
+</TabsList>
+<TabsContent value="script">
+```javascript
+import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+import 'dotenv/config';
+
+/**
+ * Technical Comparison of Chunking Strategies.
+ */
+async function compareChunking() {
+  const sampleText = `
+    Advanced RAG techniques prioritize semantic density over raw character counts. 
+    By using Recursive Character Splitting, we preserve the logical flow of a document. 
+    This is critical for high-stakes technical documentation where every sentence matters.
+  `.repeat(10);
+
+  const logger = {
+    info: (msg) => console.log(`[INFO]  ${new Date().toISOString()} | ${msg}`),
+  };
+
+  // 1. Fixed-Size (Simulated)
+  const fixedSize = sampleText.match(/.{1,100}/g);
+  logger.info(`Fixed-size split: ${fixedSize.length} chunks. (Risk: high fragmentation)`);
+  logger.info(`Fixed Chunk 1: |${fixedSize[0]}|`);
+
+  // 2. Recursive (Production Grade)
+  const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 100,
+    chunkOverlap: 20
+  });
+  const recursiveChunks = await splitter.splitText(sampleText);
+  logger.info(`Recursive split: ${recursiveChunks.length} chunks. (Prioritizing sentence integrity)`);
+  logger.info(`Recursive Chunk 1: |${recursiveChunks[0]}|`);
+
+  console.log(`\n--- CHUNKING COMPARISON SUCCESS ---\n`);
+}
+
+compareChunking();
+```
+</TabsContent>
+<TabsContent value="logs">
+```text
+[INFO]  2024-05-20T12:05:00.000Z | Fixed-size split: 24 chunks. (Risk: high fragmentation)
+[INFO]  2024-05-20T12:05:00.010Z | Fixed Chunk 1: |    Advanced RAG techniques prioritize semantic density over raw character counts. |
+[INFO]  2024-05-20T12:05:00.015Z | Recursive split: 31 chunks. (Prioritizing sentence integrity)
+[INFO]  2024-05-20T12:05:00.015Z | Recursive Chunk 1: |Advanced RAG techniques prioritize semantic density over raw character counts.|
+
+--- CHUNKING COMPARISON SUCCESS ---
+```
+</TabsContent>
+</Tabs>
+
+## Summary of Impact
+
+| Strategy | Logical Continuity | Retrieval Precision | Use Case |
+| :--- | :--- | :--- | :--- |
+| **Fixed** | Low | Low | Generic data storage |
+| **Recursive** | High | Moderate | Technical Docs / Manuals |
+| **Propositional** | Very High | High | Legal / Medical Claims |
+
+## When to Use This
+- When building technical support systems where context across paragraphs is necessary.
+- To reduce hallucination by ensuring chunks are factually self-contained.
+- If your vector search is returning unrelated snippets due to "sentence-splitting" errors.

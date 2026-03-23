@@ -1,27 +1,30 @@
 ---
-title: RAG Techniques
-description: A practical guide to Retrieval-Augmented Generation patterns in TypeScript.
+title: "Bulletproof RAG: Production Curriculum"
+description: "A comprehensive sequence on building production-grade, grounded AI systems using Vercel AI SDK v6, LangChain, and unpdf."
 ---
 
-Retrieval-Augmented Generation (RAG) is the standard for building LLM applications that reason over private, up-to-date data. Instead of relying solely on the model's static training weights, RAG retrieves relevant facts from your own documents and injects them directly into the prompt as context.
+Welcome to the **Bulletproof RAG** curriculum. This course is designed for senior developers moving beyond the "toy RAG" phase into building reliable, self-correcting, and multimodal retrieval systems. We standardize our stack on the Vercel AI SDK v6, providing a unified interface for embeddings, neural search, and agentic reasoning.
 
-This guide moves beyond simple vector search to explore the advanced patterns used in production. The "right" RAG implementation is never one-size-fits-all; it depends entirely on your document density, query complexity, and latency requirements.
+### Curriculum Structure
 
-### Foundational
-- [Basic RAG](/rag/foundational/basic-rag) — The baseline pattern of chunking, embedding, and retrieving.
-- [Chunk Sizes](/rag/foundational/chunk-sizes.mdx) — Finding the optimal balance between precision and context.
-- [Proposition Chunking](/rag/foundational/proposition-chunking.mdx) — Deconstructing text into atomic factual statements for higher accuracy.
-- [Reliable RAG](/rag/foundational/reliable-rag.mdx) — Adding a verification loop to catch and eliminate hallucinations.
+The curriculum is divided into seven distinct modules, tracing the lifecycle of a production RAG pipeline:
 
-### Query Enhancement
-- [HyDE](/rag/query-enhancement/hyde.mdx) — Using hypothetical answers to bridge the gap between questions and documents.
-- [HyPE](/rag/query-enhancement/hype.mdx) — Generating hypothetical questions at ingest time for faster, more relevant search.
-- [Query Transformations](/rag/query-enhancement/query-transformations.mdx) — Rewriting user queries into multiple perspectives to handle ambiguity.
+1.  **[01 Introduction](./01-introduction)**: Structural rationale and stack configuration.
+2.  **[02 Naive RAG](./02-naive-rag)**: Implementing the baseline and identifying its production failure points.
+3.  **[03 Data Engineering](./03-data-engineering)**: PDF parsing, recursive segmentation, and contextual metadata injection.
+4.  **[04 Query Intelligence](./04-query-intelligence)**: Automated rewriting, multi-query expansion, and HyDE search.
+5.  **[05 Advanced Retrieval](./05-advanced-retrieval)**: Neural reranking, hybrid fusion, and contextual compression.
+6.  **[06 Agentic Architectures](./06-agentic-architectures)**: Self-corrective loops (CRAG), tool-calling, and multimodal vision patterns.
+7.  **[07 Evaluation](./07-evaluation)**: Observability, logging foundations, and pipeline monitoring.
 
-### Context Enrichment
-- [Semantic Chunking](/rag/context-enrichment/semantic-chunking.mdx) — Splitting documents at semantic boundaries instead of fixed counts.
-- [Contextual Compression](/rag/context-enrichment/contextual-compression.mdx) — Summarizing retrieved chunks to fit more relevant signal into the window.
-- [Contextual Headers](/rag/context-enrichment/contextual-headers.mdx) — Preserving structure by prepending metadata to every chunk.
-- [Relevant Segment Extraction](/rag/context-enrichment/relevant-segment-extraction.mdx) — Isolating exact sentences within a chunk that answer the query.
-- [Context Window Enhancement](/rag/context-enrichment/context-window-enhancement.mdx) — Including neighboring chunks to provide wider document context.
-- [Document Augmentation](/rag/context-enrichment/document-augmentation.mdx) — Enriching chunks with generated metadata during ingestion.
+### Technical Principles
+
+Every module in this course adheres to three core engineering principles:
+
+- **Accuracy First**: We prioritize grounding over conversational fluff.
+- **Observability**: Every technique is accompanied by structured, timestamped trace logs.
+- **Modularity**: We use a decoupled stack (unpdf + AI SDK) to ensure future-proof portability.
+
+---
+
+*Select a module on the left to begin implementation.*

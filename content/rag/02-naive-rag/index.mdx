@@ -1,11 +1,11 @@
 ---
-title: Basic RAG
-description: Senior-grade implementation of a Naive RAG pipeline using Vercel AI SDK v6, LangChain Recursive splitters, and unpdf extraction.
-category: Foundational
-difficulty: beginner
+title: "The Naive RAG Implementation"
+description: "Senior-grade implementation of a Naive RAG pipeline using Vercel AI SDK v6, LangChain Recursive splitters, and unpdf extraction."
+category: "02-Naive-RAG"
+difficulty: "beginner"
 ---
 
-**Basic RAG** (Naive RAG) is the architectural baseline for grounding Large Language Models in private data. It operates as a linear "Retrieve-then-Generate" bridge. The system identifies relevant document snippets from a local repository and injects them into the model context window before inference. This creates a factual anchor, mitigating the risk of hallucinations and providing clear data provenance.
+**Naive RAG** (Basic RAG) is the architectural baseline for grounding Large Language Models in private data. It operates as a linear "Retrieve-then-Generate" bridge. The system identifies relevant document snippets from a local depository and injects them into the model context window before inference. This creates a factual anchor, mitigating the risk of hallucinations and providing clear data provenance.
 
 ### Engineering Trade-offs
 
@@ -20,28 +20,28 @@ The transformation from binary document data to a grounded response follows this
 
 ```text
         [Document]
-            │
-            ▼
-  ┌───────────────────┐
-  │  unpdf Extraction  │
-  └─────────┬─────────┘
-            │
-    ┌───────┴───────┐
-    ▼               ▼
-┌───────────┐   ┌───────────┐
-│ Chunk A   │   │ Chunk B   │ (Recursive Character Splitting)
-│ (Size: X) │   │ (Size: X) │
-└─────┬─────┘   └─────┬─────┘
-      └───────┬───────┘
-              ▼
-    ┌───────────────────┐
-    │  Vercel AI SDK    │
-    │  (Vectorization)  │
-    └─────────┬─────────┘
-              ▼
-    ┌───────────────────┐
-    │ Context Injection │ (Balancing Precision vs Context)
-    └───────────────────┘
+             │
+             ▼
+   ┌───────────────────┐
+   │  unpdf Extraction  │
+   └─────────┬─────────┘
+             │
+     ┌───────┴───────┐
+     ▼               ▼
+ ┌───────────┐   ┌───────────┐
+ │ Chunk A   │   │ Chunk B   │ (Recursive Character Splitting)
+ │ (Size: X) │   │ (Size: X) │
+ └─────┬─────┘   └─────┬─────┘
+       └───────┬───────┘
+               ▼
+     ┌───────────────────┐
+     │  Vercel AI SDK    │
+     │  (Vectorization)  │
+     └─────────┬─────────┘
+               ▼
+     ┌───────────────────┐
+     │ Context Injection │ (Balancing Precision vs Context)
+     └───────────────────┘
 ```
 
 ## Implementation Walkthrough
@@ -49,28 +49,6 @@ The transformation from binary document data to a grounded response follows this
 The following steps trace the data lifecycle from local PDF storage to a high-fidelity AI response.
 
 <Steps>
-
-<Step title="Environment Configuration">
-Initialize the production dependencies. Ensure versions match the specified requirements for stability in Node.js environments.
-
-<Tabs defaultValue="code">
-  <TabsList>
-    <TabsTrigger value="code">Command</TabsTrigger>
-    <TabsTrigger value="output">Expected Output</TabsTrigger>
-  </TabsList>
-  <TabsContent value="code">
-```bash
-npm install ai@6.0.116 @ai-sdk/openai@3.0.41 unpdf@1.4.0 @langchain/textsplitters@0.1.0 dotenv@17.3.1
-```
-  </TabsContent>
-  <TabsContent value="output">
-```text
-added 48 packages in 4s
-[SUCCESS] local environment initialized with Vercel AI SDK v6.
-```
-  </TabsContent>
-</Tabs>
-</Step>
 
 <Step title="Document Ingestion and Buffer Loading">
 Read the local binary data. We use `fs/promises` for non-blocking I/O to ensure the main thread remains available during large file reads.
@@ -350,13 +328,13 @@ main();
 </TabsContent>
 <TabsContent value="logs">
 ```text
-[INFO]  2024-05-20T10:00:00.000Z | Initializing RAG Pipeline execution...
-[TIME]  extraction: 450ms
-[INFO]  2024-05-20T10:00:00.450Z | Source text extracted: 45210 characters.
-[INFO]  2024-05-20T10:00:00.455Z | Logical segments created: 54
-[TIME]  indexing: 1.2s
-[INFO]  2024-05-20T10:00:01.655Z | Vector store populated in memory.
-[INFO]  2024-05-20T10:00:01.656Z | Query submitted: "What specific risks does the document outline regarding AI alignment?"
+[INFO]  2024-05-20T11:00:00.000Z | Initializing RAG Pipeline execution...
+[TIME]  extraction: 480ms
+[INFO]  2024-05-20T11:00:00.480Z | Source text extracted: 45210 characters.
+[INFO]  2024-05-20T11:00:00.485Z | Logical segments created: 54
+[TIME]  indexing: 1.1s
+[INFO]  2024-05-20T11:00:01.585Z | Vector store populated in memory.
+[INFO]  2024-05-20T11:00:01.585Z | Query submitted: "What specific risks does the document outline regarding AI alignment?"
 [TIME]  llm-generation: 2.1s
 
 --- AI GROUNDED RESPONSE ---
@@ -377,7 +355,7 @@ The document outlines three primary risks regarding AI alignment:
 | **Data Scope** | Static Training Data | Live Document Context |
 | **Hallucination Risk** | Significant on Niche Topics | Traceable and Low |
 | **Provenance** | None | Directly Citable |
-| **System Latency** | Baseline | Baseline + ~3s (Search & Context Injection) |
+| **System Latency** | Baseline | Baseline + ~3s (Search & Vectorization) |
 
 ## When to Use This
 - Small internal technical knowledge bases.

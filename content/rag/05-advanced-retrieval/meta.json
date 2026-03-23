@@ -1,0 +1,8 @@
+{
+  "title": "Module 05: Advanced Retrieval",
+  "pages": [
+    "reranking-logic",
+    "reciprocal-fusion",
+    "compression"
+  ]
+}

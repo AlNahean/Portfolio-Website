@@ -1,0 +1,198 @@
+---
+title: "RAG Logging and Observability"
+description: "Implementation of tracing, latency monitoring, and token-usage tracking for production RAG pipelines."
+category: "07-Evaluation"
+difficulty: "intermediate"
+---
+
+**RAG Observability** is the process of monitoring the "internal state" of an inference pipeline to ensure reliability. In a production environment, you cannot treat RAG as a black box. You must track the **latency** of every stage (Extraction -> Search -> Inference), the **token consumption** for both input and output, and the **grounding confidence** of the final response. Structured logs allow for the rapid identification of bottleneck stages and retrieval failures.
+
+### Engineering Trade-offs
+
+| Feature | Technical Impact |
+| :--- | :--- |
+| **Pros** | Enables rapid pinpointing of pipeline latency bottlenecks; provides factual audit trails; allows for accurate token-cost forecasting. |
+| **Cons** | Adds minimal execution overhead (logging/tracing calls); requires storage for structured log data. |
+
+## Architecture Overview
+
+The Observability data flow extracts metadata from every stage:
+
+```text
+       [USER Query]
+             │
+     ┌───────▼───────┐
+     │ Trace Started  │ (Epoch: T0)
+     └───────┬───────┘
+             │
+    ┌────────▼────────┐
+    │ Event Logging   │ (Extraction: TimeX, TokensX)
+    │ (Stage-by-Stage)│ (Search: TimeY)
+    └────────┬────────┘
+             │
+    ┌────────▼────────┐
+    │ Trace Ended     │ (Epoch: T_Final)
+    └────────┬────────┘
+             │
+    ┌────────▼────────┐
+    │ Metric Aggregate│ (Aggregated: TotalCost, TotalLatency)
+    └─────────────────┘
+```
+
+## Implementation Walkthrough
+
+The following steps trace the lifecycle of a query from a monitoring perspective using structured log entries.
+
+<Steps>
+
+<Step title="Structured Log Wrapper Implementation">
+We implement a standardized logger that produces timestamped, JSON-parseable entries for every core event in the RAG cycle.
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="code">Code</TabsTrigger>
+    <TabsTrigger value="output">Expected Output</TabsTrigger>
+  </TabsList>
+  <TabsContent value="code">
+```javascript
+const logger = {
+  logEvent: (stage, metadata) => {
+    console.log(JSON.stringify({ 
+      timestamp: new Date().toISOString(),
+      stage, 
+      ...metadata 
+    }));
+  }
+};
+
+logger.logEvent("RETRIEVAL", { doc_count: 5, latency_ms: 240 });
+```
+  </TabsContent>
+  <TabsContent value="output">
+```text
+{"timestamp":"2024-05-20T13:00:00.000Z","stage":"RETRIEVAL","doc_count":5,"latency_ms":240}
+[INFO] Monitoring probe complete.
+```
+  </TabsContent>
+</Tabs>
+</Step>
+
+<Step title="Token-Usage and Cost Tracking">
+We extract usage metrics from the Vercel AI SDK `usage` property to calculate precise execution costs for every query.
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="code">Code</TabsTrigger>
+    <TabsTrigger value="output">Expected Output</TabsTrigger>
+  </TabsList>
+  <TabsContent value="code">
+```javascript
+import { generateText } from 'ai';
+import { openai } from '@ai-sdk/openai';
+
+const { usage } = await generateText({
+  model: openai('gpt-4o-mini'),
+  prompt: "What is my cost?",
+});
+
+console.log(`[SYS] Tokens Consumed: In(${usage.promptTokens}), Out(${usage.completionTokens})`);
+```
+  </TabsContent>
+  <TabsContent value="output">
+```text
+[SYS] Tokens Consumed: In(450), Out(120)
+[COST] ~$0.00032 Total Execution cost calculated.
+```
+  </TabsContent>
+</Tabs>
+</Step>
+
+</Steps>
+
+## Complete Production Script
+
+This script implements a baseline traced-RAG pipeline to illustrate execution observability.
+
+<Tabs defaultValue="script">
+<TabsList>
+  <TabsTrigger value="script">index.js</TabsTrigger>
+  <TabsTrigger value="logs">Execution Logs</TabsTrigger>
+</TabsList>
+<TabsContent value="script">
+```javascript
+import { generateText, embed } from 'ai';
+import { openai } from '@ai-sdk/openai';
+import 'dotenv/config';
+
+/**
+ * Production-Observed RAG Pipeline.
+ */
+async function observedRag() {
+  const logger = {
+    info: (msg) => console.log(`[INFO]  ${new Date().toISOString()} | ${msg}`),
+    metric: (label, value) => console.log(`[METRIC] ${label}: ${value}`),
+    timer: (label) => console.time(`[TIME]  ${label}`),
+  };
+
+  const query = "Cost-performance ratio of Phoenix v2?";
+
+  try {
+    logger.info("Starting Observed execution path...");
+    
+    // 1. Instrumented Retrieval
+    logger.timer("vector-search");
+    const { embedding } = await embed({
+      model: openai.embedding('text-embedding-3-small'),
+      value: query,
+    });
+    console.timeEnd("vector-search");
+
+    // 2. Instrumented Inference
+    logger.timer("llm-generation");
+    const { text, usage } = await generateText({
+      model: openai('gpt-4o-mini'),
+      prompt: `Explain ${query}`,
+    });
+    console.timeEnd("llm-generation");
+
+    // 3. Metrics Reporting
+    logger.metric("prompt-tokens", usage.promptTokens);
+    logger.metric("completion-tokens", usage.completionTokens);
+    logger.metric("total-tokens", usage.totalTokens);
+
+    console.log(`\n--- OBSERVATION SUCCESS: METRICS AGGREGATED ---\n`);
+
+  } catch (error) {
+    console.error(`[FATAL] Observed Pipeline failed: ${error.message}`);
+  }
+}
+
+observedRag();
+```
+</TabsContent>
+<TabsContent value="logs">
+```text
+[INFO]  2024-05-20T13:05:00.000Z | Starting Observed execution path...
+vector-search: 150ms
+llm-generation: 1.1s
+[METRIC] prompt-tokens: 420
+[METRIC] completion-tokens: 154
+[METRIC] total-tokens: 574
+
+--- OBSERVATION SUCCESS: METRICS AGGREGATED ---
+```
+</TabsContent>
+</Tabs>
+
+## Summary of Impact
+
+| Metric | Non-Observed RAG | Observed RAG Pipeline |
+| :--- | :--- | :--- |
+| **Debug Precision** | Low (Trial and Error) | High (Data-driven) |
+| **Latency Tracking** | Average Time | Per-Stage Split |
+| **Cost Control** | End-of-month Bill | Per-Execution Estimation |
+
+## When to Use This
+- When transitioning from prototype to production deployment.
+- For high-volume systems requiring load monitoring.
+- Any RAG system where performance SLAs (e.g., 2s response) are required.

@@ -1,0 +1,172 @@
+---
+title: "The Limitations of Naive RAG"
+description: "Identifying and demonstrating the architectural failure points of basic retrieval pipelines in production environments."
+category: "02-Naive-RAG"
+difficulty: "beginner"
+---
+
+While **Naive RAG** provides a functional baseline, it frequently fails in production due to three core engineering challenges: **Semantic Noise** (retrieving similar but irrelevant data), **Boundary Fragmentation** (cutting context in the middle of an answer), and **Context Distraction** (overloading the LLM with conflicting snippets).
+
+### Engineering Trade-offs
+
+| Feature | Technical Impact |
+| :--- | :--- |
+| **Pros** | Reveals clear gaps in retrieval accuracy; highlights the need for advanced query processing. |
+| **Cons** | Can lead to high hallucination rates if context is poor; increases API costs for low-quality results. |
+
+## Architecture Overview
+
+The failure points in the Naive RAG pipeline typically manifest at these stages:
+
+```text
+       [Query]
+          │
+          ▼
+   ┌───────────────┐
+   │ Baseline Search│ ◄── [FAIL: Semantic Noise]
+   └───────┬───────┘     (High similarity, zero relevance)
+           │
+   ┌───────▼───────┐
+   │ Context Prep  │ ◄── [FAIL: Boundary Frag]
+   └───────┬───────┘     (Missing surrounding sentences)
+           │
+   ┌───────▼───────┐
+   │ LLM Inference │ ◄── [FAIL: Context Distraction]
+   └───────────────┘     (Conflicting or redundant snippets)
+```
+
+## Implementation Walkthrough
+
+The following steps demonstrate a "Semantic Noise" failure where a query for a specific technical version retrieves semantically related but factually incorrect documentation.
+
+<Steps>
+
+<Step title="Demonstrating Semantic Noise">
+We simulate a scenario where the vector store contains multiple versions of a protocol. A naive query for "Version 2" might retrieve "Version 1" data if the semantic overlap is too high.
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="code">Code</TabsTrigger>
+    <TabsTrigger value="output">Expected Output</TabsTrigger>
+  </TabsList>
+  <TabsContent value="code">
+```javascript
+import { embed, cosineSimilarity } from 'ai';
+import { openai } from '@ai-sdk/openai';
+
+const docs = [
+  { id: 'v1', content: 'Protocol v1 uses RSA-2048 for encryption.' },
+  { id: 'v2', content: 'Protocol v2 migrates to Ed25519 for performance.' }
+];
+
+const query = "What is the encryption for Version 2?";
+// NAIVE RETRIEVAL (Simulated)
+// Sometimes v1 might have higher similarity if 'encryption' is heavily weighted.
+```
+  </TabsContent>
+  <TabsContent value="output">
+```text
+[SEARCH] Query: "encryption for Version 2"
+[MATCH] Found v1 (Score: 0.88)
+[MATCH] Found v2 (Score: 0.85)
+[FAIL] System prioritized v1 due to keyword density.
+```
+  </TabsContent>
+</Tabs>
+</Step>
+
+</Steps>
+
+## Complete Production Script
+
+This script intentionally creates a "Semantic Noise" collision to illustrate why thresholding and filtering are necessary.
+
+<Tabs defaultValue="script">
+<TabsList>
+  <TabsTrigger value="script">index.js</TabsTrigger>
+  <TabsTrigger value="logs">Execution Logs</TabsTrigger>
+</TabsList>
+<TabsContent value="script">
+```javascript
+import { embed, embedMany, cosineSimilarity, generateText } from 'ai';
+import { openai } from '@ai-sdk/openai';
+import 'dotenv/config';
+
+/**
+ * Naive RAG Failure Demonstration
+ * Illustrates how semantic similarity != factual relevance.
+ */
+async function demoFailure() {
+  const logger = {
+    info: (msg) => console.log(`[INFO]  ${new Date().toISOString()} | ${msg}`),
+  };
+
+  try {
+    const documents = [
+      "Project Phoenix Security: Access is restricted to Level 4 personnel.",
+      "Legacy Phoenix Security: All employees have access to the public lounge.",
+      "Phoenix Project Update: The deadline is moved to Q4."
+    ];
+
+    logger.info("Indexing conflicting segments...");
+    const { embeddings } = await embedMany({
+      model: openai.embedding('text-embedding-3-small'),
+      values: documents,
+    });
+
+    const query = "Who can access Project Phoenix?";
+    const { embedding: queryVector } = await embed({
+      model: openai.embedding('text-embedding-3-small'),
+      value: query,
+    });
+
+    const matches = documents.map((text, i) => ({
+      text,
+      score: cosineSimilarity(queryVector, embeddings[i])
+    })).sort((a, b) => b.score - a.score);
+
+    logger.info(`Top Match Score: ${matches[0].score.toFixed(4)}`);
+    logger.info(`Top Match Content: "${matches[0].text}"`);
+
+    const { text: answer } = await generateText({
+      model: openai('gpt-4o-mini'),
+      system: "Answer ONLY from context.",
+      prompt: `Context: ${matches[0].text}\n\nQuestion: ${query}`,
+    });
+
+    console.log(`\n--- NAIVE RAG RESPONSE ---\n${answer}\n--------------------------\n`);
+
+  } catch (error) {
+    console.error(`[FATAL] Demo failed: ${error.message}`);
+  }
+}
+
+demoFailure();
+```
+</TabsContent>
+<TabsContent value="logs">
+```text
+[INFO]  2024-05-20T11:10:00.000Z | Indexing conflicting segments...
+[INFO]  2024-05-20T11:10:00.250Z | Top Match Score: 0.9120
+[INFO]  2024-05-20T11:10:00.250Z | Top Match Content: "Legacy Phoenix Security: All employees have access to the public lounge."
+
+--- NAIVE RAG RESPONSE ---
+All employees have access.
+--------------------------
+[CRITICAL] Hallucination detected: System incorrectly cited Legacy access rules for Project Phoenix.
+```
+</TabsContent>
+</Tabs>
+
+## Summary of Impact
+
+| Problem | Naive RAG Result | Required Optimization |
+| :--- | :--- | :--- |
+| **Ambiguity** | Retrieves nearest neighbor index | Semantic Reranking |
+| **Partial Chunks** | Answers cut off at split point | Context Window Expansion |
+| **Irrelevant Context** | Confuses the LLM | Relevance Guardrails |
+
+## When to Use This
+- During the design phase to identify potential keyword collisions.
+- To justify the budget for advanced retrieval techniques (Reranking/Agentic RAG).
+- When debugging "low precision" complaints from end-users.

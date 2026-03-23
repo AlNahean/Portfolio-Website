@@ -1,9 +1,13 @@
 {
-  "title": "RAG Techniques",
+  "title": "Bulletproof RAG",
   "pages": [
-    "00-getting-started",
-    "01-foundational",
-    "02-chunking-and-ingestion",
+    "01-introduction",
+    "02-naive-rag",
+    "03-data-engineering",
+    "04-query-intelligence",
+    "05-advanced-retrieval",
+    "06-agentic-architectures",
+    "07-evaluation",
     "index"
   ]
 }

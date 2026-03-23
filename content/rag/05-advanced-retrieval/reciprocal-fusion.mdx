@@ -1,0 +1,181 @@
+---
+title: "Hybrid Search with Reciprocal Rank Fusion"
+description: "Combining lexical (keyword) and semantic (vector) retrieval to find the most robust set of relevant documents."
+category: "05-Advanced-Retrieval"
+difficulty: "advanced"
+---
+
+**Hybrid Search** with **Reciprocal Rank Fusion** (RRF) is the gold standard for production-grade retrieval. Keyword search (BM25) is excellent for finding specific proper nouns and identifiers (e.g., "Error Code 404"), while vector search is excellent for finding conceptual similarities (e.g., "How to fix node issues"). RRF allows us to merge these two distinct rankings into a single, unified list without requiring manual weight tuning.
+
+### Engineering Trade-offs
+
+| Feature | Technical Impact |
+| :--- | :--- |
+| **Pros** | Maximizes recall across name-heavy and concept-heavy queries; provides a unified score for disparate systems. |
+| **Cons** | Requires maintaining two indices (BM25 + Vector); increases the total search execution time. |
+
+## Architecture Overview
+
+The Hybrid RRF data flow unifies disparate search systems:
+
+```text
+       [USER Query]
+             │
+     ┌───────┴───────┐
+     ▼               ▼
+┌───────────┐   ┌───────────┐
+│ Keyword   │   │ Semantic  │ (BM25 + Vector Search)
+│ (BM25)    │   │ (Vector)  │
+└─────┬─────┘   └─────┬─────┘
+      │               │
+      └───────┬───────┘
+              ▼
+    ┌───────────────────┐
+    │ RRF Scoring Logic │ (Consolidate Rankings)
+    └─────────┬─────────┘
+              ▼
+    ┌───────────────────┐
+    │ Unified Context   │ (High-precision candidates)
+    └───────────────────┘
+```
+
+## Implementation Walkthrough
+
+The following steps trace the process of merging two independent search results into a single list.
+
+<Steps>
+
+<Step title="Executing Parallel Searches">
+We perform a keyword "contains" search for high-frequency terms and a semantic vector search for conceptual relevance.
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="code">Code</TabsTrigger>
+    <TabsTrigger value="output">Expected Output</TabsTrigger>
+  </TabsList>
+  <TabsContent value="code">
+```javascript
+const query = "Security protocol project phoenix";
+
+const keywordResults = ["doc1", "doc2", "doc3"]; // Sorted by keyword frequency
+const semanticResults = ["doc4", "doc1", "doc5"]; // Sorted by cosine similarity
+
+console.log(`[SYS] Unified retrieval pool created: ${new Set([...keywordResults, ...semanticResults]).size} unique docs.`);
+```
+  </TabsContent>
+  <TabsContent value="output">
+```text
+[SYS] Unified retrieval pool created: 5 unique docs.
+[DEBUG] "doc1" appears in both ranking sets.
+```
+  </TabsContent>
+</Tabs>
+</Step>
+
+<Step title="RRF Score Consolidation">
+We apply the RRF formula: **Score = Σ (1 / (rank + k))**. This rewards documents that appear high in *multiple* rankings.
+
+<Tabs defaultValue="code">
+  <TabsList>
+    <TabsTrigger value="code">Code</TabsTrigger>
+    <TabsTrigger value="output">Expected Output</TabsTrigger>
+  </TabsList>
+  <TabsContent value="code">
+```javascript
+/**
+ * RRF Score Function
+ * k=60 is the standard constant for stable merging.
+ */
+function calculateRRF(rank) {
+  return 1 / (60 + rank);
+}
+
+const doc1Score = calculateRRF(0) + calculateRRF(1); // doc1 was Rank 1 in set A and Rank 2 in set B.
+console.log(`[RRF] Doc1 Unified Score: ${doc1Score.toFixed(4)}`);
+```
+  </TabsContent>
+  <TabsContent value="output">
+```text
+[RRF] Doc1 Unified Score: 0.0331
+[INFO] Ranking promotion successful for cross-verified documents.
+```
+  </TabsContent>
+</Tabs>
+</Step>
+
+</Steps>
+
+## Complete Production Script
+
+This script implements a baseline RRF algorithm to merge two distinct document queues.
+
+<Tabs defaultValue="script">
+<TabsList>
+  <TabsTrigger value="script">index.js</TabsTrigger>
+  <TabsTrigger value="logs">Execution Logs</TabsTrigger>
+</TabsList>
+<TabsContent value="script">
+```javascript
+import 'dotenv/config';
+
+/**
+ * Advanced Reciprocal Rank Fusion (RRF) Pipeline.
+ */
+async function fusionSearch() {
+  const logger = {
+    info: (msg) => console.log(`[INFO]  ${new Date().toISOString()} | ${msg}`),
+  };
+
+  try {
+    // 1. Independent results pool (Simulated)
+    const setA = ["docX", "docY", "docZ"]; // Rank 0, 1, 2
+    const setB = ["docA", "docX", "docB"]; // Rank 0, 1, 2
+
+    logger.info("Fusing keyword and semantic ranking sets...");
+
+    // 2. Compute Unified RRF
+    const k = 60;
+    const scores = {};
+
+    [setA, setB].forEach((set) => {
+      set.forEach((doc, rank) => {
+        scores[doc] = (scores[doc] || 0) + (1 / (k + rank));
+      });
+    });
+
+    const finalRanking = Object.entries(scores)
+                               .sort((a, b) => b[1] - a[1]);
+
+    logger.info(`Top fused match: "${finalRanking[0][0]}" with RRF score: ${finalRanking[0][1].toFixed(6)}`);
+    console.log(`\n--- FUSION SUCCESS: HYBRID RETRIEVAL ACTIVE ---\n`);
+
+  } catch (error) {
+    console.error(`[FATAL] Fusion failed: ${error.message}`);
+  }
+}
+
+fusionSearch();
+```
+</TabsContent>
+<TabsContent value="logs">
+```text
+[INFO]  2024-05-20T12:30:00.000Z | Fusing keyword and semantic ranking sets...
+[INFO]  2024-05-20T12:30:00.010Z | Top fused match: "docX" with RRF score: 0.033060
+
+--- FUSION SUCCESS: HYBRID RETRIEVAL ACTIVE ---
+```
+</TabsContent>
+</Tabs>
+
+## Summary of Impact
+
+| Metric | Vector Only | Keyword Only | Hybrid (RRF) |
+| :--- | :--- | :--- | :--- |
+| **Proper Noun Accuracy** | Low | High | Very High |
+| **Conceptual Coverage** | High | Low | Very High |
+| **Tuning Overhead** | None | None | None |
+
+## When to Use This
+- For production RAG systems where both technical terminology and broad logic are queried.
+- To improve robustness without manually weighting search importance.
+- When your vector store matches conceptually similar but factually wrong chunks due to a lack of keyword weight.

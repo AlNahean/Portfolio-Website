@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { NextResponse, type NextRequest } from "next/server";
 
-import { source, studySource, blogSource, publicationSource, projectSource, caseStudySource, reflectionSource, authorSource, guidesSource } from "@/lib/source";
+import { source, studySource, blogSource, publicationSource, projectSource, caseStudySource, reflectionSource, authorSource, guidesSource, ragSource } from "@/lib/source";
 
 export const revalidate = false;
 
@@ -38,6 +38,9 @@ export async function GET(
   }
   if (!page) {
     page = guidesSource.getPage(slug);
+  }
+  if (!page) {
+    page = ragSource.getPage(slug);
   }
 
 
@@ -77,8 +80,9 @@ export function generateStaticParams() {
   const reflectionParams = reflectionSource.generateParams();
   const authorParams = authorSource.generateParams();
   const guidesParams = guidesSource.generateParams();
+  const ragParams = ragSource.generateParams();
 
-  return [...docsParams, ...studyParams, ...blogParams, ...publicationParams, ...projectParams, ...caseStudyParams, ...reflectionParams, ...authorParams, ...guidesParams];
+  return [...docsParams, ...studyParams, ...blogParams, ...publicationParams, ...projectParams, ...caseStudyParams, ...reflectionParams, ...authorParams, ...guidesParams, ...ragParams];
 }
 
 
