@@ -48,9 +48,34 @@ export default function PhysicsBadge({
     textureUrl = "/assets/images/tag_texture.png",
     anchorX = 0,
 }: PhysicsBadgeProps) {
+    const [isWebGLSupported, setIsWebGLSupported] = useState(true);
+
+    useEffect(() => {
+        try {
+            const canvas = document.createElement("canvas");
+            const supported = !!(
+                window.WebGLRenderingContext &&
+                (canvas.getContext("webgl") ||
+                    canvas.getContext("experimental-webgl") ||
+                    canvas.getContext("webgl2"))
+            );
+            setIsWebGLSupported(supported);
+        } catch (e) {
+            setIsWebGLSupported(false);
+        }
+    }, []);
+
     // Preload assets for smoother experience
     useGLTF.preload(modelUrl);
     useTexture.preload(textureUrl);
+
+    if (!isWebGLSupported) {
+        return (
+            <div className={cn("relative h-full w-full flex items-center justify-center bg-muted/10 rounded-xl", className)}>
+                <span className="text-xs text-muted-foreground p-4 text-center">Interactive 3D badge unavailable</span>
+            </div>
+        );
+    }
 
     return (
         <div className={cn("relative h-full w-full", className)}>
