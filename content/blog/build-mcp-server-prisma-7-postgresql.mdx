@@ -1,0 +1,183 @@
+---
+title: Engineering a Production-Ready MCP Server with Prisma 7 and PostgreSQL
+description: A senior developer's guide to building a Model Context Protocol (MCP) server for Kanban management using Prisma 7, PostgreSQL, and Node.js.
+date: 2026-03-24
+authors: ["al-nahean"]
+image: https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1200&h=630
+tags: ["MCP", "Prisma 7", "PostgreSQL", "AI Agents", "Node.js"]
+---
+
+# Engineering a Production-Ready MCP Server with Prisma 7 and PostgreSQL
+
+In the shift toward agentic AI, the **Model Context Protocol (MCP)** has emerged as the industry standard for connecting LLMs to local and remote data sources. As a senior developer, you shouldn't just be building "wrappers"; you should be building robust, type-safe interfaces that allow an AI to reason over your business logic.
+
+This guide covers the architecture and implementation of a Kanban management MCP server, utilizing the latest **Prisma 7** features and a **PostgreSQL** backend.
+
+<Callout type="warning">
+  **Technical Debt Alert:** Prisma 7 introduced breaking changes regarding how database connections are handled. If you are following tutorials from 2024, your implementation will likely fail. We will use the new Driver Adapter pattern specifically for this reason.
+</Callout>
+
+## The Repository
+
+The full source code for this implementation is available at: [github.com/AlNahean/prisma-kanban-mcp-server](https://github.com/AlNahean/prisma-kanban-mcp-server). I recommend cloning it to follow along with the instructions below.
+
+---
+
+## Technical Setup & Instructions
+
+<Steps>
+
+<Step title="Initialize the Environment">
+Modern Node.js development requires ECMAScript Modules (ESM). Ensure your `package.json` includes `"type": "module"`. This enables top-level await and cleaner imports.
+
+```bash
+mkdir kanban-mcp && cd kanban-mcp
+npm init -y
+# Install core dependencies
+npm install @modelcontextprotocol/sdk @prisma/client @prisma/adapter-pg pg dotenv
+# Install dev tools
+npm install -D typescript @types/node @types/pg prisma tsx
+```
+</Step>
+
+<Step title="Prisma 7 Migration & Configuration">
+In Prisma 7, the `url` property is no longer supported directly in the `schema.prisma` file for most environments. You must move your configuration to a `prisma.config.ts` file.
+
+<Tabs items={["prisma.config.ts", "schema.prisma"]}>
+  <Tab value="prisma.config.ts">
+    ```typescript
+    import "dotenv/config";
+    import { defineConfig, env } from "prisma/config";
+
+    export default defineConfig({
+      schema: "prisma/schema.prisma",
+      datasource: {
+        url: env("DATABASE_URL"),
+      },
+    });
+    ```
+  </Tab>
+  <Tab value="schema.prisma">
+    ```prisma
+    generator client {
+      provider        = "prisma-client-js"
+      previewFeatures = ["driverAdapters"]
+    }
+
+    datasource db {
+      provider = "postgresql"
+    }
+
+    model Column {
+      id    String @id @default(cuid())
+      title String
+      tasks Task[]
+    }
+
+    model Task {
+      id       String @id @default(cuid())
+      title    String
+      columnId String
+      column   Column @relation(fields: [columnId], references: [id])
+    }
+    ```
+  </Tab>
+</Tabs>
+</Step>
+
+<Step title="Implementing the Server Architecture">
+The MCP server operates over Standard I/O. We initialize the PostgreSQL pool using the new adapter pattern before connecting the server.
+
+```typescript
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import pg from "pg";
+
+const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
+
+const server = new Server({
+  name: "kanban-manager",
+  version: "1.0.0"
+}, {
+  capabilities: { tools: {} }
+});
+```
+</Step>
+
+<Step title="Exposing Tools to the LLM">
+A senior-level MCP implementation requires descriptive schemas. The AI uses these descriptions to decide which tool to call. If your descriptions are poor, the agent will hallucinate.
+
+```typescript
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: [
+    {
+      name: "get_board",
+      description: "Retrieve the full Kanban board state, including all columns and tasks.",
+      inputSchema: { type: "object", properties: {} }
+    },
+    {
+      name: "move_task",
+      description: "Move a task to a different column by ID.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          taskId: { type: "string" },
+          columnId: { type: "string" }
+        },
+        required: ["taskId", "columnId"]
+      }
+    }
+  ]
+}));
+```
+</Step>
+
+</Steps>
+
+---
+
+## Pitfalls and Critical Issues
+
+### 1. The `console.log` Corruption
+MCP servers communicate via `stdout`. If you leave a `console.log("Connected to DB")` in your code, that string will be injected into the JSON-RPC stream. The AI client (like Claude Desktop or Antigravity) will fail to parse the response, throwing an "Unexpected token" error.
+**Fix:** Always use `console.error()` for internal logging; it uses `stderr`, which the AI client ignores but displays in debug logs.
+
+### 2. EPERM Errors on Windows
+When running `npx prisma generate`, you may encounter `EPERM: operation not permitted`. This happens because a process (like the MCP client or a background Node server) is holding a lock on the `.prisma/client` engine file.
+**Fix:** Shut down your MCP client (Claude Desktop/Antigravity) and any running dev servers before generating the client or running migrations.
+
+### 3. Serialization of BigInt
+If your schema uses `BigInt` (common for Telegram IDs or snowflake IDs), native `JSON.stringify` will crash.
+**Fix:** Implement a replacer function for your tool results:
+```typescript
+const result = JSON.stringify(data, (key, value) =>
+  typeof value === "bigint" ? value.toString() : value
+);
+```
+
+### 4. Prisma 7 Driver Adapters
+Prisma 7 removed the internal Rust-based engine for database connectivity. If you initialize `new PrismaClient()` without an adapter, it will crash.
+**Fix:** You must install `pg` and `@prisma/adapter-pg` and pass the adapter explicitly during instantiation as shown in Step 3.
+
+---
+
+## Senior Architectural Advice
+
+<Callout type="default">
+  **Security Note:** Do not grant the PostgreSQL user used by MCP "Superuser" status. Use a dedicated user with permissions limited to the `public` schema. If your MCP tools allow data deletion, ensure you have implemented a confirmation flow or restricted those tools to specific agent roles.
+</Callout>
+
+### Handling Context Windows
+Do not return 500 rows of data in a single MCP call. Large payloads will blow out the LLM's context window, increasing latency and cost. 
+*   Implement pagination in your `List` tools.
+*   Return only the IDs and Titles for broad queries; let the AI request "Details" by ID for a specific item.
+
+## Conclusion
+
+Building an MCP server is the most efficient way to turn a generalist AI into a specialist for your team's workflow. By following the Prisma 7 adapter pattern and respecting the Standard I/O communication model, you can create a production-grade backend for AI agents.
+
+Check out the full implementation and contribute to the logic over at the [repository](https://github.com/AlNahean/prisma-kanban-mcp-server).

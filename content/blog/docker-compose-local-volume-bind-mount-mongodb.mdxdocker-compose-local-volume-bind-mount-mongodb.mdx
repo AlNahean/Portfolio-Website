@@ -102,13 +102,9 @@ Now, bring the infrastructure online. Because we explicitly mapped the volume us
 
 Fire up the stack in detached mode:
 
-<div className="mt-4 flex gap-2">
-  <KbdGroup>
-    <Kbd>docker-compose</Kbd>
-    <Kbd>up</Kbd>
-    <Kbd>-d</Kbd>
-  </KbdGroup>
-</div>
+```bash
+docker-compose up -d
+```
 
 If you look at your file explorer now, you'll see a brand new folder called `mongo_data`. If you ever need to completely wipe your database (a "hard reset") and start fresh, you don't need obscure Docker volume prune commands. Just run `docker-compose down`, delete the folder manually, and run `docker-compose up` again!
 </Step>
@@ -118,13 +114,9 @@ Let's prove the data sticks around across container restarts. We'll use a Node.j
 
 First, install the driver via your terminal:
 
-<div className="mt-4 flex gap-2">
-  <KbdGroup>
-    <Kbd>npm</Kbd>
-    <Kbd>install</Kbd>
-    <Kbd>mongodb</Kbd>
-  </KbdGroup>
-</div>
+```bash
+npm install mongodb
+```
 
 Next, run this connection script. Note the `?authSource=admin` parameter—this is strictly required when authenticating against a user created via Docker's `MONGO_INITDB_ROOT_USERNAME` environment variable.
 
@@ -188,14 +180,9 @@ When Docker creates the `./mongo_data` folder via a bind mount, it often creates
 
 If this happens, simply elevate your privileges in the terminal to clear it out:
 
-<div className="mt-2 mb-8">
-  <KbdGroup>
-    <Kbd>sudo</Kbd>
-    <Kbd>rm</Kbd>
-    <Kbd>-rf</Kbd>
-    <Kbd>mongo_data</Kbd>
-  </KbdGroup>
-</div>
+```bash
+sudo rm -rf mongo_data
+```
 
 Mastering your local development environment pays compounding dividends over your career. By keeping your database data visible and scoped to your project directories via Docker Compose bind mounts, you remove the "magic" from Docker and take absolute control over your local state. 
 
