@@ -21,3 +21,14 @@ model GuestbookEntry {
   imageUrl  String?
   createdAt DateTime @default(now())
 }
+
+model Booking {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  date      DateTime
+  timeSlot  String   // e.g. "09:30 AM"
+  notes     String?
+  createdAt DateTime @default(now())
+}
+

@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Terminal, Globe, Code2, BrainCircuit, PenTool } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { BookingCalendar } from "@/components/booking-calendar";
 
 // ----------------------------------------------------------------------
 // Reusable Framer Motion Arrow Icon
@@ -49,7 +51,7 @@ export function MicroCardsSection() {
 
                         {/* CARD 1: Learn More About Me */}
                         <div className="col-span-1 md:col-span-5 lg:col-span-5 lg:row-span-6">
-                            <Link href="/about" className="block outline-none h-full">
+                            <Link href="/authors/nahean" className="block outline-none h-full">
                                 <motion.div
                                     initial="initial"
                                     whileHover="hover"
@@ -242,75 +244,84 @@ export function MicroCardsSection() {
 
                         {/* CARD 4: Book a call */}
                         <div className="md:col-span-12 lg:col-span-7 lg:row-span-5">
-                            <Link href="#" className="block outline-none h-full" target="_blank" rel="noopener noreferrer">
-                                <motion.div
-                                    initial="initial"
-                                    whileHover="hover"
-                                    className="group relative flex flex-col rounded-[2rem] border-2 border-border bg-card p-6 overflow-hidden h-[220px]"
-                                >
-                                    <ArrowIcon />
-                                    <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-tl from-purple-500/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <div className="block outline-none h-full cursor-pointer">
+                                        <motion.div
+                                            initial="initial"
+                                            whileHover="hover"
+                                            className="group relative flex flex-col rounded-[2rem] border-2 border-border bg-card p-6 overflow-hidden h-[220px]"
+                                        >
+                                            <ArrowIcon />
+                                            <div className="pointer-events-none absolute inset-0 z-30 bg-gradient-to-tl from-purple-500/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
 
-                                    <div className="grid h-full grid-cols-12 gap-5 z-40">
-                                        <div className="col-span-5 text-balance md:col-span-5">
-                                            <h2 className="mb-4 text-base font-bold text-foreground">Book a call with me</h2>
-                                            <p className="mb-2 text-sm text-muted-foreground">I'd love to chat even if there's no agenda!</p>
-                                        </div>
+                                            <div className="grid h-full grid-cols-12 gap-5 z-40">
+                                                <div className="col-span-5 text-balance md:col-span-5">
+                                                    <h2 className="mb-4 text-base font-bold text-foreground">Book a call with me</h2>
+                                                    <p className="mb-2 text-sm text-muted-foreground">I'd love to chat even if there's no agenda!</p>
+                                                </div>
 
-                                        <div className="absolute left-[43%] top-7 md:-right-14 md:left-auto">
-                                            <motion.div
-                                                variants={{
-                                                    initial: { x: 0, y: 0 },
-                                                    hover: { x: -24, y: -12 }
-                                                }}
-                                                transition={{ type: "spring", stiffness: 150, damping: 20 }}
-                                            >
-                                                {/* Original exact DOM structure for calendar */}
-                                                <motion.div
-                                                    variants={{
-                                                        initial: { borderColor: "var(--border)" },
-                                                        hover: { borderColor: "#a855f7" }
-                                                    }}
-                                                    className="h-[278px] w-[550px] rounded-[20px] border p-2 transition-colors duration-300 bg-background"
-                                                >
-                                                    <div className="h-full rounded-xl border-2 border-border/50 bg-secondary shadow-[inset_0px_2px_1.5px_0px_rgba(0,0,0,0.05)] dark:shadow-[inset_0px_2px_1.5px_0px_rgba(255,255,255,0.05)] p-3">
-                                                        <div className="flex items-center space-x-2">
-                                                            <p className="text-sm text-foreground font-semibold">January, 2026</p>
-                                                            <span className="h-1 w-1 rounded-full bg-muted-foreground/50">&nbsp;</span>
-                                                            <p className="text-xs text-muted-foreground">30 min call</p>
-                                                        </div>
-
-                                                        <div className="mt-4 grid grid-cols-7 grid-rows-5 gap-2 px-4">
-                                                            {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map(day => (
-                                                                <div key={day} className="col-span-1 row-span-1 flex h-8 w-8 items-center justify-center text-muted-foreground">
-                                                                    <span className="font-semibold text-[10px]">{day}</span>
+                                                <div className="absolute left-[43%] top-7 md:-right-14 md:left-auto">
+                                                    <motion.div
+                                                        variants={{
+                                                            initial: { x: 0, y: 0 },
+                                                            hover: { x: -24, y: -12 }
+                                                        }}
+                                                        transition={{ type: "spring", stiffness: 150, damping: 20 }}
+                                                    >
+                                                        {/* Original exact DOM structure for calendar */}
+                                                        <motion.div
+                                                            variants={{
+                                                                initial: { borderColor: "var(--border)" },
+                                                                hover: { borderColor: "#a855f7" }
+                                                            }}
+                                                            className="h-[278px] w-[550px] rounded-[20px] border p-2 transition-colors duration-300 bg-background"
+                                                        >
+                                                            <div className="h-full rounded-xl border-2 border-border/50 bg-secondary shadow-[inset_0px_2px_1.5px_0px_rgba(0,0,0,0.05)] dark:shadow-[inset_0px_2px_1.5px_0px_rgba(255,255,255,0.05)] p-3">
+                                                                <div className="flex items-center space-x-2">
+                                                                    <p className="text-sm text-foreground font-semibold">January, 2026</p>
+                                                                    <span className="h-1 w-1 rounded-full bg-muted-foreground/50">&nbsp;</span>
+                                                                    <p className="text-xs text-muted-foreground">30 min call</p>
                                                                 </div>
-                                                            ))}
 
-                                                            {Array.from({ length: 31 }, (_, i) => i + 1).map((date) => {
-                                                                const isAvailable = [5, 7, 8, 9, 10, 13, 22, 23, 25, 29, 30].includes(date);
-                                                                return (
-                                                                    <div
-                                                                        key={date}
-                                                                        className={cn(
-                                                                            "col-span-1 row-span-1 flex h-8 w-8 items-center justify-center rounded transition-colors text-sm font-medium",
-                                                                            isAvailable
-                                                                                ? "bg-background shadow-sm border border-border text-foreground group-hover:bg-purple-500 group-hover:text-white group-hover:border-transparent cursor-pointer"
-                                                                                : "text-muted-foreground/40"
-                                                                        )}
-                                                                    >
-                                                                        <span>{date}</span>
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                        </div>
-                                                    </div>
-                                                </motion.div>
-                                            </motion.div>
-                                        </div>
+                                                                <div className="mt-4 grid grid-cols-7 grid-rows-5 gap-2 px-4">
+                                                                    {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map(day => (
+                                                                        <div key={day} className="col-span-1 row-span-1 flex h-8 w-8 items-center justify-center text-muted-foreground">
+                                                                            <span className="font-semibold text-[10px]">{day}</span>
+                                                                        </div>
+                                                                    ))}
+
+                                                                    {Array.from({ length: 31 }, (_, i) => i + 1).map((date) => {
+                                                                        const isAvailable = [5, 7, 8, 9, 10, 13, 22, 23, 25, 29, 30].includes(date);
+                                                                        return (
+                                                                            <div
+                                                                                key={date}
+                                                                                className={cn(
+                                                                                    "col-span-1 row-span-1 flex h-8 w-8 items-center justify-center rounded transition-colors text-sm font-medium",
+                                                                                    isAvailable
+                                                                                        ? "bg-background shadow-sm border border-border text-foreground group-hover:bg-purple-500 group-hover:text-white group-hover:border-transparent cursor-pointer"
+                                                                                        : "text-muted-foreground/40"
+                                                                                )}
+                                                                            >
+                                                                                <span>{date}</span>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            </div>
+                                                        </motion.div>
+                                                    </motion.div>
+                                                </div>
+                                            </div>
+                                        </motion.div>
                                     </div>
-                                </motion.div>
-                            </Link>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-4xl p-0 overflow-hidden bg-transparent border-none shadow-none md:max-w-4xl max-h-[90vh] overflow-y-auto no-scrollbar">
+                                    <DialogTitle className="sr-only">Book a Call</DialogTitle>
+                                    <DialogDescription className="sr-only">Schedule a 30-minute call using the calendar.</DialogDescription>
+                                    <BookingCalendar embedded />
+                                </DialogContent>
+                            </Dialog>
                         </div>
 
                     </div>

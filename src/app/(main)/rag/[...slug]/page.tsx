@@ -125,7 +125,8 @@ export default async function RagPage({ params }: PageProps) {
 }
 
 export async function generateStaticParams() {
-    return ragSource.generateParams();
+    const params = await ragSource.generateParams();
+    return params.filter(p => p.slug && p.slug.length > 0);
 }
 
 export async function generateMetadata(props: PageProps) {

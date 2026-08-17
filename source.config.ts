@@ -25,6 +25,9 @@ export default defineConfig({
     //   useImport: false,
     //   placeholder: "none",
     // },
+    remarkImageOptions: {
+      external: false,
+    },
     rehypePlugins: (plugins) => {
       plugins.shift();
       plugins.push([

@@ -33,7 +33,7 @@ export default function Home() {
 
                 {/* 3. Professional Work */}
                 <ProjectsSection />
-                <CaseStudiesSection />
+                {/* <CaseStudiesSection /> */}
 
                 {/* 4. Open Source Contributions */}
                 <RepositoriesSection />
@@ -41,7 +41,7 @@ export default function Home() {
 
                 {/* 5. Specialized Domain (Bioinformatics) */}
                 <BioToolboxSection />
-                <PublicationsSection />
+                {/* <PublicationsSection /> */}
 
                 {/* 6. Content, Thoughts, & Inspirations */}
                 <BlogSection />
